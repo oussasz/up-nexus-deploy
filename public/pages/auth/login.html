@@ -462,7 +462,9 @@
       }
 
       @keyframes spin {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       /* Mobile */
@@ -547,7 +549,7 @@
           <div class="social-login">
             <!-- Google Sign-In Button -->
             <div id="googleSignInBtn"></div>
-            
+
             <!-- LinkedIn Button (Coming Soon) -->
             <button class="social-btn linkedin" id="linkedinBtn">
               <i class="fab fa-linkedin-in"></i>
@@ -563,7 +565,12 @@
               <label class="form-label">Email Address</label>
               <div class="form-input-wrapper">
                 <i class="fas fa-envelope"></i>
-                <input type="email" id="emailInput" placeholder="Enter your email" required />
+                <input
+                  type="email"
+                  id="emailInput"
+                  placeholder="Enter your email"
+                  required
+                />
               </div>
             </div>
 
@@ -595,7 +602,11 @@
               <a href="forgot" class="forgot-link">Forgot password?</a>
             </div>
 
-            <button type="submit" class="btn btn-primary submit-btn" id="submitBtn">
+            <button
+              type="submit"
+              class="btn btn-primary submit-btn"
+              id="submitBtn"
+            >
               Sign In
               <i class="fas fa-arrow-right"></i>
             </button>
@@ -619,10 +630,12 @@
         </div>
         <h2>Coming Soon!</h2>
         <p>
-          LinkedIn sign-in is currently under development. 
-          We're working hard to bring this feature to you soon!
+          LinkedIn sign-in is currently under development. We're working hard to
+          bring this feature to you soon!
         </p>
-        <p style="font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
+        <p
+          style="font-size: var(--font-size-sm); margin-bottom: var(--space-6)"
+        >
           In the meantime, please use Google sign-in or email registration.
         </p>
         <button class="modal-close" onclick="closeLinkedinModal()">
@@ -633,174 +646,179 @@
 
     <script src="/js/config.js"></script>
     <script>
-      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || '/api';
-      
+      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || "/api";
+
       // Initialize Google Sign-In
-      window.onload = function() {
+      window.onload = function () {
         google.accounts.id.initialize({
-          client_id: '902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com',
+          client_id:
+            "902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com",
           callback: handleGoogleSignIn,
           auto_select: false,
-          context: 'signin'
+          context: "signin",
         });
-        
+
         google.accounts.id.renderButton(
-          document.getElementById('googleSignInBtn'),
-          { 
-            theme: 'outline', 
-            size: 'large', 
-            width: '100%',
-            text: 'continue_with',
-            shape: 'rectangular',
-            logo_alignment: 'left'
+          document.getElementById("googleSignInBtn"),
+          {
+            theme: "outline",
+            size: "large",
+            width: "100%",
+            text: "continue_with",
+            shape: "rectangular",
+            logo_alignment: "left",
           }
         );
       };
-      
+
       // Handle Google Sign-In
       async function handleGoogleSignIn(response) {
-        showStatus('Signing in with Google...', 'pending');
-        
+        showStatus("Signing in with Google...", "pending");
+
         try {
           const res = await fetch(`${API_URL}/users/auth/google`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
               credential: response.credential,
-              userType: 'browser' // Login is always for existing users or new browsers
-            })
+              userType: "browser", // Login is always for existing users or new browsers
+            }),
           });
-          
+
           const data = await res.json();
-          
+
           if (data.success) {
             // Store token and user data
-            localStorage.setItem('upnexus_token', data.token);
-            localStorage.setItem('upnexus_user', JSON.stringify(data.user));
-            
+            localStorage.setItem("upnexus_token", data.token);
+            localStorage.setItem("upnexus_user", JSON.stringify(data.user));
+
             if (data.isNewUser) {
-              showStatus('Account created! Redirecting...', 'success');
+              showStatus("Account created! Redirecting...", "success");
             } else {
-              showStatus('Login successful! Redirecting...', 'success');
+              showStatus("Login successful! Redirecting...", "success");
             }
-            
+
             // Redirect based on user status
             setTimeout(() => {
-              if (data.user.status === 'pending_review') {
-                window.location.href = '/pages/dashboard/pending.html';
+              if (data.user.status === "pending_review") {
+                window.location.href = "/pages/dashboard/pending.html";
               } else {
-                window.location.href = '/pages/dashboard/';
+                window.location.href = "/pages/dashboard/";
               }
             }, 1500);
           } else {
-            showStatus(data.message || 'Authentication failed', 'error');
+            showStatus(data.message || "Authentication failed", "error");
           }
         } catch (error) {
-          console.error('Google sign-in error:', error);
-          showStatus('Authentication failed. Please try again.', 'error');
+          console.error("Google sign-in error:", error);
+          showStatus("Authentication failed. Please try again.", "error");
         }
       }
-      
+
       // Email/Password Login
-      document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const email = document.getElementById('emailInput').value;
-        const password = document.getElementById('passwordInput').value;
-        const submitBtn = document.getElementById('submitBtn');
-        
-        submitBtn.classList.add('loading');
-        showStatus('Signing in...', 'pending');
-        
-        try {
-          const res = await fetch(`${API_URL}/users/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-          });
-          
-          const data = await res.json();
-          
-          if (data.success) {
-            localStorage.setItem('upnexus_token', data.token);
-            localStorage.setItem('upnexus_user', JSON.stringify(data.user));
-            
-            showStatus('Login successful! Redirecting...', 'success');
-            
-            setTimeout(() => {
-              if (data.user.status === 'pending_review') {
-                window.location.href = '/pages/dashboard/pending.html';
-              } else {
-                window.location.href = '/pages/dashboard/';
-              }
-            }, 1500);
-          } else {
-            showStatus(data.message || 'Invalid email or password', 'error');
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const email = document.getElementById("emailInput").value;
+          const password = document.getElementById("passwordInput").value;
+          const submitBtn = document.getElementById("submitBtn");
+
+          submitBtn.classList.add("loading");
+          showStatus("Signing in...", "pending");
+
+          try {
+            const res = await fetch(`${API_URL}/users/login`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+              localStorage.setItem("upnexus_token", data.token);
+              localStorage.setItem("upnexus_user", JSON.stringify(data.user));
+
+              showStatus("Login successful! Redirecting...", "success");
+
+              setTimeout(() => {
+                if (data.user.status === "pending_review") {
+                  window.location.href = "/pages/dashboard/pending.html";
+                } else {
+                  window.location.href = "/pages/dashboard/";
+                }
+              }, 1500);
+            } else {
+              showStatus(data.message || "Invalid email or password", "error");
+            }
+          } catch (error) {
+            console.error("Login error:", error);
+            showStatus("Login failed. Please try again.", "error");
+          } finally {
+            submitBtn.classList.remove("loading");
           }
-        } catch (error) {
-          console.error('Login error:', error);
-          showStatus('Login failed. Please try again.', 'error');
-        } finally {
-          submitBtn.classList.remove('loading');
-        }
-      });
-      
+        });
+
       // LinkedIn Modal
-      document.getElementById('linkedinBtn').addEventListener('click', () => {
-        document.getElementById('linkedinModal').classList.add('active');
+      document.getElementById("linkedinBtn").addEventListener("click", () => {
+        document.getElementById("linkedinModal").classList.add("active");
       });
-      
+
       function closeLinkedinModal() {
-        document.getElementById('linkedinModal').classList.remove('active');
+        document.getElementById("linkedinModal").classList.remove("active");
       }
-      
+
       // Close modal on overlay click
-      document.getElementById('linkedinModal').addEventListener('click', (e) => {
-        if (e.target === e.currentTarget) {
-          closeLinkedinModal();
-        }
-      });
-      
+      document
+        .getElementById("linkedinModal")
+        .addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) {
+            closeLinkedinModal();
+          }
+        });
+
       // Toggle Password Visibility
       function togglePassword() {
-        const password = document.getElementById('passwordInput');
-        const icon = document.getElementById('toggleIcon');
+        const password = document.getElementById("passwordInput");
+        const icon = document.getElementById("toggleIcon");
 
-        if (password.type === 'password') {
-          password.type = 'text';
-          icon.classList.remove('fa-eye');
-          icon.classList.add('fa-eye-slash');
+        if (password.type === "password") {
+          password.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
         } else {
-          password.type = 'password';
-          icon.classList.remove('fa-eye-slash');
-          icon.classList.add('fa-eye');
+          password.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
         }
       }
-      
+
       // Show Status Message
       function showStatus(message, type) {
-        const statusEl = document.getElementById('statusMessage');
+        const statusEl = document.getElementById("statusMessage");
         statusEl.textContent = message;
         statusEl.className = `status-message show ${type}`;
       }
-      
+
       // Check if user is already logged in
-      const existingToken = localStorage.getItem('upnexus_token');
+      const existingToken = localStorage.getItem("upnexus_token");
       if (existingToken) {
         // Verify token is still valid
         fetch(`${API_URL}/users/me`, {
-          headers: { 'Authorization': `Bearer ${existingToken}` }
+          headers: { Authorization: `Bearer ${existingToken}` },
         })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            window.location.href = '/pages/dashboard/';
-          }
-        })
-        .catch(() => {
-          localStorage.removeItem('upnexus_token');
-          localStorage.removeItem('upnexus_user');
-        });
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              window.location.href = "/pages/dashboard/";
+            }
+          })
+          .catch(() => {
+            localStorage.removeItem("upnexus_token");
+            localStorage.removeItem("upnexus_user");
+          });
       }
     </script>
   </body>

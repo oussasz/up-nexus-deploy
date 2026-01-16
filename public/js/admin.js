@@ -1211,7 +1211,7 @@ async function fetchUsers() {
 function updatePendingBadge() {
   const badge = document.getElementById("pendingBadge");
   const totalPending = pendingUsers.length + pendingClaims.length;
-  
+
   if (totalPending > 0) {
     badge.textContent = totalPending;
     badge.style.display = "flex";
@@ -1225,7 +1225,8 @@ function renderPendingUsers() {
   const container = document.getElementById("pendingUsersList");
 
   if (pendingUsers.length === 0) {
-    container.innerHTML = '<p class="empty-message">No pending user reviews</p>';
+    container.innerHTML =
+      '<p class="empty-message">No pending user reviews</p>';
     return;
   }
 
@@ -1234,14 +1235,22 @@ function renderPendingUsers() {
       (user) => `
     <div class="review-card">
       <div class="review-avatar">
-        ${user.firstName ? user.firstName.charAt(0).toUpperCase() : "U"}${user.lastName ? user.lastName.charAt(0).toUpperCase() : ""}
+        ${user.firstName ? user.firstName.charAt(0).toUpperCase() : "U"}${
+        user.lastName ? user.lastName.charAt(0).toUpperCase() : ""
+      }
       </div>
       <div class="review-info">
         <h4>${user.firstName || ""} ${user.lastName || ""}</h4>
         <p>${user.email}</p>
         <div class="review-meta">
-          <span class="user-type-badge user-type-${user.userType}">${formatUserType(user.userType)}</span>
-          ${user.publicRole ? `<span class="user-type-badge">${user.publicRole}</span>` : ""}
+          <span class="user-type-badge user-type-${
+            user.userType
+          }">${formatUserType(user.userType)}</span>
+          ${
+            user.publicRole
+              ? `<span class="user-type-badge">${user.publicRole}</span>`
+              : ""
+          }
           <span>Joined ${formatDate(user.createdAt)}</span>
         </div>
       </div>
@@ -1249,7 +1258,9 @@ function renderPendingUsers() {
         <button class="btn-approve" onclick="approveUser('${user._id}')">
           <i class="fas fa-check"></i> Approve
         </button>
-        <button class="btn-reject" onclick="openRejectModal('${user._id}', 'user')">
+        <button class="btn-reject" onclick="openRejectModal('${
+          user._id
+        }', 'user')">
           <i class="fas fa-times"></i> Reject
         </button>
       </div>
@@ -1264,7 +1275,8 @@ function renderPendingClaims() {
   const container = document.getElementById("pendingClaimsList");
 
   if (pendingClaims.length === 0) {
-    container.innerHTML = '<p class="empty-message">No pending entity claims</p>';
+    container.innerHTML =
+      '<p class="empty-message">No pending entity claims</p>';
     return;
   }
 
@@ -1273,26 +1285,47 @@ function renderPendingClaims() {
       (claim) => `
     <div class="review-card">
       <div class="review-avatar">
-        ${claim.userId?.firstName ? claim.userId.firstName.charAt(0).toUpperCase() : "?"}${claim.userId?.lastName ? claim.userId.lastName.charAt(0).toUpperCase() : ""}
+        ${
+          claim.userId?.firstName
+            ? claim.userId.firstName.charAt(0).toUpperCase()
+            : "?"
+        }${
+        claim.userId?.lastName
+          ? claim.userId.lastName.charAt(0).toUpperCase()
+          : ""
+      }
       </div>
       <div class="review-info">
-        <h4>${claim.userId?.firstName || ""} ${claim.userId?.lastName || ""}</h4>
+        <h4>${claim.userId?.firstName || ""} ${
+        claim.userId?.lastName || ""
+      }</h4>
         <p>${claim.userId?.email || "Unknown user"}</p>
         <div class="review-meta">
-          ${claim.isNewEntity 
-            ? `<span class="user-type-badge user-type-entity_representative">New Entity: ${claim.newEntityData?.name || "Unknown"} (${claim.newEntityData?.type || "Unknown"})</span>`
-            : `<span class="user-type-badge user-type-entity_representative">Claim: ${claim.entityId?.name || "Unknown Entity"}</span>`
+          ${
+            claim.isNewEntity
+              ? `<span class="user-type-badge user-type-entity_representative">New Entity: ${
+                  claim.newEntityData?.name || "Unknown"
+                } (${claim.newEntityData?.type || "Unknown"})</span>`
+              : `<span class="user-type-badge user-type-entity_representative">Claim: ${
+                  claim.entityId?.name || "Unknown Entity"
+                }</span>`
           }
           <span>Role: ${formatClaimRole(claim.claimRole)}</span>
           ${claim.workEmail ? `<span>Work: ${claim.workEmail}</span>` : ""}
         </div>
-        ${claim.linkedinProfile ? `<p style="font-size: 0.8rem; color: #0077b5;"><i class="fab fa-linkedin"></i> ${claim.linkedinProfile}</p>` : ""}
+        ${
+          claim.linkedinProfile
+            ? `<p style="font-size: 0.8rem; color: #0077b5;"><i class="fab fa-linkedin"></i> ${claim.linkedinProfile}</p>`
+            : ""
+        }
       </div>
       <div class="review-actions">
         <button class="btn-approve" onclick="approveClaim('${claim._id}')">
           <i class="fas fa-check"></i> Approve
         </button>
-        <button class="btn-reject" onclick="openRejectModal('${claim._id}', 'claim')">
+        <button class="btn-reject" onclick="openRejectModal('${
+          claim._id
+        }', 'claim')">
           <i class="fas fa-times"></i> Reject
         </button>
       </div>
@@ -1305,12 +1338,15 @@ function renderPendingClaims() {
 // Render users table
 function renderUsersTable() {
   const tbody = document.getElementById("usersTableBody");
-  const searchTerm = document.getElementById("searchUserInput")?.value.toLowerCase() || "";
+  const searchTerm =
+    document.getElementById("searchUserInput")?.value.toLowerCase() || "";
   const statusFilter = document.getElementById("filterUserStatus")?.value || "";
   const typeFilter = document.getElementById("filterUserType")?.value || "";
 
   let filteredUsers = users.filter((user) => {
-    const fullName = `${user.firstName || ""} ${user.lastName || ""}`.toLowerCase();
+    const fullName = `${user.firstName || ""} ${
+      user.lastName || ""
+    }`.toLowerCase();
     const matchesSearch =
       fullName.includes(searchTerm) ||
       user.email.toLowerCase().includes(searchTerm);
@@ -1320,7 +1356,8 @@ function renderUsersTable() {
   });
 
   if (filteredUsers.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty-message">No users found</td></tr>';
+    tbody.innerHTML =
+      '<tr><td colspan="6" class="empty-message">No users found</td></tr>';
     return;
   }
 
@@ -1331,12 +1368,16 @@ function renderUsersTable() {
       <td>
         <div class="entity-cell">
           <div class="entity-info">
-            <span class="entity-name">${user.firstName || ""} ${user.lastName || ""}</span>
+            <span class="entity-name">${user.firstName || ""} ${
+        user.lastName || ""
+      }</span>
           </div>
         </div>
       </td>
       <td>${user.email}</td>
-      <td><span class="user-type-badge user-type-${user.userType}">${formatUserType(user.userType)}</span></td>
+      <td><span class="user-type-badge user-type-${
+        user.userType
+      }">${formatUserType(user.userType)}</span></td>
       <td>
         <span class="status-badge status-${user.status}">
           ${formatStatus(user.status)}
@@ -1345,8 +1386,9 @@ function renderUsersTable() {
       <td>${formatDate(user.createdAt)}</td>
       <td>
         <div class="action-buttons">
-          ${user.status === "pending_review" 
-            ? `
+          ${
+            user.status === "pending_review"
+              ? `
               <button class="btn-icon" onclick="approveUser('${user._id}')" title="Approve">
                 <i class="fas fa-check" style="color: #10b981;"></i>
               </button>
@@ -1354,19 +1396,19 @@ function renderUsersTable() {
                 <i class="fas fa-times" style="color: #ef4444;"></i>
               </button>
             `
-            : user.status === "active"
-            ? `
+              : user.status === "active"
+              ? `
               <button class="btn-icon" onclick="suspendUser('${user._id}')" title="Suspend">
                 <i class="fas fa-ban" style="color: #f97316;"></i>
               </button>
             `
-            : user.status === "suspended"
-            ? `
+              : user.status === "suspended"
+              ? `
               <button class="btn-icon" onclick="reactivateUser('${user._id}')" title="Reactivate">
                 <i class="fas fa-undo" style="color: #10b981;"></i>
               </button>
             `
-            : ""
+              : ""
           }
         </div>
       </td>
@@ -1553,7 +1595,8 @@ async function rejectClaim(claimId, reason = "") {
 function openRejectModal(itemId, itemType) {
   rejectItemId = itemId;
   rejectItemType = itemType;
-  document.getElementById("rejectItemType").textContent = itemType === "user" ? "User" : "Entity Claim";
+  document.getElementById("rejectItemType").textContent =
+    itemType === "user" ? "User" : "Entity Claim";
   document.getElementById("rejectReason").value = "";
   document.getElementById("rejectModal").classList.add("show");
 }
@@ -1568,26 +1611,34 @@ function closeRejectModal() {
 // Confirm rejection
 function confirmRejection() {
   const reason = document.getElementById("rejectReason").value;
-  
+
   if (rejectItemType === "user") {
     rejectUser(rejectItemId, reason);
   } else if (rejectItemType === "claim") {
     rejectClaim(rejectItemId, reason);
   }
-  
+
   closeRejectModal();
 }
 
 // Initialize user management event listeners
 function initUserManagement() {
   // User search and filter listeners
-  document.getElementById("searchUserInput")?.addEventListener("input", () => renderUsersTable());
-  document.getElementById("filterUserStatus")?.addEventListener("change", () => renderUsersTable());
-  document.getElementById("filterUserType")?.addEventListener("change", () => renderUsersTable());
+  document
+    .getElementById("searchUserInput")
+    ?.addEventListener("input", () => renderUsersTable());
+  document
+    .getElementById("filterUserStatus")
+    ?.addEventListener("change", () => renderUsersTable());
+  document
+    .getElementById("filterUserType")
+    ?.addEventListener("change", () => renderUsersTable());
 
   // Reject modal listeners
-  document.getElementById("confirmRejectBtn")?.addEventListener("click", confirmRejection);
-  
+  document
+    .getElementById("confirmRejectBtn")
+    ?.addEventListener("click", confirmRejection);
+
   // Close modal on outside click
   document.getElementById("rejectModal")?.addEventListener("click", (e) => {
     if (e.target.id === "rejectModal") {

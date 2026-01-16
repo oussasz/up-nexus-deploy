@@ -6,8 +6,14 @@
     <title>Create Account | UP-NEXUS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="icon" type="image/png" href="/icon.png" />
     <link rel="apple-touch-icon" href="/icon.png" />
@@ -36,7 +42,10 @@
         content: "";
         position: absolute;
         inset: 0;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px
+          ),
           linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         background-size: 50px 50px;
       }
@@ -61,7 +70,9 @@
         align-items: center;
       }
 
-      .auth-logo .logo-up, .auth-logo .logo-ne, .auth-logo .logo-us {
+      .auth-logo .logo-up,
+      .auth-logo .logo-ne,
+      .auth-logo .logo-us {
         color: #ffffff;
       }
 
@@ -189,8 +200,14 @@
       }
 
       @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       /* User Type Cards */
@@ -482,9 +499,18 @@
         transition: all var(--transition-base);
       }
 
-      .strength-fill.weak { width: 33%; background: var(--color-accent-red); }
-      .strength-fill.medium { width: 66%; background: #f59e0b; }
-      .strength-fill.strong { width: 100%; background: var(--color-accent-green); }
+      .strength-fill.weak {
+        width: 33%;
+        background: var(--color-accent-red);
+      }
+      .strength-fill.medium {
+        width: 66%;
+        background: #f59e0b;
+      }
+      .strength-fill.strong {
+        width: 100%;
+        background: var(--color-accent-green);
+      }
 
       .strength-text {
         font-size: var(--font-size-xs);
@@ -567,7 +593,8 @@
         font-size: var(--font-size-sm);
       }
 
-      .auth-divider::before, .auth-divider::after {
+      .auth-divider::before,
+      .auth-divider::after {
         content: "";
         flex: 1;
         height: 1px;
@@ -647,10 +674,24 @@
         display: none;
       }
 
-      .status-message.show { display: block; }
-      .status-message.success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; }
-      .status-message.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; }
-      .status-message.pending { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; }
+      .status-message.show {
+        display: block;
+      }
+      .status-message.success {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #10b981;
+      }
+      .status-message.error {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+      }
+      .status-message.pending {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        color: #f59e0b;
+      }
 
       /* Loading */
       .btn.loading {
@@ -669,7 +710,11 @@
         margin-left: var(--space-2);
       }
 
-      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
 
       /* Footer */
       .auth-footer {
@@ -699,7 +744,9 @@
         justify-content: center;
       }
 
-      .modal-overlay.active { display: flex; }
+      .modal-overlay.active {
+        display: flex;
+      }
 
       .modal-content {
         background: var(--color-bg-secondary);
@@ -711,8 +758,14 @@
       }
 
       @keyframes modalIn {
-        from { opacity: 0; transform: scale(0.9) translateY(20px); }
-        to { opacity: 1; transform: scale(1) translateY(0); }
+        from {
+          opacity: 0;
+          transform: scale(0.9) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
       }
 
       .modal-icon {
@@ -726,9 +779,19 @@
         justify-content: center;
       }
 
-      .modal-icon i { font-size: 2.5rem; color: white; }
-      .modal-content h2 { font-size: var(--font-size-2xl); margin-bottom: var(--space-3); }
-      .modal-content p { color: var(--color-text-secondary); margin-bottom: var(--space-6); line-height: 1.6; }
+      .modal-icon i {
+        font-size: 2.5rem;
+        color: white;
+      }
+      .modal-content h2 {
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--space-3);
+      }
+      .modal-content p {
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-6);
+        line-height: 1.6;
+      }
 
       .modal-close {
         padding: var(--space-3) var(--space-8);
@@ -742,15 +805,27 @@
 
       /* Mobile */
       @media (max-width: 1024px) {
-        .auth-branding { display: none; }
+        .auth-branding {
+          display: none;
+        }
       }
 
       @media (max-width: 640px) {
-        .user-type-grid { grid-template-columns: 1fr; }
-        .role-grid { grid-template-columns: repeat(2, 1fr); }
-        .form-row { grid-template-columns: 1fr; }
-        .form-actions { flex-direction: column; }
-        .claim-role-grid { grid-template-columns: 1fr; }
+        .user-type-grid {
+          grid-template-columns: 1fr;
+        }
+        .role-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        .form-actions {
+          flex-direction: column;
+        }
+        .claim-role-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -761,12 +836,15 @@
         <div class="auth-branding-content">
           <div class="auth-logo">
             <span class="logo-text">
-              <span class="logo-up">UP</span><span class="logo-ne">-NE</span><span class="logo-x"><img src="/icon.png" alt="X" /></span><span class="logo-us">US</span>
+              <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+              ><span class="logo-x"><img src="/icon.png" alt="X" /></span
+              ><span class="logo-us">US</span>
             </span>
           </div>
           <h2 class="auth-tagline">Start Your Entrepreneurial Journey</h2>
           <p class="auth-description">
-            Join thousands of startups, investors, and ecosystem players building Algeria's future together.
+            Join thousands of startups, investors, and ecosystem players
+            building Algeria's future together.
           </p>
         </div>
       </div>
@@ -775,9 +853,19 @@
       <div class="auth-form-panel">
         <div class="auth-form-container">
           <div class="auth-form-header">
-            <a href="/" class="logo" style="display: flex; justify-content: center; margin-bottom: var(--space-4);">
+            <a
+              href="/"
+              class="logo"
+              style="
+                display: flex;
+                justify-content: center;
+                margin-bottom: var(--space-4);
+              "
+            >
               <span class="logo-text">
-                <span class="logo-up">UP</span><span class="logo-ne">-NE</span><span class="logo-x"><img src="/icon.png" alt="X" /></span><span class="logo-us">US</span>
+                <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+                ><span class="logo-x"><img src="/icon.png" alt="X" /></span
+                ><span class="logo-us">US</span>
               </span>
             </a>
             <h1>Create Your Account</h1>
@@ -805,33 +893,57 @@
           <form id="registerForm">
             <!-- Step 1: Choose Account Type -->
             <div class="step-content active" id="step1">
-              <h3 style="text-align: center; margin-bottom: var(--space-4); font-size: var(--font-size-lg);">
+              <h3
+                style="
+                  text-align: center;
+                  margin-bottom: var(--space-4);
+                  font-size: var(--font-size-lg);
+                "
+              >
                 What brings you to UP-NEXUS?
               </h3>
 
               <div class="user-type-grid">
                 <div class="user-type-card" data-type="browser">
-                  <div class="user-type-icon"><i class="fas fa-compass"></i></div>
+                  <div class="user-type-icon">
+                    <i class="fas fa-compass"></i>
+                  </div>
                   <div class="user-type-name">Just Browsing</div>
-                  <div class="user-type-desc">Explore the ecosystem, find opportunities, stay updated</div>
+                  <div class="user-type-desc">
+                    Explore the ecosystem, find opportunities, stay updated
+                  </div>
                 </div>
 
                 <div class="user-type-card" data-type="individual_public">
-                  <div class="user-type-icon"><i class="fas fa-user-tie"></i></div>
+                  <div class="user-type-icon">
+                    <i class="fas fa-user-tie"></i>
+                  </div>
                   <div class="user-type-name">Public Profile</div>
-                  <div class="user-type-desc">Appear as a mentor, coach, freelancer, or project holder</div>
+                  <div class="user-type-desc">
+                    Appear as a mentor, coach, freelancer, or project holder
+                  </div>
                 </div>
 
                 <div class="user-type-card" data-type="entity_representative">
-                  <div class="user-type-icon"><i class="fas fa-building"></i></div>
+                  <div class="user-type-icon">
+                    <i class="fas fa-building"></i>
+                  </div>
                   <div class="user-type-name">Entity Representative</div>
-                  <div class="user-type-desc">Manage a startup, incubator, accelerator, or coworking space</div>
+                  <div class="user-type-desc">
+                    Manage a startup, incubator, accelerator, or coworking space
+                  </div>
                 </div>
               </div>
 
               <!-- Public Role Selection (shown for individual_public) -->
-              <div id="publicRoleSection" style="display: none;">
-                <h4 style="margin-bottom: var(--space-3); font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+              <div id="publicRoleSection" style="display: none">
+                <h4
+                  style="
+                    margin-bottom: var(--space-3);
+                    font-size: var(--font-size-sm);
+                    color: var(--color-text-secondary);
+                  "
+                >
                   What's your role?
                 </h4>
                 <div class="role-grid">
@@ -863,7 +975,12 @@
               </div>
 
               <div class="form-actions">
-                <button type="button" class="btn btn-primary" id="toStep2" disabled>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="toStep2"
+                  disabled
+                >
                   Continue <i class="fas fa-arrow-right"></i>
                 </button>
               </div>
@@ -872,35 +989,89 @@
             <!-- Step 2: Entity Selection (for entity_representative) OR Account Info -->
             <div class="step-content" id="step2">
               <!-- Entity Selection Section -->
-              <div id="entitySelectionSection" style="display: none;">
-                <h3 style="text-align: center; margin-bottom: var(--space-4); font-size: var(--font-size-lg);">
+              <div id="entitySelectionSection" style="display: none">
+                <h3
+                  style="
+                    text-align: center;
+                    margin-bottom: var(--space-4);
+                    font-size: var(--font-size-lg);
+                  "
+                >
                   Select Your Organization
                 </h3>
 
                 <div class="info-box">
-                  <h4><i class="fas fa-info-circle"></i> Verification Required</h4>
-                  <p>After registration, your claim will be reviewed by our admin team. You may need to provide proof of your role.</p>
+                  <h4>
+                    <i class="fas fa-info-circle"></i> Verification Required
+                  </h4>
+                  <p>
+                    After registration, your claim will be reviewed by our admin
+                    team. You may need to provide proof of your role.
+                  </p>
                 </div>
 
                 <!-- Entity Type Tabs -->
                 <div class="entity-type-tabs">
-                  <button type="button" class="entity-tab active" data-entity-type="Startup">Startups</button>
-                  <button type="button" class="entity-tab" data-entity-type="Incubator">Incubators</button>
-                  <button type="button" class="entity-tab" data-entity-type="Accelerator">Accelerators</button>
-                  <button type="button" class="entity-tab" data-entity-type="Coworking Space">Coworking</button>
-                  <button type="button" class="entity-tab" data-entity-type="Investor">Investors</button>
+                  <button
+                    type="button"
+                    class="entity-tab active"
+                    data-entity-type="Startup"
+                  >
+                    Startups
+                  </button>
+                  <button
+                    type="button"
+                    class="entity-tab"
+                    data-entity-type="Incubator"
+                  >
+                    Incubators
+                  </button>
+                  <button
+                    type="button"
+                    class="entity-tab"
+                    data-entity-type="Accelerator"
+                  >
+                    Accelerators
+                  </button>
+                  <button
+                    type="button"
+                    class="entity-tab"
+                    data-entity-type="Coworking Space"
+                  >
+                    Coworking
+                  </button>
+                  <button
+                    type="button"
+                    class="entity-tab"
+                    data-entity-type="Investor"
+                  >
+                    Investors
+                  </button>
                 </div>
 
                 <!-- Entity Search -->
                 <div class="entity-search-box">
                   <i class="fas fa-search"></i>
-                  <input type="text" id="entitySearch" placeholder="Search for your organization..." />
+                  <input
+                    type="text"
+                    id="entitySearch"
+                    placeholder="Search for your organization..."
+                  />
                 </div>
 
                 <!-- Entity Results -->
                 <div class="entity-results" id="entityResults">
-                  <div style="padding: var(--space-4); text-align: center; color: var(--color-text-tertiary);">
-                    <i class="fas fa-search" style="font-size: 2rem; margin-bottom: var(--space-2);"></i>
+                  <div
+                    style="
+                      padding: var(--space-4);
+                      text-align: center;
+                      color: var(--color-text-tertiary);
+                    "
+                  >
+                    <i
+                      class="fas fa-search"
+                      style="font-size: 2rem; margin-bottom: var(--space-2)"
+                    ></i>
                     <p>Type to search for your organization</p>
                   </div>
                 </div>
@@ -908,20 +1079,78 @@
                 <!-- Add New Entity -->
                 <div class="add-new-entity" id="addNewEntity">
                   <i class="fas fa-plus-circle"></i>
-                  <div style="font-weight: var(--font-weight-medium);">My organization is not listed</div>
-                  <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary);">Request to add a new entity</div>
+                  <div style="font-weight: var(--font-weight-medium)">
+                    My organization is not listed
+                  </div>
+                  <div
+                    style="
+                      font-size: var(--font-size-xs);
+                      color: var(--color-text-tertiary);
+                    "
+                  >
+                    Request to add a new entity
+                  </div>
                 </div>
 
                 <!-- Selected Entity Info -->
-                <div id="selectedEntityInfo" style="display: none; margin-bottom: var(--space-4);">
-                  <div style="padding: var(--space-4); background: var(--color-primary-10); border: 1px solid var(--color-primary); border-radius: var(--radius-lg);">
-                    <div style="display: flex; align-items: center; gap: var(--space-3);">
-                      <div id="selectedEntityLogo" style="width: 48px; height: 48px; background: var(--color-bg-tertiary); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🏢</div>
-                      <div>
-                        <h4 id="selectedEntityName" style="font-weight: var(--font-weight-semibold);"></h4>
-                        <p id="selectedEntityType" style="font-size: var(--font-size-xs); color: var(--color-text-secondary);"></p>
+                <div
+                  id="selectedEntityInfo"
+                  style="display: none; margin-bottom: var(--space-4)"
+                >
+                  <div
+                    style="
+                      padding: var(--space-4);
+                      background: var(--color-primary-10);
+                      border: 1px solid var(--color-primary);
+                      border-radius: var(--radius-lg);
+                    "
+                  >
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        gap: var(--space-3);
+                      "
+                    >
+                      <div
+                        id="selectedEntityLogo"
+                        style="
+                          width: 48px;
+                          height: 48px;
+                          background: var(--color-bg-tertiary);
+                          border-radius: var(--radius-lg);
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          font-size: 1.5rem;
+                        "
+                      >
+                        🏢
                       </div>
-                      <button type="button" style="margin-left: auto; background: none; border: none; color: var(--color-text-muted); cursor: pointer;" onclick="clearSelectedEntity()">
+                      <div>
+                        <h4
+                          id="selectedEntityName"
+                          style="font-weight: var(--font-weight-semibold)"
+                        ></h4>
+                        <p
+                          id="selectedEntityType"
+                          style="
+                            font-size: var(--font-size-xs);
+                            color: var(--color-text-secondary);
+                          "
+                        ></p>
+                      </div>
+                      <button
+                        type="button"
+                        style="
+                          margin-left: auto;
+                          background: none;
+                          border: none;
+                          color: var(--color-text-muted);
+                          cursor: pointer;
+                        "
+                        onclick="clearSelectedEntity()"
+                      >
                         <i class="fas fa-times"></i>
                       </button>
                     </div>
@@ -929,8 +1158,15 @@
                 </div>
 
                 <!-- Claim Role -->
-                <div id="claimRoleSection" style="display: none;">
-                  <h4 style="margin-bottom: var(--space-3); font-size: var(--font-size-sm);">Your role at this organization:</h4>
+                <div id="claimRoleSection" style="display: none">
+                  <h4
+                    style="
+                      margin-bottom: var(--space-3);
+                      font-size: var(--font-size-sm);
+                    "
+                  >
+                    Your role at this organization:
+                  </h4>
                   <div class="claim-role-grid">
                     <label class="claim-role-option" data-claim-role="owner">
                       <input type="radio" name="claimRole" value="owner" />
@@ -940,52 +1176,107 @@
                       <input type="radio" name="claimRole" value="admin" />
                       <span>Admin / Manager</span>
                     </label>
-                    <label class="claim-role-option" data-claim-role="team_member">
-                      <input type="radio" name="claimRole" value="team_member" />
+                    <label
+                      class="claim-role-option"
+                      data-claim-role="team_member"
+                    >
+                      <input
+                        type="radio"
+                        name="claimRole"
+                        value="team_member"
+                      />
                       <span>Team Member</span>
                     </label>
                   </div>
 
                   <div class="form-group">
                     <label class="form-label">Work Email (optional)</label>
-                    <input type="email" class="form-input" id="workEmail" placeholder="your.name@company.com" />
-                    <p style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-top: var(--space-1);">
-                      If your email matches the company domain, verification is faster
+                    <input
+                      type="email"
+                      class="form-input"
+                      id="workEmail"
+                      placeholder="your.name@company.com"
+                    />
+                    <p
+                      style="
+                        font-size: var(--font-size-xs);
+                        color: var(--color-text-tertiary);
+                        margin-top: var(--space-1);
+                      "
+                    >
+                      If your email matches the company domain, verification is
+                      faster
                     </p>
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label">LinkedIn Profile (optional)</label>
-                    <input type="url" class="form-input" id="linkedinProfile" placeholder="https://linkedin.com/in/yourprofile" />
+                    <label class="form-label"
+                      >LinkedIn Profile (optional)</label
+                    >
+                    <input
+                      type="url"
+                      class="form-input"
+                      id="linkedinProfile"
+                      placeholder="https://linkedin.com/in/yourprofile"
+                    />
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label">Additional Notes (optional)</label>
-                    <textarea class="form-input" id="additionalNotes" rows="2" placeholder="Any additional information to verify your role..."></textarea>
+                    <label class="form-label"
+                      >Additional Notes (optional)</label
+                    >
+                    <textarea
+                      class="form-input"
+                      id="additionalNotes"
+                      rows="2"
+                      placeholder="Any additional information to verify your role..."
+                    ></textarea>
                   </div>
                 </div>
               </div>
 
               <!-- New Entity Form (hidden by default) -->
-              <div id="newEntitySection" style="display: none;">
-                <h3 style="text-align: center; margin-bottom: var(--space-4); font-size: var(--font-size-lg);">
+              <div id="newEntitySection" style="display: none">
+                <h3
+                  style="
+                    text-align: center;
+                    margin-bottom: var(--space-4);
+                    font-size: var(--font-size-lg);
+                  "
+                >
                   Add New Organization
                 </h3>
 
                 <div class="info-box warning">
-                  <h4><i class="fas fa-exclamation-triangle"></i> Admin Review Required</h4>
-                  <p>New organizations require admin approval before being added to the platform.</p>
+                  <h4>
+                    <i class="fas fa-exclamation-triangle"></i> Admin Review
+                    Required
+                  </h4>
+                  <p>
+                    New organizations require admin approval before being added
+                    to the platform.
+                  </p>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Organization Name *</label>
-                  <input type="text" class="form-input" id="newEntityName" placeholder="Enter organization name" required />
+                  <input
+                    type="text"
+                    class="form-input"
+                    id="newEntityName"
+                    placeholder="Enter organization name"
+                    required
+                  />
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">Type *</label>
-                    <select class="form-input form-select" id="newEntityType" required>
+                    <select
+                      class="form-input form-select"
+                      id="newEntityType"
+                      required
+                    >
                       <option value="">Select type</option>
                       <option value="Startup">Startup</option>
                       <option value="Incubator">Incubator</option>
@@ -997,40 +1288,75 @@
                   </div>
                   <div class="form-group">
                     <label class="form-label">City</label>
-                    <input type="text" class="form-input" id="newEntityCity" placeholder="e.g., Algiers" />
+                    <input
+                      type="text"
+                      class="form-input"
+                      id="newEntityCity"
+                      placeholder="e.g., Algiers"
+                    />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Website</label>
-                  <input type="url" class="form-input" id="newEntityWebsite" placeholder="https://..." />
+                  <input
+                    type="url"
+                    class="form-input"
+                    id="newEntityWebsite"
+                    placeholder="https://..."
+                  />
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">LinkedIn Page</label>
-                  <input type="url" class="form-input" id="newEntityLinkedin" placeholder="https://linkedin.com/company/..." />
+                  <input
+                    type="url"
+                    class="form-input"
+                    id="newEntityLinkedin"
+                    placeholder="https://linkedin.com/company/..."
+                  />
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Description</label>
-                  <textarea class="form-input" id="newEntityDescription" rows="3" placeholder="Brief description of the organization..."></textarea>
+                  <textarea
+                    class="form-input"
+                    id="newEntityDescription"
+                    rows="3"
+                    placeholder="Brief description of the organization..."
+                  ></textarea>
                 </div>
 
-                <button type="button" class="btn btn-secondary" onclick="showEntitySelection()" style="width: 100%; margin-bottom: var(--space-4);">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onclick="showEntitySelection()"
+                  style="width: 100%; margin-bottom: var(--space-4)"
+                >
                   <i class="fas fa-arrow-left"></i> Back to Search
                 </button>
               </div>
 
               <!-- Account Info Section (for browser and individual_public) -->
-              <div id="accountInfoSection" style="display: none;">
-                <h3 style="text-align: center; margin-bottom: var(--space-6); font-size: var(--font-size-lg);">
+              <div id="accountInfoSection" style="display: none">
+                <h3
+                  style="
+                    text-align: center;
+                    margin-bottom: var(--space-6);
+                    font-size: var(--font-size-lg);
+                  "
+                >
                   Create Your Account
                 </h3>
 
                 <!-- Social Login -->
                 <div class="social-login-section">
                   <div id="googleSignInBtn2"></div>
-                  <button type="button" class="social-btn linkedin" id="linkedinBtn">
+                  <button
+                    type="button"
+                    class="social-btn linkedin"
+                    id="linkedinBtn"
+                  >
                     <i class="fab fa-linkedin-in"></i>
                     Continue with LinkedIn
                   </button>
@@ -1041,22 +1367,45 @@
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">First Name *</label>
-                    <input type="text" class="form-input" id="firstName" placeholder="Enter first name" required />
+                    <input
+                      type="text"
+                      class="form-input"
+                      id="firstName"
+                      placeholder="Enter first name"
+                      required
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-label">Last Name *</label>
-                    <input type="text" class="form-input" id="lastName" placeholder="Enter last name" required />
+                    <input
+                      type="text"
+                      class="form-input"
+                      id="lastName"
+                      placeholder="Enter last name"
+                      required
+                    />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Email Address *</label>
-                  <input type="email" class="form-input" id="email" placeholder="Enter your email" required />
+                  <input
+                    type="email"
+                    class="form-input"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                  />
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Phone Number</label>
-                  <input type="tel" class="form-input" id="phone" placeholder="+213 XXX XXX XXX" />
+                  <input
+                    type="tel"
+                    class="form-input"
+                    id="phone"
+                    placeholder="+213 XXX XXX XXX"
+                  />
                 </div>
 
                 <div class="form-group">
@@ -1075,7 +1424,11 @@
               </div>
 
               <div class="form-actions" id="step2Actions">
-                <button type="button" class="btn btn-secondary" id="backToStep1">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="backToStep1"
+                >
                   <i class="fas fa-arrow-left"></i> Back
                 </button>
                 <button type="button" class="btn btn-primary" id="toStep3">
@@ -1086,60 +1439,110 @@
 
             <!-- Step 3: Account Security & Confirmation -->
             <div class="step-content" id="step3">
-              <h3 style="text-align: center; margin-bottom: var(--space-6); font-size: var(--font-size-lg);">
+              <h3
+                style="
+                  text-align: center;
+                  margin-bottom: var(--space-6);
+                  font-size: var(--font-size-lg);
+                "
+              >
                 Secure Your Account
               </h3>
 
               <!-- For entity representatives, show account info here -->
-              <div id="entityAccountInfo" style="display: none;">
+              <div id="entityAccountInfo" style="display: none">
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">First Name *</label>
-                    <input type="text" class="form-input" id="firstName2" placeholder="Enter first name" required />
+                    <input
+                      type="text"
+                      class="form-input"
+                      id="firstName2"
+                      placeholder="Enter first name"
+                      required
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-label">Last Name *</label>
-                    <input type="text" class="form-input" id="lastName2" placeholder="Enter last name" required />
+                    <input
+                      type="text"
+                      class="form-input"
+                      id="lastName2"
+                      placeholder="Enter last name"
+                      required
+                    />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Email Address *</label>
-                  <input type="email" class="form-input" id="email2" placeholder="Enter your email" required />
+                  <input
+                    type="email"
+                    class="form-input"
+                    id="email2"
+                    placeholder="Enter your email"
+                    required
+                  />
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="form-label">Create Password *</label>
-                <input type="password" class="form-input" id="password" placeholder="Create a strong password" required />
+                <input
+                  type="password"
+                  class="form-input"
+                  id="password"
+                  placeholder="Create a strong password"
+                  required
+                />
                 <div class="password-strength">
                   <div class="strength-bar">
                     <div class="strength-fill" id="strengthFill"></div>
                   </div>
-                  <span class="strength-text" id="strengthText">Password strength</span>
+                  <span class="strength-text" id="strengthText"
+                    >Password strength</span
+                  >
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="form-label">Confirm Password *</label>
-                <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required />
+                <input
+                  type="password"
+                  class="form-input"
+                  id="confirmPassword"
+                  placeholder="Confirm your password"
+                  required
+                />
               </div>
 
               <div class="terms-check">
                 <input type="checkbox" id="terms" required />
                 <label for="terms">
-                  I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. 
-                  I understand that UP-NEXUS will process my data as described.
+                  I agree to the <a href="#">Terms of Service</a> and
+                  <a href="#">Privacy Policy</a>. I understand that UP-NEXUS
+                  will process my data as described.
                 </label>
               </div>
 
-              <div id="reviewNotice" style="display: none;" class="info-box warning">
+              <div
+                id="reviewNotice"
+                style="display: none"
+                class="info-box warning"
+              >
                 <h4><i class="fas fa-clock"></i> Pending Review</h4>
-                <p>Your account will be reviewed by our admin team. You'll receive an email once your account is approved.</p>
+                <p>
+                  Your account will be reviewed by our admin team. You'll
+                  receive an email once your account is approved.
+                </p>
               </div>
 
               <div class="form-actions">
-                <button type="button" class="btn btn-secondary" id="backToStep2">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="backToStep2"
+                >
                   <i class="fas fa-arrow-left"></i> Back
                 </button>
                 <button type="submit" class="btn btn-primary" id="submitBtn">
@@ -1163,15 +1566,20 @@
           <i class="fab fa-linkedin-in"></i>
         </div>
         <h2>Coming Soon!</h2>
-        <p>LinkedIn sign-in is currently under development. We're working hard to bring this feature to you soon!</p>
-        <button class="modal-close" onclick="closeLinkedinModal()">Got it!</button>
+        <p>
+          LinkedIn sign-in is currently under development. We're working hard to
+          bring this feature to you soon!
+        </p>
+        <button class="modal-close" onclick="closeLinkedinModal()">
+          Got it!
+        </button>
       </div>
     </div>
 
     <script src="/js/config.js"></script>
     <script>
-      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || '/api';
-      
+      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || "/api";
+
       // State
       let currentStep = 1;
       let selectedUserType = null;
@@ -1182,31 +1590,38 @@
       let entities = [];
 
       // DOM Elements
-      const steps = document.querySelectorAll('.step-content');
+      const steps = document.querySelectorAll(".step-content");
       const stepDots = [
-        document.getElementById('stepDot1'),
-        document.getElementById('stepDot2'),
-        document.getElementById('stepDot3')
+        document.getElementById("stepDot1"),
+        document.getElementById("stepDot2"),
+        document.getElementById("stepDot3"),
       ];
       const stepLines = [
-        document.getElementById('stepLine1'),
-        document.getElementById('stepLine2')
+        document.getElementById("stepLine1"),
+        document.getElementById("stepLine2"),
       ];
 
       // Initialize Google Sign-In
-      window.onload = function() {
+      window.onload = function () {
         google.accounts.id.initialize({
-          client_id: '902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com',
+          client_id:
+            "902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com",
           callback: handleGoogleSignIn,
           auto_select: false,
-          context: 'signup'
+          context: "signup",
         });
-        
+
         google.accounts.id.renderButton(
-          document.getElementById('googleSignInBtn2'),
-          { theme: 'outline', size: 'large', width: '100%', text: 'signup_with', shape: 'rectangular' }
+          document.getElementById("googleSignInBtn2"),
+          {
+            theme: "outline",
+            size: "large",
+            width: "100%",
+            text: "signup_with",
+            shape: "rectangular",
+          }
         );
-        
+
         // Load entities
         loadEntities();
       };
@@ -1220,25 +1635,25 @@
             entities = data.entities;
           }
         } catch (error) {
-          console.error('Failed to load entities:', error);
+          console.error("Failed to load entities:", error);
         }
       }
 
       // Step Navigation
       function showStep(step) {
         currentStep = step;
-        
+
         steps.forEach((s, i) => {
-          s.classList.remove('active');
-          if (i + 1 === step) s.classList.add('active');
+          s.classList.remove("active");
+          if (i + 1 === step) s.classList.add("active");
         });
 
         stepDots.forEach((dot, i) => {
-          dot.classList.remove('active', 'completed');
+          dot.classList.remove("active", "completed");
           if (i + 1 === step) {
-            dot.classList.add('active');
+            dot.classList.add("active");
           } else if (i + 1 < step) {
-            dot.classList.add('completed');
+            dot.classList.add("completed");
             dot.innerHTML = '<i class="fas fa-check"></i>';
           } else {
             dot.textContent = i + 1;
@@ -1246,101 +1661,119 @@
         });
 
         stepLines.forEach((line, i) => {
-          line.classList.remove('completed');
-          if (i + 1 < step) line.classList.add('completed');
+          line.classList.remove("completed");
+          if (i + 1 < step) line.classList.add("completed");
         });
 
         // Configure step 2 based on user type
         if (step === 2) {
-          if (selectedUserType === 'entity_representative') {
-            document.getElementById('entitySelectionSection').style.display = 'block';
-            document.getElementById('accountInfoSection').style.display = 'none';
+          if (selectedUserType === "entity_representative") {
+            document.getElementById("entitySelectionSection").style.display =
+              "block";
+            document.getElementById("accountInfoSection").style.display =
+              "none";
           } else {
-            document.getElementById('entitySelectionSection').style.display = 'none';
-            document.getElementById('accountInfoSection').style.display = 'block';
+            document.getElementById("entitySelectionSection").style.display =
+              "none";
+            document.getElementById("accountInfoSection").style.display =
+              "block";
           }
         }
 
         // Configure step 3
         if (step === 3) {
-          if (selectedUserType === 'entity_representative') {
-            document.getElementById('entityAccountInfo').style.display = 'block';
+          if (selectedUserType === "entity_representative") {
+            document.getElementById("entityAccountInfo").style.display =
+              "block";
           } else {
-            document.getElementById('entityAccountInfo').style.display = 'none';
+            document.getElementById("entityAccountInfo").style.display = "none";
           }
-          
+
           // Show review notice for users needing approval
-          if (selectedUserType !== 'browser') {
-            document.getElementById('reviewNotice').style.display = 'block';
+          if (selectedUserType !== "browser") {
+            document.getElementById("reviewNotice").style.display = "block";
           } else {
-            document.getElementById('reviewNotice').style.display = 'none';
+            document.getElementById("reviewNotice").style.display = "none";
           }
         }
       }
 
       // User Type Selection
-      document.querySelectorAll('.user-type-card').forEach(card => {
-        card.addEventListener('click', () => {
-          document.querySelectorAll('.user-type-card').forEach(c => c.classList.remove('selected'));
-          card.classList.add('selected');
+      document.querySelectorAll(".user-type-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          document
+            .querySelectorAll(".user-type-card")
+            .forEach((c) => c.classList.remove("selected"));
+          card.classList.add("selected");
           selectedUserType = card.dataset.type;
-          
+
           // Show/hide public role section
-          const publicRoleSection = document.getElementById('publicRoleSection');
-          if (selectedUserType === 'individual_public') {
-            publicRoleSection.style.display = 'block';
-            document.getElementById('toStep2').disabled = !selectedPublicRole;
+          const publicRoleSection =
+            document.getElementById("publicRoleSection");
+          if (selectedUserType === "individual_public") {
+            publicRoleSection.style.display = "block";
+            document.getElementById("toStep2").disabled = !selectedPublicRole;
           } else {
-            publicRoleSection.style.display = 'none';
+            publicRoleSection.style.display = "none";
             selectedPublicRole = null;
-            document.getElementById('toStep2').disabled = false;
+            document.getElementById("toStep2").disabled = false;
           }
         });
       });
 
       // Public Role Selection
-      document.querySelectorAll('.role-card').forEach(card => {
-        card.addEventListener('click', () => {
-          document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
-          card.classList.add('selected');
+      document.querySelectorAll(".role-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          document
+            .querySelectorAll(".role-card")
+            .forEach((c) => c.classList.remove("selected"));
+          card.classList.add("selected");
           selectedPublicRole = card.dataset.role;
-          document.getElementById('toStep2').disabled = false;
+          document.getElementById("toStep2").disabled = false;
         });
       });
 
       // Entity Type Tabs
-      document.querySelectorAll('.entity-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.entity-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
+      document.querySelectorAll(".entity-tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document
+            .querySelectorAll(".entity-tab")
+            .forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
           filterEntities();
         });
       });
 
       // Entity Search
-      document.getElementById('entitySearch').addEventListener('input', filterEntities);
+      document
+        .getElementById("entitySearch")
+        .addEventListener("input", filterEntities);
 
       function filterEntities() {
-        const searchTerm = document.getElementById('entitySearch').value.toLowerCase();
-        const activeTab = document.querySelector('.entity-tab.active');
-        const entityType = activeTab?.dataset.entityType || '';
-        
+        const searchTerm = document
+          .getElementById("entitySearch")
+          .value.toLowerCase();
+        const activeTab = document.querySelector(".entity-tab.active");
+        const entityType = activeTab?.dataset.entityType || "";
+
         let filtered = entities;
-        
+
         if (entityType) {
-          filtered = filtered.filter(e => e.type === entityType);
+          filtered = filtered.filter((e) => e.type === entityType);
         }
-        
+
         if (searchTerm) {
-          filtered = filtered.filter(e => e.name.toLowerCase().includes(searchTerm));
+          filtered = filtered.filter((e) =>
+            e.name.toLowerCase().includes(searchTerm)
+          );
         }
-        
+
         renderEntityResults(filtered.slice(0, 10));
       }
 
       function renderEntityResults(results) {
-        const container = document.getElementById('entityResults');
-        
+        const container = document.getElementById("entityResults");
+
         if (results.length === 0) {
           container.innerHTML = `
             <div style="padding: var(--space-4); text-align: center; color: var(--color-text-tertiary);">
@@ -1350,22 +1783,36 @@
           `;
           return;
         }
-        
-        container.innerHTML = results.map(entity => `
-          <div class="entity-result-item ${selectedEntity?.name === entity.name ? 'selected' : ''}" data-entity-id="${entity._id}" data-entity-name="${entity.name}" data-entity-type="${entity.type}">
+
+        container.innerHTML = results
+          .map(
+            (entity) => `
+          <div class="entity-result-item ${
+            selectedEntity?.name === entity.name ? "selected" : ""
+          }" data-entity-id="${entity._id}" data-entity-name="${
+              entity.name
+            }" data-entity-type="${entity.type}">
             <div class="entity-result-logo">
-              ${entity.logo ? `<img src="${entity.logo}" alt="${entity.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">` : '🏢'}
+              ${
+                entity.logo
+                  ? `<img src="${entity.logo}" alt="${entity.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">`
+                  : "🏢"
+              }
             </div>
             <div class="entity-result-info">
               <h4>${entity.name}</h4>
-              <p>${entity.type}${entity.location ? ` • ${entity.location}` : ''}</p>
+              <p>${entity.type}${
+              entity.location ? ` • ${entity.location}` : ""
+            }</p>
             </div>
           </div>
-        `).join('');
-        
+        `
+          )
+          .join("");
+
         // Add click handlers
-        container.querySelectorAll('.entity-result-item').forEach(item => {
-          item.addEventListener('click', () => selectEntity(item));
+        container.querySelectorAll(".entity-result-item").forEach((item) => {
+          item.addEventListener("click", () => selectEntity(item));
         });
       }
 
@@ -1373,78 +1820,95 @@
         const entityId = item.dataset.entityId;
         const entityName = item.dataset.entityName;
         const entityType = item.dataset.entityType;
-        
+
         selectedEntity = { id: entityId, name: entityName, type: entityType };
         isNewEntity = false;
-        
+
         // Update UI
-        document.querySelectorAll('.entity-result-item').forEach(i => i.classList.remove('selected'));
-        item.classList.add('selected');
-        
+        document
+          .querySelectorAll(".entity-result-item")
+          .forEach((i) => i.classList.remove("selected"));
+        item.classList.add("selected");
+
         // Show selected entity info
-        document.getElementById('selectedEntityInfo').style.display = 'block';
-        document.getElementById('selectedEntityName').textContent = entityName;
-        document.getElementById('selectedEntityType').textContent = entityType;
-        
+        document.getElementById("selectedEntityInfo").style.display = "block";
+        document.getElementById("selectedEntityName").textContent = entityName;
+        document.getElementById("selectedEntityType").textContent = entityType;
+
         // Show claim role section
-        document.getElementById('claimRoleSection').style.display = 'block';
+        document.getElementById("claimRoleSection").style.display = "block";
       }
 
       function clearSelectedEntity() {
         selectedEntity = null;
-        document.getElementById('selectedEntityInfo').style.display = 'none';
-        document.getElementById('claimRoleSection').style.display = 'none';
-        document.querySelectorAll('.entity-result-item').forEach(i => i.classList.remove('selected'));
+        document.getElementById("selectedEntityInfo").style.display = "none";
+        document.getElementById("claimRoleSection").style.display = "none";
+        document
+          .querySelectorAll(".entity-result-item")
+          .forEach((i) => i.classList.remove("selected"));
       }
 
       // Add New Entity
-      document.getElementById('addNewEntity').addEventListener('click', () => {
+      document.getElementById("addNewEntity").addEventListener("click", () => {
         isNewEntity = true;
         selectedEntity = null;
-        document.getElementById('entitySelectionSection').style.display = 'none';
-        document.getElementById('newEntitySection').style.display = 'block';
+        document.getElementById("entitySelectionSection").style.display =
+          "none";
+        document.getElementById("newEntitySection").style.display = "block";
       });
 
       function showEntitySelection() {
         isNewEntity = false;
-        document.getElementById('newEntitySection').style.display = 'none';
-        document.getElementById('entitySelectionSection').style.display = 'block';
+        document.getElementById("newEntitySection").style.display = "none";
+        document.getElementById("entitySelectionSection").style.display =
+          "block";
       }
 
       // Claim Role Selection
-      document.querySelectorAll('.claim-role-option').forEach(option => {
-        option.addEventListener('click', () => {
-          document.querySelectorAll('.claim-role-option').forEach(o => o.classList.remove('selected'));
-          option.classList.add('selected');
+      document.querySelectorAll(".claim-role-option").forEach((option) => {
+        option.addEventListener("click", () => {
+          document
+            .querySelectorAll(".claim-role-option")
+            .forEach((o) => o.classList.remove("selected"));
+          option.classList.add("selected");
           selectedClaimRole = option.dataset.claimRole;
         });
       });
 
       // Navigation Buttons
-      document.getElementById('toStep2').addEventListener('click', () => showStep(2));
-      document.getElementById('backToStep1').addEventListener('click', () => showStep(1));
-      document.getElementById('toStep3').addEventListener('click', () => {
+      document
+        .getElementById("toStep2")
+        .addEventListener("click", () => showStep(2));
+      document
+        .getElementById("backToStep1")
+        .addEventListener("click", () => showStep(1));
+      document.getElementById("toStep3").addEventListener("click", () => {
         // Validate step 2
-        if (selectedUserType === 'entity_representative') {
+        if (selectedUserType === "entity_representative") {
           if (!selectedEntity && !isNewEntity) {
-            showStatus('Please select an organization or add a new one', 'error');
+            showStatus(
+              "Please select an organization or add a new one",
+              "error"
+            );
             return;
           }
           if (selectedEntity && !selectedClaimRole) {
-            showStatus('Please select your role at the organization', 'error');
+            showStatus("Please select your role at the organization", "error");
             return;
           }
-          if (isNewEntity && !document.getElementById('newEntityName').value) {
-            showStatus('Please enter the organization name', 'error');
+          if (isNewEntity && !document.getElementById("newEntityName").value) {
+            showStatus("Please enter the organization name", "error");
             return;
           }
         }
         showStep(3);
       });
-      document.getElementById('backToStep2').addEventListener('click', () => showStep(2));
+      document
+        .getElementById("backToStep2")
+        .addEventListener("click", () => showStep(2));
 
       // Password Strength
-      document.getElementById('password').addEventListener('input', (e) => {
+      document.getElementById("password").addEventListener("input", (e) => {
         const value = e.target.value;
         let strength = 0;
 
@@ -1453,240 +1917,255 @@
         if (/[0-9]/.test(value)) strength++;
         if (/[^A-Za-z0-9]/.test(value)) strength++;
 
-        const fill = document.getElementById('strengthFill');
-        const text = document.getElementById('strengthText');
-        
-        fill.className = 'strength-fill';
+        const fill = document.getElementById("strengthFill");
+        const text = document.getElementById("strengthText");
+
+        fill.className = "strength-fill";
         if (strength <= 1) {
-          fill.classList.add('weak');
-          text.textContent = 'Weak password';
+          fill.classList.add("weak");
+          text.textContent = "Weak password";
         } else if (strength <= 3) {
-          fill.classList.add('medium');
-          text.textContent = 'Medium strength';
+          fill.classList.add("medium");
+          text.textContent = "Medium strength";
         } else {
-          fill.classList.add('strong');
-          text.textContent = 'Strong password';
+          fill.classList.add("strong");
+          text.textContent = "Strong password";
         }
       });
 
       // LinkedIn Modal
-      document.getElementById('linkedinBtn').addEventListener('click', () => {
-        document.getElementById('linkedinModal').classList.add('active');
+      document.getElementById("linkedinBtn").addEventListener("click", () => {
+        document.getElementById("linkedinModal").classList.add("active");
       });
 
       function closeLinkedinModal() {
-        document.getElementById('linkedinModal').classList.remove('active');
+        document.getElementById("linkedinModal").classList.remove("active");
       }
 
-      document.getElementById('linkedinModal').addEventListener('click', (e) => {
-        if (e.target === e.currentTarget) closeLinkedinModal();
-      });
+      document
+        .getElementById("linkedinModal")
+        .addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) closeLinkedinModal();
+        });
 
       // Google Sign-In Handler
       async function handleGoogleSignIn(response) {
-        showStatus('Creating account with Google...', 'pending');
-        
+        showStatus("Creating account with Google...", "pending");
+
         // Build entity claim data if applicable
         let entityClaim = null;
-        if (selectedUserType === 'entity_representative') {
+        if (selectedUserType === "entity_representative") {
           if (isNewEntity) {
             entityClaim = {
               isNewEntity: true,
               newEntityData: {
-                name: document.getElementById('newEntityName').value,
-                type: document.getElementById('newEntityType').value,
-                city: document.getElementById('newEntityCity').value,
-                website: document.getElementById('newEntityWebsite').value,
-                linkedin: document.getElementById('newEntityLinkedin').value,
-                description: document.getElementById('newEntityDescription').value
+                name: document.getElementById("newEntityName").value,
+                type: document.getElementById("newEntityType").value,
+                city: document.getElementById("newEntityCity").value,
+                website: document.getElementById("newEntityWebsite").value,
+                linkedin: document.getElementById("newEntityLinkedin").value,
+                description: document.getElementById("newEntityDescription")
+                  .value,
               },
-              claimRole: 'owner'
+              claimRole: "owner",
             };
           } else if (selectedEntity) {
             entityClaim = {
               entityId: selectedEntity.id,
               claimRole: selectedClaimRole,
-              workEmail: document.getElementById('workEmail').value,
-              linkedinProfile: document.getElementById('linkedinProfile').value,
-              additionalNotes: document.getElementById('additionalNotes').value
+              workEmail: document.getElementById("workEmail").value,
+              linkedinProfile: document.getElementById("linkedinProfile").value,
+              additionalNotes: document.getElementById("additionalNotes").value,
             };
           }
         }
-        
+
         try {
           const res = await fetch(`${API_URL}/users/auth/google`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               credential: response.credential,
-              userType: selectedUserType || 'browser',
-              publicRole: selectedPublicRole || 'none',
-              entityClaim
-            })
+              userType: selectedUserType || "browser",
+              publicRole: selectedPublicRole || "none",
+              entityClaim,
+            }),
           });
-          
+
           const data = await res.json();
-          
+
           if (data.success) {
-            localStorage.setItem('upnexus_token', data.token);
-            localStorage.setItem('upnexus_user', JSON.stringify(data.user));
-            
-            if (data.user.status === 'pending_review') {
-              showStatus('Account created! Your account is pending review.', 'success');
+            localStorage.setItem("upnexus_token", data.token);
+            localStorage.setItem("upnexus_user", JSON.stringify(data.user));
+
+            if (data.user.status === "pending_review") {
+              showStatus(
+                "Account created! Your account is pending review.",
+                "success"
+              );
               setTimeout(() => {
-                window.location.href = '/pages/dashboard/pending.html';
+                window.location.href = "/pages/dashboard/pending.html";
               }, 2000);
             } else {
-              showStatus('Account created! Redirecting...', 'success');
+              showStatus("Account created! Redirecting...", "success");
               setTimeout(() => {
-                window.location.href = '/pages/dashboard/';
+                window.location.href = "/pages/dashboard/";
               }, 1500);
             }
           } else {
-            showStatus(data.message || 'Registration failed', 'error');
+            showStatus(data.message || "Registration failed", "error");
           }
         } catch (error) {
-          console.error('Google sign-up error:', error);
-          showStatus('Registration failed. Please try again.', 'error');
+          console.error("Google sign-up error:", error);
+          showStatus("Registration failed. Please try again.", "error");
         }
       }
 
       // Form Submit (Email Registration)
-      document.getElementById('registerForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        
-        if (password !== confirmPassword) {
-          showStatus('Passwords do not match', 'error');
-          return;
-        }
-        
-        if (password.length < 8) {
-          showStatus('Password must be at least 8 characters', 'error');
-          return;
-        }
-        
-        if (!document.getElementById('terms').checked) {
-          showStatus('Please accept the terms and conditions', 'error');
-          return;
-        }
-        
-        // Get form data
-        let firstName, lastName, email;
-        if (selectedUserType === 'entity_representative') {
-          firstName = document.getElementById('firstName2').value;
-          lastName = document.getElementById('lastName2').value;
-          email = document.getElementById('email2').value;
-        } else {
-          firstName = document.getElementById('firstName').value;
-          lastName = document.getElementById('lastName').value;
-          email = document.getElementById('email').value;
-        }
-        
-        const phone = document.getElementById('phone')?.value || '';
-        const city = document.getElementById('city')?.value || '';
-        
-        // Build entity claim
-        let entityClaim = null;
-        if (selectedUserType === 'entity_representative') {
-          if (isNewEntity) {
-            entityClaim = {
-              isNewEntity: true,
-              newEntityData: {
-                name: document.getElementById('newEntityName').value,
-                type: document.getElementById('newEntityType').value,
-                city: document.getElementById('newEntityCity').value,
-                website: document.getElementById('newEntityWebsite').value,
-                linkedin: document.getElementById('newEntityLinkedin').value,
-                description: document.getElementById('newEntityDescription').value
-              },
-              claimRole: 'owner'
-            };
-          } else if (selectedEntity) {
-            entityClaim = {
-              entityId: selectedEntity.id,
-              claimRole: selectedClaimRole,
-              workEmail: document.getElementById('workEmail').value,
-              linkedinProfile: document.getElementById('linkedinProfile').value,
-              additionalNotes: document.getElementById('additionalNotes').value
-            };
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+
+          if (password !== confirmPassword) {
+            showStatus("Passwords do not match", "error");
+            return;
           }
-        }
-        
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.classList.add('loading');
-        showStatus('Creating account...', 'pending');
-        
-        try {
-          const res = await fetch(`${API_URL}/users/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email,
-              password,
-              firstName,
-              lastName,
-              phone,
-              city,
-              userType: selectedUserType || 'browser',
-              publicRole: selectedPublicRole || 'none',
-              entityClaim
-            })
-          });
-          
-          const data = await res.json();
-          
-          if (data.success) {
-            localStorage.setItem('upnexus_token', data.token);
-            localStorage.setItem('upnexus_user', JSON.stringify(data.user));
-            
-            if (data.user.status === 'pending_review') {
-              showStatus('Account created! Your account is pending admin review.', 'success');
-              setTimeout(() => {
-                window.location.href = '/pages/dashboard/pending.html';
-              }, 2000);
-            } else {
-              showStatus('Account created! Redirecting...', 'success');
-              setTimeout(() => {
-                window.location.href = '/pages/dashboard/';
-              }, 1500);
-            }
+
+          if (password.length < 8) {
+            showStatus("Password must be at least 8 characters", "error");
+            return;
+          }
+
+          if (!document.getElementById("terms").checked) {
+            showStatus("Please accept the terms and conditions", "error");
+            return;
+          }
+
+          // Get form data
+          let firstName, lastName, email;
+          if (selectedUserType === "entity_representative") {
+            firstName = document.getElementById("firstName2").value;
+            lastName = document.getElementById("lastName2").value;
+            email = document.getElementById("email2").value;
           } else {
-            showStatus(data.message || 'Registration failed', 'error');
+            firstName = document.getElementById("firstName").value;
+            lastName = document.getElementById("lastName").value;
+            email = document.getElementById("email").value;
           }
-        } catch (error) {
-          console.error('Registration error:', error);
-          showStatus('Registration failed. Please try again.', 'error');
-        } finally {
-          submitBtn.classList.remove('loading');
-        }
-      });
+
+          const phone = document.getElementById("phone")?.value || "";
+          const city = document.getElementById("city")?.value || "";
+
+          // Build entity claim
+          let entityClaim = null;
+          if (selectedUserType === "entity_representative") {
+            if (isNewEntity) {
+              entityClaim = {
+                isNewEntity: true,
+                newEntityData: {
+                  name: document.getElementById("newEntityName").value,
+                  type: document.getElementById("newEntityType").value,
+                  city: document.getElementById("newEntityCity").value,
+                  website: document.getElementById("newEntityWebsite").value,
+                  linkedin: document.getElementById("newEntityLinkedin").value,
+                  description: document.getElementById("newEntityDescription")
+                    .value,
+                },
+                claimRole: "owner",
+              };
+            } else if (selectedEntity) {
+              entityClaim = {
+                entityId: selectedEntity.id,
+                claimRole: selectedClaimRole,
+                workEmail: document.getElementById("workEmail").value,
+                linkedinProfile:
+                  document.getElementById("linkedinProfile").value,
+                additionalNotes:
+                  document.getElementById("additionalNotes").value,
+              };
+            }
+          }
+
+          const submitBtn = document.getElementById("submitBtn");
+          submitBtn.classList.add("loading");
+          showStatus("Creating account...", "pending");
+
+          try {
+            const res = await fetch(`${API_URL}/users/register`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email,
+                password,
+                firstName,
+                lastName,
+                phone,
+                city,
+                userType: selectedUserType || "browser",
+                publicRole: selectedPublicRole || "none",
+                entityClaim,
+              }),
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+              localStorage.setItem("upnexus_token", data.token);
+              localStorage.setItem("upnexus_user", JSON.stringify(data.user));
+
+              if (data.user.status === "pending_review") {
+                showStatus(
+                  "Account created! Your account is pending admin review.",
+                  "success"
+                );
+                setTimeout(() => {
+                  window.location.href = "/pages/dashboard/pending.html";
+                }, 2000);
+              } else {
+                showStatus("Account created! Redirecting...", "success");
+                setTimeout(() => {
+                  window.location.href = "/pages/dashboard/";
+                }, 1500);
+              }
+            } else {
+              showStatus(data.message || "Registration failed", "error");
+            }
+          } catch (error) {
+            console.error("Registration error:", error);
+            showStatus("Registration failed. Please try again.", "error");
+          } finally {
+            submitBtn.classList.remove("loading");
+          }
+        });
 
       // Show Status Message
       function showStatus(message, type) {
-        const statusEl = document.getElementById('statusMessage');
+        const statusEl = document.getElementById("statusMessage");
         statusEl.textContent = message;
         statusEl.className = `status-message show ${type}`;
       }
 
       // Check if already logged in
-      const existingToken = localStorage.getItem('upnexus_token');
+      const existingToken = localStorage.getItem("upnexus_token");
       if (existingToken) {
         fetch(`${API_URL}/users/me`, {
-          headers: { 'Authorization': `Bearer ${existingToken}` }
+          headers: { Authorization: `Bearer ${existingToken}` },
         })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            window.location.href = '/pages/dashboard/';
-          }
-        })
-        .catch(() => {
-          localStorage.removeItem('upnexus_token');
-          localStorage.removeItem('upnexus_user');
-        });
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              window.location.href = "/pages/dashboard/";
+            }
+          })
+          .catch(() => {
+            localStorage.removeItem("upnexus_token");
+            localStorage.removeItem("upnexus_user");
+          });
       }
     </script>
   </body>

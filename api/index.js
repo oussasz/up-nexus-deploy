@@ -257,95 +257,109 @@ const Admin = mongoose.models.Admin || mongoose.model("Admin", adminSchema);
 // User Model (for public users)
 const userSchema = new mongoose.Schema({
   // Basic Info
-  email: { type: String, required: true, unique: true, trim: true, lowercase: true },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  },
   password: { type: String }, // Optional if using OAuth
   firstName: { type: String, required: true, trim: true },
   lastName: { type: String, required: true, trim: true },
   phone: { type: String, trim: true },
   profilePicture: { type: String, trim: true },
-  
+
   // Authentication
-  authProvider: { 
-    type: String, 
-    enum: ['email', 'google', 'linkedin'], 
-    default: 'email' 
+  authProvider: {
+    type: String,
+    enum: ["email", "google", "linkedin"],
+    default: "email",
   },
   googleId: { type: String, sparse: true },
   linkedinId: { type: String, sparse: true },
-  
+
   // User Type & Role
-  userType: { 
-    type: String, 
-    enum: ['browser', 'entity_representative', 'individual_public'], 
-    default: 'browser' 
+  userType: {
+    type: String,
+    enum: ["browser", "entity_representative", "individual_public"],
+    default: "browser",
   },
   // browser = just browsing, auto-approved
   // entity_representative = wants to manage an entity
   // individual_public = wants to appear publicly (coach, mentor, freelancer, etc.)
-  
-  publicRole: { 
-    type: String, 
-    enum: ['none', 'mentor', 'coach', 'freelancer', 'project_holder', 'investor', 'other'],
-    default: 'none'
+
+  publicRole: {
+    type: String,
+    enum: [
+      "none",
+      "mentor",
+      "coach",
+      "freelancer",
+      "project_holder",
+      "investor",
+      "other",
+    ],
+    default: "none",
   },
-  
+
   // Location
   city: { type: String, trim: true },
   wilaya: { type: String, trim: true },
-  
+
   // Bio/Profile (for public profiles)
   bio: { type: String, trim: true, maxlength: 500 },
   skills: [{ type: String, trim: true }],
   linkedinProfile: { type: String, trim: true },
-  
+
   // Account Status
-  status: { 
-    type: String, 
-    enum: ['active', 'pending_review', 'rejected', 'suspended'], 
-    default: 'active' 
+  status: {
+    type: String,
+    enum: ["active", "pending_review", "rejected", "suspended"],
+    default: "active",
   },
   statusReason: { type: String, trim: true }, // Reason for rejection/suspension
-  
+
   // Email Verification
   isEmailVerified: { type: Boolean, default: false },
   emailVerificationToken: { type: String },
   emailVerificationExpires: { type: Date },
-  
+
   // Password Reset
   passwordResetToken: { type: String },
   passwordResetExpires: { type: Date },
-  
+
   // Timestamps
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   approvedAt: { type: Date },
-  approvedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' },
-  lastLogin: { type: Date }
+  approvedBy: { type: mongoose.Schema.Types.ObjectId, ref: "Admin" },
+  lastLogin: { type: Date },
 });
 
-userSchema.pre('save', async function(next) {
+userSchema.pre("save", async function (next) {
   this.updatedAt = Date.now();
-  if (this.isModified('password') && this.password) {
+  if (this.isModified("password") && this.password) {
     this.password = await bcrypt.hash(this.password, 12);
   }
   next();
 });
 
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   if (!this.password) return false;
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-const User = mongoose.models.User || mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 // Entity Claim Model (for users claiming/managing entities)
 const entityClaimSchema = new mongoose.Schema({
   // User making the claim
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+
   // Entity being claimed (null if new entity request)
-  entityId: { type: mongoose.Schema.Types.ObjectId, ref: 'Entity' },
-  
+  entityId: { type: mongoose.Schema.Types.ObjectId, ref: "Entity" },
+
   // For new entity submissions
   isNewEntity: { type: Boolean, default: false },
   newEntityData: {
@@ -356,37 +370,39 @@ const entityClaimSchema = new mongoose.Schema({
     linkedin: { type: String, trim: true },
     city: { type: String, trim: true },
     foundedYear: { type: Number },
-    logo: { type: String, trim: true }
+    logo: { type: String, trim: true },
   },
-  
+
   // Claim Details
-  claimRole: { 
-    type: String, 
-    enum: ['owner', 'founder', 'admin', 'manager', 'team_member'], 
-    required: true 
+  claimRole: {
+    type: String,
+    enum: ["owner", "founder", "admin", "manager", "team_member"],
+    required: true,
   },
-  
+
   // Verification
   workEmail: { type: String, trim: true }, // Email matching entity domain
   linkedinProfile: { type: String, trim: true },
   verificationDocuments: [{ type: String, trim: true }], // URLs to uploaded docs
   additionalNotes: { type: String, trim: true },
-  
+
   // Status
-  status: { 
-    type: String, 
-    enum: ['pending', 'approved', 'rejected'], 
-    default: 'pending' 
+  status: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
   },
   rejectionReason: { type: String, trim: true },
-  
+
   // Timestamps
   createdAt: { type: Date, default: Date.now },
   reviewedAt: { type: Date },
-  reviewedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }
+  reviewedBy: { type: mongoose.Schema.Types.ObjectId, ref: "Admin" },
 });
 
-const EntityClaim = mongoose.models.EntityClaim || mongoose.model('EntityClaim', entityClaimSchema);
+const EntityClaim =
+  mongoose.models.EntityClaim ||
+  mongoose.model("EntityClaim", entityClaimSchema);
 
 // ============================================
 // AUTH MIDDLEWARE
@@ -419,20 +435,26 @@ const userAuthMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ success: false, message: "Access denied. No token provided." });
+      return res
+        .status(401)
+        .json({ success: false, message: "Access denied. No token provided." });
     }
 
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, JWT_SECRET);
-    
+
     if (!decoded.userId) {
-      return res.status(401).json({ success: false, message: "Invalid user token." });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid user token." });
     }
-    
+
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(401).json({ success: false, message: "Invalid or expired token." });
+    res
+      .status(401)
+      .json({ success: false, message: "Invalid or expired token." });
   }
 };
 
@@ -536,28 +558,31 @@ app.post("/api/users/auth/google", async (req, res) => {
 
   try {
     const { credential, userType, publicRole, entityClaim } = req.body;
-    
+
     // Verify Google token
-    const { OAuth2Client } = require('google-auth-library');
-    const client = new OAuth2Client('902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com');
-    
+    const { OAuth2Client } = require("google-auth-library");
+    const client = new OAuth2Client(
+      "902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com"
+    );
+
     const ticket = await client.verifyIdToken({
       idToken: credential,
-      audience: '902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com',
+      audience:
+        "902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com",
     });
-    
+
     const payload = ticket.getPayload();
     const { sub: googleId, email, given_name, family_name, picture } = payload;
-    
+
     // Check if user exists
     let user = await User.findOne({ $or: [{ googleId }, { email }] });
     let isNewUser = false;
-    
+
     if (user) {
       // Update existing user
       if (!user.googleId) {
         user.googleId = googleId;
-        user.authProvider = 'google';
+        user.authProvider = "google";
       }
       user.lastLogin = Date.now();
       user.profilePicture = picture || user.profilePicture;
@@ -565,58 +590,61 @@ app.post("/api/users/auth/google", async (req, res) => {
     } else {
       // Create new user
       isNewUser = true;
-      
+
       // Determine initial status based on userType
-      let initialStatus = 'active'; // browsers are auto-approved
-      if (userType === 'entity_representative' || userType === 'individual_public') {
-        initialStatus = 'pending_review';
+      let initialStatus = "active"; // browsers are auto-approved
+      if (
+        userType === "entity_representative" ||
+        userType === "individual_public"
+      ) {
+        initialStatus = "pending_review";
       }
-      
+
       user = new User({
         email,
-        firstName: given_name || 'User',
-        lastName: family_name || '',
+        firstName: given_name || "User",
+        lastName: family_name || "",
         profilePicture: picture,
-        authProvider: 'google',
+        authProvider: "google",
         googleId,
-        userType: userType || 'browser',
-        publicRole: publicRole || 'none',
+        userType: userType || "browser",
+        publicRole: publicRole || "none",
         status: initialStatus,
         isEmailVerified: true, // Google emails are verified
-        lastLogin: Date.now()
+        lastLogin: Date.now(),
       });
-      
+
       await user.save();
-      
+
       // If user wants to claim an entity, create the claim
-      if (entityClaim && userType === 'entity_representative') {
+      if (entityClaim && userType === "entity_representative") {
         const claim = new EntityClaim({
           userId: user._id,
           entityId: entityClaim.entityId || null,
           isNewEntity: entityClaim.isNewEntity || false,
           newEntityData: entityClaim.newEntityData || {},
-          claimRole: entityClaim.claimRole || 'team_member',
+          claimRole: entityClaim.claimRole || "team_member",
           workEmail: entityClaim.workEmail,
           linkedinProfile: entityClaim.linkedinProfile,
           additionalNotes: entityClaim.additionalNotes,
-          status: 'pending'
+          status: "pending",
         });
         await claim.save();
       }
     }
-    
+
     // Generate JWT
     const token = jwt.sign(
-      { 
-        userId: user._id, 
-        email: user.email, 
+      {
+        userId: user._id,
+        email: user.email,
         userType: user.userType,
-        status: user.status 
+        status: user.status,
       },
       JWT_SECRET,
       { expiresIn: "7d" }
     );
-    
+
     res.json({
       success: true,
       isNewUser,
@@ -629,13 +657,18 @@ app.post("/api/users/auth/google", async (req, res) => {
         profilePicture: user.profilePicture,
         userType: user.userType,
         publicRole: user.publicRole,
-        status: user.status
-      }
+        status: user.status,
+      },
     });
-    
   } catch (error) {
     console.error("Google auth error:", error);
-    res.status(500).json({ success: false, message: "Authentication failed", error: error.message });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Authentication failed",
+        error: error.message,
+      });
   }
 });
 
@@ -644,20 +677,35 @@ app.post("/api/users/register", async (req, res) => {
   await connectDB();
 
   try {
-    const { email, password, firstName, lastName, phone, city, userType, publicRole, entityClaim } = req.body;
-    
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      phone,
+      city,
+      userType,
+      publicRole,
+      entityClaim,
+    } = req.body;
+
     // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ success: false, message: "Email already registered" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Email already registered" });
     }
-    
+
     // Determine initial status
-    let initialStatus = 'active';
-    if (userType === 'entity_representative' || userType === 'individual_public') {
-      initialStatus = 'pending_review';
+    let initialStatus = "active";
+    if (
+      userType === "entity_representative" ||
+      userType === "individual_public"
+    ) {
+      initialStatus = "pending_review";
     }
-    
+
     // Create user
     const user = new User({
       email,
@@ -666,48 +714,49 @@ app.post("/api/users/register", async (req, res) => {
       lastName,
       phone,
       city,
-      authProvider: 'email',
-      userType: userType || 'browser',
-      publicRole: publicRole || 'none',
+      authProvider: "email",
+      userType: userType || "browser",
+      publicRole: publicRole || "none",
       status: initialStatus,
-      isEmailVerified: false
+      isEmailVerified: false,
     });
-    
+
     await user.save();
-    
+
     // If user wants to claim an entity, create the claim
-    if (entityClaim && userType === 'entity_representative') {
+    if (entityClaim && userType === "entity_representative") {
       const claim = new EntityClaim({
         userId: user._id,
         entityId: entityClaim.entityId || null,
         isNewEntity: entityClaim.isNewEntity || false,
         newEntityData: entityClaim.newEntityData || {},
-        claimRole: entityClaim.claimRole || 'team_member',
+        claimRole: entityClaim.claimRole || "team_member",
         workEmail: entityClaim.workEmail,
         linkedinProfile: entityClaim.linkedinProfile,
         additionalNotes: entityClaim.additionalNotes,
-        status: 'pending'
+        status: "pending",
       });
       await claim.save();
     }
-    
+
     // Generate JWT
     const token = jwt.sign(
-      { 
-        userId: user._id, 
-        email: user.email, 
+      {
+        userId: user._id,
+        email: user.email,
         userType: user.userType,
-        status: user.status 
+        status: user.status,
       },
       JWT_SECRET,
       { expiresIn: "7d" }
     );
-    
+
     res.status(201).json({
       success: true,
-      message: initialStatus === 'pending_review' 
-        ? "Account created! Your account is pending admin review." 
-        : "Account created successfully!",
+      message:
+        initialStatus === "pending_review"
+          ? "Account created! Your account is pending admin review."
+          : "Account created successfully!",
       token,
       user: {
         id: user._id,
@@ -715,13 +764,18 @@ app.post("/api/users/register", async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         userType: user.userType,
-        status: user.status
-      }
+        status: user.status,
+      },
     });
-    
   } catch (error) {
     console.error("Registration error:", error);
-    res.status(500).json({ success: false, message: "Registration failed", error: error.message });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Registration failed",
+        error: error.message,
+      });
   }
 });
 
@@ -731,40 +785,44 @@ app.post("/api/users/login", async (req, res) => {
 
   try {
     const { email, password } = req.body;
-    
+
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ success: false, message: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid email or password" });
     }
-    
-    if (user.authProvider !== 'email') {
-      return res.status(401).json({ 
-        success: false, 
-        message: `This account uses ${user.authProvider} login. Please sign in with ${user.authProvider}.` 
+
+    if (user.authProvider !== "email") {
+      return res.status(401).json({
+        success: false,
+        message: `This account uses ${user.authProvider} login. Please sign in with ${user.authProvider}.`,
       });
     }
-    
+
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ success: false, message: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid email or password" });
     }
-    
+
     // Update last login
     user.lastLogin = Date.now();
     await user.save();
-    
+
     // Generate JWT
     const token = jwt.sign(
-      { 
-        userId: user._id, 
-        email: user.email, 
+      {
+        userId: user._id,
+        email: user.email,
         userType: user.userType,
-        status: user.status 
+        status: user.status,
       },
       JWT_SECRET,
       { expiresIn: "7d" }
     );
-    
+
     res.json({
       success: true,
       token,
@@ -776,10 +834,9 @@ app.post("/api/users/login", async (req, res) => {
         profilePicture: user.profilePicture,
         userType: user.userType,
         publicRole: user.publicRole,
-        status: user.status
-      }
+        status: user.status,
+      },
     });
-    
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ success: false, message: "Login failed" });
@@ -791,18 +848,25 @@ app.get("/api/users/me", userAuthMiddleware, async (req, res) => {
   await connectDB();
 
   try {
-    const user = await User.findById(req.user.userId).select('-password -passwordResetToken -emailVerificationToken');
+    const user = await User.findById(req.user.userId).select(
+      "-password -passwordResetToken -emailVerificationToken"
+    );
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
-    
+
     // Get user's entity claims
-    const claims = await EntityClaim.find({ userId: user._id }).populate('entityId', 'name type logo');
-    
+    const claims = await EntityClaim.find({ userId: user._id }).populate(
+      "entityId",
+      "name type logo"
+    );
+
     res.json({
       success: true,
       user,
-      entityClaims: claims
+      entityClaims: claims,
     });
   } catch (error) {
     console.error("Get user error:", error);
@@ -815,25 +879,37 @@ app.put("/api/users/me", userAuthMiddleware, async (req, res) => {
   await connectDB();
 
   try {
-    const allowedUpdates = ['firstName', 'lastName', 'phone', 'city', 'wilaya', 'bio', 'skills', 'linkedinProfile', 'profilePicture'];
+    const allowedUpdates = [
+      "firstName",
+      "lastName",
+      "phone",
+      "city",
+      "wilaya",
+      "bio",
+      "skills",
+      "linkedinProfile",
+      "profilePicture",
+    ];
     const updates = {};
-    
+
     for (const field of allowedUpdates) {
       if (req.body[field] !== undefined) {
         updates[field] = req.body[field];
       }
     }
-    
+
     const user = await User.findByIdAndUpdate(
-      req.user.userId, 
+      req.user.userId,
       { ...updates, updatedAt: Date.now() },
       { new: true, runValidators: true }
-    ).select('-password -passwordResetToken -emailVerificationToken');
-    
+    ).select("-password -passwordResetToken -emailVerificationToken");
+
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
-    
+
     res.json({ success: true, user });
   } catch (error) {
     console.error("Update user error:", error);
@@ -850,52 +926,60 @@ app.post("/api/entity-claims", userAuthMiddleware, async (req, res) => {
   await connectDB();
 
   try {
-    const { entityId, isNewEntity, newEntityData, claimRole, workEmail, linkedinProfile, additionalNotes } = req.body;
-    
+    const {
+      entityId,
+      isNewEntity,
+      newEntityData,
+      claimRole,
+      workEmail,
+      linkedinProfile,
+      additionalNotes,
+    } = req.body;
+
     // Check if user already has a pending claim for this entity
     if (entityId) {
-      const existingClaim = await EntityClaim.findOne({ 
-        userId: req.user.userId, 
+      const existingClaim = await EntityClaim.findOne({
+        userId: req.user.userId,
         entityId,
-        status: { $in: ['pending', 'approved'] }
+        status: { $in: ["pending", "approved"] },
       });
-      
+
       if (existingClaim) {
-        return res.status(400).json({ 
-          success: false, 
-          message: existingClaim.status === 'approved' 
-            ? "You are already a verified representative of this entity" 
-            : "You already have a pending claim for this entity"
+        return res.status(400).json({
+          success: false,
+          message:
+            existingClaim.status === "approved"
+              ? "You are already a verified representative of this entity"
+              : "You already have a pending claim for this entity",
         });
       }
     }
-    
+
     const claim = new EntityClaim({
       userId: req.user.userId,
       entityId: entityId || null,
       isNewEntity: isNewEntity || !entityId,
       newEntityData: newEntityData || {},
-      claimRole: claimRole || 'team_member',
+      claimRole: claimRole || "team_member",
       workEmail,
       linkedinProfile,
       additionalNotes,
-      status: 'pending'
+      status: "pending",
     });
-    
+
     await claim.save();
-    
+
     // Update user type if they were just browsing
-    await User.findByIdAndUpdate(req.user.userId, { 
-      userType: 'entity_representative',
-      status: 'pending_review'
+    await User.findByIdAndUpdate(req.user.userId, {
+      userType: "entity_representative",
+      status: "pending_review",
     });
-    
+
     res.status(201).json({
       success: true,
       message: "Claim submitted successfully. Pending admin review.",
-      claim
+      claim,
     });
-    
   } catch (error) {
     console.error("Entity claim error:", error);
     res.status(500).json({ success: false, message: "Failed to submit claim" });
@@ -903,20 +987,24 @@ app.post("/api/entity-claims", userAuthMiddleware, async (req, res) => {
 });
 
 // Get user's entity claims
-app.get("/api/entity-claims/my-claims", userAuthMiddleware, async (req, res) => {
-  await connectDB();
+app.get(
+  "/api/entity-claims/my-claims",
+  userAuthMiddleware,
+  async (req, res) => {
+    await connectDB();
 
-  try {
-    const claims = await EntityClaim.find({ userId: req.user.userId })
-      .populate('entityId', 'name type logo')
-      .sort({ createdAt: -1 });
-    
-    res.json({ success: true, claims });
-  } catch (error) {
-    console.error("Get claims error:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    try {
+      const claims = await EntityClaim.find({ userId: req.user.userId })
+        .populate("entityId", "name type logo")
+        .sort({ createdAt: -1 });
+
+      res.json({ success: true, claims });
+    } catch (error) {
+      console.error("Get claims error:", error);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
   }
-});
+);
 
 // Get all pending claims (admin)
 app.get("/api/entity-claims", authMiddleware, async (req, res) => {
@@ -925,12 +1013,12 @@ app.get("/api/entity-claims", authMiddleware, async (req, res) => {
   try {
     const { status } = req.query;
     const filter = status ? { status } : {};
-    
+
     const claims = await EntityClaim.find(filter)
-      .populate('userId', 'firstName lastName email profilePicture')
-      .populate('entityId', 'name type logo')
+      .populate("userId", "firstName lastName email profilePicture")
+      .populate("entityId", "name type logo")
       .sort({ createdAt: -1 });
-    
+
     res.json({ success: true, claims });
   } catch (error) {
     console.error("Get claims error:", error);
@@ -944,30 +1032,38 @@ app.post("/api/entity-claims/:id/review", authMiddleware, async (req, res) => {
 
   try {
     const { action, reason } = req.body;
-    
-    if (!['approve', 'reject'].includes(action)) {
-      return res.status(400).json({ success: false, message: "Invalid action" });
+
+    if (!["approve", "reject"].includes(action)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid action" });
     }
-    
-    const status = action === 'approve' ? 'approved' : 'rejected';
-    
+
+    const status = action === "approve" ? "approved" : "rejected";
+
     const claim = await EntityClaim.findById(req.params.id);
     if (!claim) {
-      return res.status(404).json({ success: false, message: "Claim not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Claim not found" });
     }
-    
+
     claim.status = status;
-    claim.rejectionReason = reason || '';
+    claim.rejectionReason = reason || "";
     claim.reviewedAt = Date.now();
     claim.reviewedBy = req.admin.id;
-    
+
     await claim.save();
-    
+
     // If approved and it's a new entity, create the entity
-    if (status === 'approved' && claim.isNewEntity && claim.newEntityData.name) {
+    if (
+      status === "approved" &&
+      claim.isNewEntity &&
+      claim.newEntityData.name
+    ) {
       const newEntity = new Entity({
         name: claim.newEntityData.name,
-        type: claim.newEntityData.type || 'Startup',
+        type: claim.newEntityData.type || "Startup",
         description: claim.newEntityData.description,
         website: claim.newEntityData.website,
         socialMedia: { linkedin: claim.newEntityData.linkedin },
@@ -975,36 +1071,35 @@ app.post("/api/entity-claims/:id/review", authMiddleware, async (req, res) => {
         logo: claim.newEntityData.logo,
         foundedYear: claim.newEntityData.foundedYear,
         isActive: true,
-        isVerified: true
+        isVerified: true,
       });
       await newEntity.save();
-      
+
       // Link the claim to the new entity
       claim.entityId = newEntity._id;
       await claim.save();
     }
-    
+
     // Update user status if all their claims are processed
-    const pendingClaims = await EntityClaim.countDocuments({ 
-      userId: claim.userId, 
-      status: 'pending' 
+    const pendingClaims = await EntityClaim.countDocuments({
+      userId: claim.userId,
+      status: "pending",
     });
-    
+
     if (pendingClaims === 0) {
-      const approvedClaims = await EntityClaim.countDocuments({ 
-        userId: claim.userId, 
-        status: 'approved' 
+      const approvedClaims = await EntityClaim.countDocuments({
+        userId: claim.userId,
+        status: "approved",
       });
-      
+
       await User.findByIdAndUpdate(claim.userId, {
-        status: approvedClaims > 0 ? 'active' : 'active', // User is active either way after review
+        status: approvedClaims > 0 ? "active" : "active", // User is active either way after review
         approvedAt: approvedClaims > 0 ? Date.now() : undefined,
-        approvedBy: approvedClaims > 0 ? req.admin.id : undefined
+        approvedBy: approvedClaims > 0 ? req.admin.id : undefined,
       });
     }
-    
+
     res.json({ success: true, message: `Claim ${status}`, claim });
-    
   } catch (error) {
     console.error("Review claim error:", error);
     res.status(500).json({ success: false, message: "Server error" });
@@ -1022,14 +1117,14 @@ app.get("/api/users", authMiddleware, async (req, res) => {
   try {
     const { status, userType } = req.query;
     const filter = {};
-    
+
     if (status) filter.status = status;
     if (userType) filter.userType = userType;
-    
+
     const users = await User.find(filter)
-      .select('-password -passwordResetToken -emailVerificationToken')
+      .select("-password -passwordResetToken -emailVerificationToken")
       .sort({ createdAt: -1 });
-    
+
     res.json({ success: true, users });
   } catch (error) {
     console.error("Get users error:", error);
@@ -1043,14 +1138,18 @@ app.get("/api/users/admin/stats", authMiddleware, async (req, res) => {
 
   try {
     const totalUsers = await User.countDocuments();
-    const pendingUsers = await User.countDocuments({ status: 'pending_review' });
-    const activeUsers = await User.countDocuments({ status: 'active' });
-    const pendingClaims = await EntityClaim.countDocuments({ status: 'pending' });
-    
+    const pendingUsers = await User.countDocuments({
+      status: "pending_review",
+    });
+    const activeUsers = await User.countDocuments({ status: "active" });
+    const pendingClaims = await EntityClaim.countDocuments({
+      status: "pending",
+    });
+
     const usersByType = await User.aggregate([
-      { $group: { _id: '$userType', count: { $sum: 1 } } }
+      { $group: { _id: "$userType", count: { $sum: 1 } } },
     ]);
-    
+
     res.json({
       success: true,
       stats: {
@@ -1058,8 +1157,8 @@ app.get("/api/users/admin/stats", authMiddleware, async (req, res) => {
         pendingUsers,
         activeUsers,
         pendingClaims,
-        byType: usersByType
-      }
+        byType: usersByType,
+      },
     });
   } catch (error) {
     console.error("User stats error:", error);
@@ -1073,53 +1172,56 @@ app.post("/api/users/:id/review", authMiddleware, async (req, res) => {
 
   try {
     const { action, reason } = req.body;
-    
-    if (!['approve', 'reject', 'suspend', 'reactivate'].includes(action)) {
-      return res.status(400).json({ success: false, message: "Invalid action" });
+
+    if (!["approve", "reject", "suspend", "reactivate"].includes(action)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid action" });
     }
-    
+
     const user = await User.findById(req.params.id);
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
-    
+
     // Map action to status
     const statusMap = {
-      approve: 'active',
-      reject: 'rejected',
-      suspend: 'suspended',
-      reactivate: 'active'
+      approve: "active",
+      reject: "rejected",
+      suspend: "suspended",
+      reactivate: "active",
     };
-    
+
     user.status = statusMap[action];
-    user.statusReason = reason || '';
-    
-    if (action === 'approve' || action === 'reactivate') {
+    user.statusReason = reason || "";
+
+    if (action === "approve" || action === "reactivate") {
       user.approvedAt = Date.now();
       user.approvedBy = req.admin.id;
     }
-    
+
     await user.save();
-    
+
     const actionMessages = {
-      approve: 'approved',
-      reject: 'rejected',
-      suspend: 'suspended',
-      reactivate: 'reactivated'
+      approve: "approved",
+      reject: "rejected",
+      suspend: "suspended",
+      reactivate: "reactivated",
     };
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       message: `User ${actionMessages[action]}`,
       user: {
         id: user._id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        status: user.status
-      }
+        status: user.status,
+      },
     });
-    
   } catch (error) {
     console.error("Review user error:", error);
     res.status(500).json({ success: false, message: "Server error" });
@@ -1134,11 +1236,11 @@ app.get("/api/entities/list/simple", async (req, res) => {
     const { type } = req.query;
     const filter = { isActive: true };
     if (type) filter.type = type;
-    
+
     const entities = await Entity.find(filter)
-      .select('name type logo location')
+      .select("name type logo location")
       .sort({ name: 1 });
-    
+
     res.json({ success: true, entities });
   } catch (error) {
     console.error("Get entities list error:", error);
