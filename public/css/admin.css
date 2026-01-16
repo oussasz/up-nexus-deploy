@@ -61,6 +61,7 @@ body {
   align-items: center;
   text-decoration: none;
   transition: transform 0.2s ease;
+  flex-shrink: 0;
 }
 
 .logo:hover {
@@ -68,11 +69,12 @@ body {
 }
 
 .logo-text {
-  font-size: clamp(1.1rem, 4vw, 1.5rem);
+  font-size: clamp(0.95rem, 3.5vw, 1.5rem);
   font-weight: 800;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
 .logo-text .logo-up {
@@ -96,9 +98,10 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: clamp(18px, 4vw, 22px);
-  height: clamp(18px, 4vw, 22px);
-  margin: 0 -2px;
+  width: clamp(16px, 3.5vw, 22px);
+  height: clamp(16px, 3.5vw, 22px);
+  margin: 0 -1px;
+  flex-shrink: 0;
   animation: admin-pulse 3s ease-in-out infinite;
 }
 
