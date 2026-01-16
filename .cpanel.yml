@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/bnyqzpdb/upnexus
+    - /bin/cp -R api $DEPLOYPATH/
+    - /bin/cp -R public $DEPLOYPATH/
+    - /bin/cp -R data $DEPLOYPATH/
+    - /bin/cp package.json $DEPLOYPATH/
+    - /bin/cp seed-database.js $DEPLOYPATH/
+    - /bin/cp .htaccess $DEPLOYPATH/
+    - cd $DEPLOYPATH && npm install --production
+    - mkdir -p $DEPLOYPATH/tmp && touch $DEPLOYPATH/tmp/restart.txt
