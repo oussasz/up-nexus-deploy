@@ -6,17 +6,12 @@
     <title>Create Account | UP-NEXUS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="icon" type="image/png" href="/icon.png" />
     <link rel="apple-touch-icon" href="/icon.png" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
       /* Auth Page Styles */
       .auth-page {
@@ -26,13 +21,13 @@
 
       /* Left Panel - Branding */
       .auth-branding {
-        flex: 0 0 45%;
+        flex: 0 0 40%;
         background: var(--gradient-hero);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: var(--space-16);
+        padding: var(--space-12);
         position: relative;
         overflow: hidden;
       }
@@ -41,10 +36,7 @@
         content: "";
         position: absolute;
         inset: 0;
-        background-image: linear-gradient(
-            rgba(255, 255, 255, 0.03) 1px,
-            transparent 1px
-          ),
+        background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         background-size: 50px 50px;
       }
@@ -69,12 +61,7 @@
         align-items: center;
       }
 
-      .auth-logo .logo-up {
-        color: #ffffff;
-      }
-
-      .auth-logo .logo-ne,
-      .auth-logo .logo-us {
+      .auth-logo .logo-up, .auth-logo .logo-ne, .auth-logo .logo-us {
         color: #ffffff;
       }
 
@@ -89,13 +76,6 @@
         height: 100%;
         object-fit: contain;
         filter: brightness(1.2);
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-          filter 0.3s ease;
-      }
-
-      .auth-logo:hover .logo-x img {
-        transform: rotate(180deg) scale(1.15);
-        filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
       }
 
       .auth-tagline {
@@ -116,21 +96,23 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
-        padding: var(--space-12);
+        padding: var(--space-8);
         background: var(--color-bg-primary);
         overflow-y: auto;
+        max-height: 100vh;
       }
 
       .auth-form-container {
         width: 100%;
-        max-width: 480px;
+        max-width: 540px;
+        padding: var(--space-4) 0;
       }
 
       .auth-form-header {
         text-align: center;
-        margin-bottom: var(--space-8);
+        margin-bottom: var(--space-6);
       }
 
       .auth-form-header h1 {
@@ -147,48 +129,147 @@
       .steps-indicator {
         display: flex;
         justify-content: center;
-        gap: var(--space-4);
+        align-items: center;
+        gap: var(--space-2);
         margin-bottom: var(--space-8);
       }
 
+      .step-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
       .step-dot {
-        width: 12px;
-        height: 12px;
+        width: 32px;
+        height: 32px;
         border-radius: var(--radius-full);
         background: var(--color-bg-tertiary);
+        border: 2px solid var(--color-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-tertiary);
         transition: all var(--transition-base);
       }
 
       .step-dot.active {
-        background: var(--color-primary);
-        width: 32px;
+        background: var(--gradient-primary);
+        border-color: var(--color-primary);
+        color: var(--color-text-on-primary);
       }
 
       .step-dot.completed {
         background: var(--color-accent-green);
+        border-color: var(--color-accent-green);
+        color: white;
       }
 
-      /* Role Selection */
-      .role-grid {
+      .step-line {
+        width: 40px;
+        height: 2px;
+        background: var(--color-border);
+        transition: all var(--transition-base);
+      }
+
+      .step-line.completed {
+        background: var(--color-accent-green);
+      }
+
+      /* Step Content */
+      .step-content {
+        display: none;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .step-content.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* User Type Cards */
+      .user-type-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: var(--space-4);
-        margin-bottom: var(--space-8);
+        margin-bottom: var(--space-6);
       }
 
-      .role-card {
-        padding: var(--space-5);
-        background: var(--color-bg-tertiary);
+      .user-type-card {
+        padding: var(--space-6);
+        background: var(--color-bg-secondary);
         border: 2px solid var(--color-border);
         border-radius: var(--radius-xl);
-        text-align: center;
         cursor: pointer;
+        transition: all var(--transition-fast);
+        text-align: center;
+      }
+
+      .user-type-card:hover {
+        border-color: var(--color-primary-50);
+        transform: translateY(-2px);
+      }
+
+      .user-type-card.selected {
+        border-color: var(--color-primary);
+        background: var(--color-primary-10);
+      }
+
+      .user-type-icon {
+        width: 56px;
+        height: 56px;
+        margin: 0 auto var(--space-4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-xl);
+        font-size: 1.5rem;
         transition: all var(--transition-fast);
       }
 
+      .user-type-card.selected .user-type-icon {
+        background: var(--gradient-primary);
+        color: white;
+      }
+
+      .user-type-name {
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--space-2);
+      }
+
+      .user-type-desc {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+        line-height: 1.4;
+      }
+
+      /* Public Role Selection */
+      .role-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-3);
+        margin-bottom: var(--space-6);
+      }
+
+      .role-card {
+        padding: var(--space-4);
+        background: var(--color-bg-secondary);
+        border: 2px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        text-align: center;
+      }
+
       .role-card:hover {
-        border-color: var(--color-primary-20);
-        background: var(--color-bg-hover);
+        border-color: var(--color-primary-50);
       }
 
       .role-card.selected {
@@ -196,34 +277,146 @@
         background: var(--color-primary-10);
       }
 
-      .role-icon {
-        width: 48px;
-        height: 48px;
-        margin: 0 auto var(--space-3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--color-bg-secondary);
-        border-radius: var(--radius-lg);
+      .role-card i {
+        font-size: 1.5rem;
+        margin-bottom: var(--space-2);
         color: var(--color-primary);
-        font-size: 1.25rem;
+      }
+
+      .role-card .role-name {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+      }
+
+      /* Entity Selection */
+      .entity-type-tabs {
+        display: flex;
+        gap: var(--space-2);
+        margin-bottom: var(--space-4);
+        overflow-x: auto;
+        padding-bottom: var(--space-2);
+      }
+
+      .entity-tab {
+        padding: var(--space-2) var(--space-4);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-sm);
+        white-space: nowrap;
+        cursor: pointer;
         transition: all var(--transition-fast);
       }
 
-      .role-card.selected .role-icon {
+      .entity-tab:hover {
+        border-color: var(--color-primary);
+      }
+
+      .entity-tab.active {
         background: var(--gradient-primary);
-        color: white;
+        border-color: var(--color-primary);
+        color: var(--color-text-on-primary);
       }
 
-      .role-name {
-        font-weight: var(--font-weight-semibold);
+      .entity-search-box {
+        position: relative;
+        margin-bottom: var(--space-4);
+      }
+
+      .entity-search-box input {
+        width: 100%;
+        padding: var(--space-4) var(--space-4) var(--space-4) var(--space-12);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-base);
+      }
+
+      .entity-search-box input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+      }
+
+      .entity-search-box i {
+        position: absolute;
+        left: var(--space-4);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--color-text-muted);
+      }
+
+      .entity-results {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--space-4);
+      }
+
+      .entity-result-item {
+        padding: var(--space-3) var(--space-4);
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .entity-result-item:last-child {
+        border-bottom: none;
+      }
+
+      .entity-result-item:hover {
+        background: var(--color-bg-hover);
+      }
+
+      .entity-result-item.selected {
+        background: var(--color-primary-10);
+      }
+
+      .entity-result-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-lg);
+        background: var(--color-bg-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+      }
+
+      .entity-result-info h4 {
         font-size: var(--font-size-sm);
-        margin-bottom: var(--space-1);
+        font-weight: var(--font-weight-medium);
       }
 
-      .role-desc {
+      .entity-result-info p {
         font-size: var(--font-size-xs);
         color: var(--color-text-tertiary);
+      }
+
+      .add-new-entity {
+        padding: var(--space-4);
+        background: var(--color-bg-secondary);
+        border: 2px dashed var(--color-border);
+        border-radius: var(--radius-lg);
+        text-align: center;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        margin-bottom: var(--space-4);
+      }
+
+      .add-new-entity:hover {
+        border-color: var(--color-primary);
+        background: var(--color-primary-10);
+      }
+
+      .add-new-entity i {
+        font-size: 1.5rem;
+        color: var(--color-primary);
+        margin-bottom: var(--space-2);
       }
 
       /* Form Styles */
@@ -264,7 +457,7 @@
 
       .form-select {
         appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 12px center;
         padding-right: 40px;
@@ -289,22 +482,96 @@
         transition: all var(--transition-base);
       }
 
-      .strength-fill.weak {
-        width: 33%;
-        background: var(--color-accent-red);
-      }
-      .strength-fill.medium {
-        width: 66%;
-        background: #f59e0b;
-      }
-      .strength-fill.strong {
-        width: 100%;
-        background: var(--color-accent-green);
-      }
+      .strength-fill.weak { width: 33%; background: var(--color-accent-red); }
+      .strength-fill.medium { width: 66%; background: #f59e0b; }
+      .strength-fill.strong { width: 100%; background: var(--color-accent-green); }
 
       .strength-text {
         font-size: var(--font-size-xs);
         color: var(--color-text-tertiary);
+      }
+
+      /* Claim Role Selection */
+      .claim-role-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-3);
+        margin-bottom: var(--space-4);
+      }
+
+      .claim-role-option {
+        padding: var(--space-3) var(--space-4);
+        background: var(--color-bg-secondary);
+        border: 2px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        text-align: center;
+      }
+
+      .claim-role-option:hover {
+        border-color: var(--color-primary-50);
+      }
+
+      .claim-role-option.selected {
+        border-color: var(--color-primary);
+        background: var(--color-primary-10);
+      }
+
+      .claim-role-option input {
+        display: none;
+      }
+
+      /* Social Login */
+      .social-login-section {
+        margin-bottom: var(--space-6);
+      }
+
+      .social-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-3);
+        padding: var(--space-4);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        margin-bottom: var(--space-3);
+      }
+
+      .social-btn:hover {
+        background: var(--color-bg-hover);
+        border-color: var(--color-primary);
+      }
+
+      .social-btn.linkedin i {
+        color: #0077b5;
+        font-size: 1.2rem;
+      }
+
+      #googleSignInBtn > div {
+        width: 100% !important;
+      }
+
+      .auth-divider {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        margin-bottom: var(--space-6);
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+      }
+
+      .auth-divider::before, .auth-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--color-border);
       }
 
       /* Terms */
@@ -343,10 +610,71 @@
         padding: var(--space-4);
       }
 
+      /* Info Box */
+      .info-box {
+        padding: var(--space-4);
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--space-6);
+      }
+
+      .info-box.warning {
+        background: rgba(245, 158, 11, 0.1);
+        border-color: rgba(245, 158, 11, 0.3);
+      }
+
+      .info-box h4 {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--space-2);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .info-box p {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        line-height: 1.5;
+      }
+
+      /* Status Messages */
+      .status-message {
+        padding: var(--space-4);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--space-6);
+        display: none;
+      }
+
+      .status-message.show { display: block; }
+      .status-message.success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; }
+      .status-message.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; }
+      .status-message.pending { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; }
+
+      /* Loading */
+      .btn.loading {
+        pointer-events: none;
+        opacity: 0.7;
+      }
+
+      .btn.loading::after {
+        content: "";
+        width: 16px;
+        height: 16px;
+        border: 2px solid transparent;
+        border-top-color: currentColor;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-left: var(--space-2);
+      }
+
+      @keyframes spin { to { transform: rotate(360deg); } }
+
       /* Footer */
       .auth-footer {
         text-align: center;
-        margin-top: var(--space-8);
+        margin-top: var(--space-6);
       }
 
       .auth-footer p {
@@ -359,34 +687,70 @@
         font-weight: var(--font-weight-semibold);
       }
 
-      /* Step Content */
-      .step-content {
+      /* Coming Soon Modal */
+      .modal-overlay {
         display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
       }
 
-      .step-content.active {
-        display: block;
+      .modal-overlay.active { display: flex; }
+
+      .modal-content {
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-10);
+        max-width: 400px;
+        text-align: center;
+        animation: modalIn 0.3s ease;
+      }
+
+      @keyframes modalIn {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+      }
+
+      .modal-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto var(--space-6);
+        background: linear-gradient(135deg, #0077b5, #00a0dc);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-icon i { font-size: 2.5rem; color: white; }
+      .modal-content h2 { font-size: var(--font-size-2xl); margin-bottom: var(--space-3); }
+      .modal-content p { color: var(--color-text-secondary); margin-bottom: var(--space-6); line-height: 1.6; }
+
+      .modal-close {
+        padding: var(--space-3) var(--space-8);
+        background: var(--gradient-primary);
+        border: none;
+        border-radius: var(--radius-lg);
+        color: var(--color-text-on-primary);
+        font-weight: var(--font-weight-semibold);
+        cursor: pointer;
       }
 
       /* Mobile */
       @media (max-width: 1024px) {
-        .auth-branding {
-          display: none;
-        }
+        .auth-branding { display: none; }
       }
 
       @media (max-width: 640px) {
-        .role-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .form-row {
-          grid-template-columns: 1fr;
-        }
-
-        .form-actions {
-          flex-direction: column;
-        }
+        .user-type-grid { grid-template-columns: 1fr; }
+        .role-grid { grid-template-columns: repeat(2, 1fr); }
+        .form-row { grid-template-columns: 1fr; }
+        .form-actions { flex-direction: column; }
+        .claim-role-grid { grid-template-columns: 1fr; }
       }
     </style>
   </head>
@@ -397,15 +761,12 @@
         <div class="auth-branding-content">
           <div class="auth-logo">
             <span class="logo-text">
-              <span class="logo-up">UP</span><span class="logo-ne">-NE</span
-              ><span class="logo-x"><img src="/icon.png" alt="X" /></span
-              ><span class="logo-us">US</span>
+              <span class="logo-up">UP</span><span class="logo-ne">-NE</span><span class="logo-x"><img src="/icon.png" alt="X" /></span><span class="logo-us">US</span>
             </span>
           </div>
           <h2 class="auth-tagline">Start Your Entrepreneurial Journey</h2>
           <p class="auth-description">
-            Join thousands of startups, investors, and ecosystem players
-            building Algeria's future together.
+            Join thousands of startups, investors, and ecosystem players building Algeria's future together.
           </p>
         </div>
       </div>
@@ -414,19 +775,9 @@
       <div class="auth-form-panel">
         <div class="auth-form-container">
           <div class="auth-form-header">
-            <a
-              href="/pages/../"
-              class="logo"
-              style="
-                display: flex;
-                justify-content: center;
-                margin-bottom: var(--space-6);
-              "
-            >
+            <a href="/" class="logo" style="display: flex; justify-content: center; margin-bottom: var(--space-4);">
               <span class="logo-text">
-                <span class="logo-up">UP</span><span class="logo-ne">-NE</span
-                ><span class="logo-x"><img src="/icon.png" alt="X" /></span
-                ><span class="logo-us">US</span>
+                <span class="logo-up">UP</span><span class="logo-ne">-NE</span><span class="logo-x"><img src="/icon.png" alt="X" /></span><span class="logo-us">US</span>
               </span>
             </a>
             <h1>Create Your Account</h1>
@@ -435,269 +786,665 @@
 
           <!-- Steps Indicator -->
           <div class="steps-indicator">
-            <div class="step-dot active" data-step="1"></div>
-            <div class="step-dot" data-step="2"></div>
-            <div class="step-dot" data-step="3"></div>
+            <div class="step-item">
+              <div class="step-dot active" id="stepDot1">1</div>
+            </div>
+            <div class="step-line" id="stepLine1"></div>
+            <div class="step-item">
+              <div class="step-dot" id="stepDot2">2</div>
+            </div>
+            <div class="step-line" id="stepLine2"></div>
+            <div class="step-item">
+              <div class="step-dot" id="stepDot3">3</div>
+            </div>
           </div>
 
+          <!-- Status Message -->
+          <div class="status-message" id="statusMessage"></div>
+
           <form id="registerForm">
-            <!-- Step 1: Choose Role -->
-            <div class="step-content active" data-step="1">
-              <h3
-                style="
-                  text-align: center;
-                  margin-bottom: var(--space-6);
-                  color: var(--color-text-secondary);
-                  font-size: var(--font-size-sm);
-                "
-              >
-                What best describes you?
+            <!-- Step 1: Choose Account Type -->
+            <div class="step-content active" id="step1">
+              <h3 style="text-align: center; margin-bottom: var(--space-4); font-size: var(--font-size-lg);">
+                What brings you to UP-NEXUS?
               </h3>
 
-              <div class="role-grid">
-                <div class="role-card" data-role="startup">
-                  <div class="role-icon"><i class="fas fa-rocket"></i></div>
-                  <div class="role-name">Startup</div>
-                  <div class="role-desc">Building a company</div>
+              <div class="user-type-grid">
+                <div class="user-type-card" data-type="browser">
+                  <div class="user-type-icon"><i class="fas fa-compass"></i></div>
+                  <div class="user-type-name">Just Browsing</div>
+                  <div class="user-type-desc">Explore the ecosystem, find opportunities, stay updated</div>
                 </div>
-                <div class="role-card" data-role="investor">
-                  <div class="role-icon"><i class="fas fa-chart-pie"></i></div>
-                  <div class="role-name">Investor</div>
-                  <div class="role-desc">Looking to invest</div>
+
+                <div class="user-type-card" data-type="individual_public">
+                  <div class="user-type-icon"><i class="fas fa-user-tie"></i></div>
+                  <div class="user-type-name">Public Profile</div>
+                  <div class="user-type-desc">Appear as a mentor, coach, freelancer, or project holder</div>
                 </div>
-                <div class="role-card" data-role="incubator">
-                  <div class="role-icon"><i class="fas fa-building"></i></div>
-                  <div class="role-name">Incubator</div>
-                  <div class="role-desc">Supporting startups</div>
+
+                <div class="user-type-card" data-type="entity_representative">
+                  <div class="user-type-icon"><i class="fas fa-building"></i></div>
+                  <div class="user-type-name">Entity Representative</div>
+                  <div class="user-type-desc">Manage a startup, incubator, accelerator, or coworking space</div>
                 </div>
-                <div class="role-card" data-role="freelancer">
-                  <div class="role-icon">
-                    <i class="fas fa-laptop-code"></i>
-                  </div>
-                  <div class="role-name">Freelancer</div>
-                  <div class="role-desc">Offering services</div>
-                </div>
-                <div class="role-card" data-role="mentor">
-                  <div class="role-icon">
+              </div>
+
+              <!-- Public Role Selection (shown for individual_public) -->
+              <div id="publicRoleSection" style="display: none;">
+                <h4 style="margin-bottom: var(--space-3); font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                  What's your role?
+                </h4>
+                <div class="role-grid">
+                  <div class="role-card" data-role="mentor">
                     <i class="fas fa-chalkboard-teacher"></i>
+                    <div class="role-name">Mentor</div>
                   </div>
-                  <div class="role-name">Mentor</div>
-                  <div class="role-desc">Sharing expertise</div>
-                </div>
-                <div class="role-card" data-role="project">
-                  <div class="role-icon"><i class="fas fa-lightbulb"></i></div>
-                  <div class="role-name">Project Holder</div>
-                  <div class="role-desc">Have an idea</div>
+                  <div class="role-card" data-role="coach">
+                    <i class="fas fa-user-graduate"></i>
+                    <div class="role-name">Coach</div>
+                  </div>
+                  <div class="role-card" data-role="freelancer">
+                    <i class="fas fa-laptop-code"></i>
+                    <div class="role-name">Freelancer</div>
+                  </div>
+                  <div class="role-card" data-role="project_holder">
+                    <i class="fas fa-lightbulb"></i>
+                    <div class="role-name">Project Holder</div>
+                  </div>
+                  <div class="role-card" data-role="investor">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <div class="role-name">Investor</div>
+                  </div>
+                  <div class="role-card" data-role="other">
+                    <i class="fas fa-ellipsis-h"></i>
+                    <div class="role-name">Other</div>
+                  </div>
                 </div>
               </div>
 
               <div class="form-actions">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  id="toStep2"
-                  disabled
-                >
-                  Continue
-                  <i class="fas fa-arrow-right"></i>
+                <button type="button" class="btn btn-primary" id="toStep2" disabled>
+                  Continue <i class="fas fa-arrow-right"></i>
                 </button>
               </div>
             </div>
 
-            <!-- Step 2: Personal Info -->
-            <div class="step-content" data-step="2">
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">First Name</label>
-                  <input
-                    type="text"
-                    class="form-input"
-                    placeholder="Enter first name"
-                    required
-                  />
+            <!-- Step 2: Entity Selection (for entity_representative) OR Account Info -->
+            <div class="step-content" id="step2">
+              <!-- Entity Selection Section -->
+              <div id="entitySelectionSection" style="display: none;">
+                <h3 style="text-align: center; margin-bottom: var(--space-4); font-size: var(--font-size-lg);">
+                  Select Your Organization
+                </h3>
+
+                <div class="info-box">
+                  <h4><i class="fas fa-info-circle"></i> Verification Required</h4>
+                  <p>After registration, your claim will be reviewed by our admin team. You may need to provide proof of your role.</p>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Last Name</label>
-                  <input
-                    type="text"
-                    class="form-input"
-                    placeholder="Enter last name"
-                    required
-                  />
+
+                <!-- Entity Type Tabs -->
+                <div class="entity-type-tabs">
+                  <button type="button" class="entity-tab active" data-entity-type="Startup">Startups</button>
+                  <button type="button" class="entity-tab" data-entity-type="Incubator">Incubators</button>
+                  <button type="button" class="entity-tab" data-entity-type="Accelerator">Accelerators</button>
+                  <button type="button" class="entity-tab" data-entity-type="Coworking Space">Coworking</button>
+                  <button type="button" class="entity-tab" data-entity-type="Investor">Investors</button>
+                </div>
+
+                <!-- Entity Search -->
+                <div class="entity-search-box">
+                  <i class="fas fa-search"></i>
+                  <input type="text" id="entitySearch" placeholder="Search for your organization..." />
+                </div>
+
+                <!-- Entity Results -->
+                <div class="entity-results" id="entityResults">
+                  <div style="padding: var(--space-4); text-align: center; color: var(--color-text-tertiary);">
+                    <i class="fas fa-search" style="font-size: 2rem; margin-bottom: var(--space-2);"></i>
+                    <p>Type to search for your organization</p>
+                  </div>
+                </div>
+
+                <!-- Add New Entity -->
+                <div class="add-new-entity" id="addNewEntity">
+                  <i class="fas fa-plus-circle"></i>
+                  <div style="font-weight: var(--font-weight-medium);">My organization is not listed</div>
+                  <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary);">Request to add a new entity</div>
+                </div>
+
+                <!-- Selected Entity Info -->
+                <div id="selectedEntityInfo" style="display: none; margin-bottom: var(--space-4);">
+                  <div style="padding: var(--space-4); background: var(--color-primary-10); border: 1px solid var(--color-primary); border-radius: var(--radius-lg);">
+                    <div style="display: flex; align-items: center; gap: var(--space-3);">
+                      <div id="selectedEntityLogo" style="width: 48px; height: 48px; background: var(--color-bg-tertiary); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🏢</div>
+                      <div>
+                        <h4 id="selectedEntityName" style="font-weight: var(--font-weight-semibold);"></h4>
+                        <p id="selectedEntityType" style="font-size: var(--font-size-xs); color: var(--color-text-secondary);"></p>
+                      </div>
+                      <button type="button" style="margin-left: auto; background: none; border: none; color: var(--color-text-muted); cursor: pointer;" onclick="clearSelectedEntity()">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Claim Role -->
+                <div id="claimRoleSection" style="display: none;">
+                  <h4 style="margin-bottom: var(--space-3); font-size: var(--font-size-sm);">Your role at this organization:</h4>
+                  <div class="claim-role-grid">
+                    <label class="claim-role-option" data-claim-role="owner">
+                      <input type="radio" name="claimRole" value="owner" />
+                      <span>Owner / Founder</span>
+                    </label>
+                    <label class="claim-role-option" data-claim-role="admin">
+                      <input type="radio" name="claimRole" value="admin" />
+                      <span>Admin / Manager</span>
+                    </label>
+                    <label class="claim-role-option" data-claim-role="team_member">
+                      <input type="radio" name="claimRole" value="team_member" />
+                      <span>Team Member</span>
+                    </label>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Work Email (optional)</label>
+                    <input type="email" class="form-input" id="workEmail" placeholder="your.name@company.com" />
+                    <p style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-top: var(--space-1);">
+                      If your email matches the company domain, verification is faster
+                    </p>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">LinkedIn Profile (optional)</label>
+                    <input type="url" class="form-input" id="linkedinProfile" placeholder="https://linkedin.com/in/yourprofile" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Additional Notes (optional)</label>
+                    <textarea class="form-input" id="additionalNotes" rows="2" placeholder="Any additional information to verify your role..."></textarea>
+                  </div>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input
-                  type="email"
-                  class="form-input"
-                  placeholder="Enter your email"
-                  required
-                />
+              <!-- New Entity Form (hidden by default) -->
+              <div id="newEntitySection" style="display: none;">
+                <h3 style="text-align: center; margin-bottom: var(--space-4); font-size: var(--font-size-lg);">
+                  Add New Organization
+                </h3>
+
+                <div class="info-box warning">
+                  <h4><i class="fas fa-exclamation-triangle"></i> Admin Review Required</h4>
+                  <p>New organizations require admin approval before being added to the platform.</p>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Organization Name *</label>
+                  <input type="text" class="form-input" id="newEntityName" placeholder="Enter organization name" required />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Type *</label>
+                    <select class="form-input form-select" id="newEntityType" required>
+                      <option value="">Select type</option>
+                      <option value="Startup">Startup</option>
+                      <option value="Incubator">Incubator</option>
+                      <option value="Accelerator">Accelerator</option>
+                      <option value="Coworking Space">Coworking Space</option>
+                      <option value="Investor">Investor</option>
+                      <option value="Community & Network">Community</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">City</label>
+                    <input type="text" class="form-input" id="newEntityCity" placeholder="e.g., Algiers" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Website</label>
+                  <input type="url" class="form-input" id="newEntityWebsite" placeholder="https://..." />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">LinkedIn Page</label>
+                  <input type="url" class="form-input" id="newEntityLinkedin" placeholder="https://linkedin.com/company/..." />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-input" id="newEntityDescription" rows="3" placeholder="Brief description of the organization..."></textarea>
+                </div>
+
+                <button type="button" class="btn btn-secondary" onclick="showEntitySelection()" style="width: 100%; margin-bottom: var(--space-4);">
+                  <i class="fas fa-arrow-left"></i> Back to Search
+                </button>
               </div>
 
-              <div class="form-group">
-                <label class="form-label">Phone Number</label>
-                <input
-                  type="tel"
-                  class="form-input"
-                  placeholder="+213 XXX XXX XXX"
-                />
+              <!-- Account Info Section (for browser and individual_public) -->
+              <div id="accountInfoSection" style="display: none;">
+                <h3 style="text-align: center; margin-bottom: var(--space-6); font-size: var(--font-size-lg);">
+                  Create Your Account
+                </h3>
+
+                <!-- Social Login -->
+                <div class="social-login-section">
+                  <div id="googleSignInBtn2"></div>
+                  <button type="button" class="social-btn linkedin" id="linkedinBtn">
+                    <i class="fab fa-linkedin-in"></i>
+                    Continue with LinkedIn
+                  </button>
+                </div>
+
+                <div class="auth-divider">or register with email</div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">First Name *</label>
+                    <input type="text" class="form-input" id="firstName" placeholder="Enter first name" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Last Name *</label>
+                    <input type="text" class="form-input" id="lastName" placeholder="Enter last name" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Email Address *</label>
+                  <input type="email" class="form-input" id="email" placeholder="Enter your email" required />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <input type="tel" class="form-input" id="phone" placeholder="+213 XXX XXX XXX" />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">City</label>
+                  <select class="form-input form-select" id="city">
+                    <option value="">Select your city</option>
+                    <option value="Algiers">Algiers</option>
+                    <option value="Oran">Oran</option>
+                    <option value="Constantine">Constantine</option>
+                    <option value="Annaba">Annaba</option>
+                    <option value="Blida">Blida</option>
+                    <option value="Batna">Batna</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label class="form-label">Location</label>
-                <select class="form-input form-select">
-                  <option value="">Select your city</option>
-                  <option value="algiers">Algiers</option>
-                  <option value="oran">Oran</option>
-                  <option value="constantine">Constantine</option>
-                  <option value="annaba">Annaba</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div class="form-actions">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  id="backToStep1"
-                >
-                  <i class="fas fa-arrow-left"></i>
-                  Back
+              <div class="form-actions" id="step2Actions">
+                <button type="button" class="btn btn-secondary" id="backToStep1">
+                  <i class="fas fa-arrow-left"></i> Back
                 </button>
                 <button type="button" class="btn btn-primary" id="toStep3">
-                  Continue
-                  <i class="fas fa-arrow-right"></i>
+                  Continue <i class="fas fa-arrow-right"></i>
                 </button>
               </div>
             </div>
 
-            <!-- Step 3: Security -->
-            <div class="step-content" data-step="3">
+            <!-- Step 3: Account Security & Confirmation -->
+            <div class="step-content" id="step3">
+              <h3 style="text-align: center; margin-bottom: var(--space-6); font-size: var(--font-size-lg);">
+                Secure Your Account
+              </h3>
+
+              <!-- For entity representatives, show account info here -->
+              <div id="entityAccountInfo" style="display: none;">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">First Name *</label>
+                    <input type="text" class="form-input" id="firstName2" placeholder="Enter first name" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Last Name *</label>
+                    <input type="text" class="form-input" id="lastName2" placeholder="Enter last name" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Email Address *</label>
+                  <input type="email" class="form-input" id="email2" placeholder="Enter your email" required />
+                </div>
+              </div>
+
               <div class="form-group">
-                <label class="form-label">Create Password</label>
-                <input
-                  type="password"
-                  class="form-input"
-                  id="password"
-                  placeholder="Create a strong password"
-                  required
-                />
+                <label class="form-label">Create Password *</label>
+                <input type="password" class="form-input" id="password" placeholder="Create a strong password" required />
                 <div class="password-strength">
                   <div class="strength-bar">
                     <div class="strength-fill" id="strengthFill"></div>
                   </div>
-                  <span class="strength-text" id="strengthText"
-                    >Password strength</span
-                  >
+                  <span class="strength-text" id="strengthText">Password strength</span>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Confirm Password</label>
-                <input
-                  type="password"
-                  class="form-input"
-                  placeholder="Confirm your password"
-                  required
-                />
+                <label class="form-label">Confirm Password *</label>
+                <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required />
               </div>
 
               <div class="terms-check">
                 <input type="checkbox" id="terms" required />
                 <label for="terms">
-                  I agree to the <a href="#">Terms of Service</a> and
-                  <a href="#">Privacy Policy</a>. I understand that UP-NEXUS
-                  will process my data as described.
+                  I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. 
+                  I understand that UP-NEXUS will process my data as described.
                 </label>
               </div>
 
+              <div id="reviewNotice" style="display: none;" class="info-box warning">
+                <h4><i class="fas fa-clock"></i> Pending Review</h4>
+                <p>Your account will be reviewed by our admin team. You'll receive an email once your account is approved.</p>
+              </div>
+
               <div class="form-actions">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  id="backToStep2"
-                >
-                  <i class="fas fa-arrow-left"></i>
-                  Back
+                <button type="button" class="btn btn-secondary" id="backToStep2">
+                  <i class="fas fa-arrow-left"></i> Back
                 </button>
-                <button type="submit" class="btn btn-primary">
-                  Create Account
-                  <i class="fas fa-check"></i>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                  Create Account <i class="fas fa-check"></i>
                 </button>
               </div>
             </div>
           </form>
 
           <div class="auth-footer">
-            <p>
-              Already have an account?
-              <a href="/pages/auth/login.html">Sign in</a>
-            </p>
+            <p>Already have an account? <a href="login">Sign in</a></p>
           </div>
         </div>
       </div>
     </div>
 
-    <script>
-      // Role Selection
-      let selectedRole = null;
-      const roleCards = document.querySelectorAll(".role-card");
-      const toStep2Btn = document.getElementById("toStep2");
+    <!-- LinkedIn Coming Soon Modal -->
+    <div class="modal-overlay" id="linkedinModal">
+      <div class="modal-content">
+        <div class="modal-icon">
+          <i class="fab fa-linkedin-in"></i>
+        </div>
+        <h2>Coming Soon!</h2>
+        <p>LinkedIn sign-in is currently under development. We're working hard to bring this feature to you soon!</p>
+        <button class="modal-close" onclick="closeLinkedinModal()">Got it!</button>
+      </div>
+    </div>
 
-      roleCards.forEach((card) => {
-        card.addEventListener("click", () => {
-          roleCards.forEach((c) => c.classList.remove("selected"));
-          card.classList.add("selected");
-          selectedRole = card.dataset.role;
-          toStep2Btn.disabled = false;
+    <script src="/js/config.js"></script>
+    <script>
+      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || '/api';
+      
+      // State
+      let currentStep = 1;
+      let selectedUserType = null;
+      let selectedPublicRole = null;
+      let selectedEntity = null;
+      let selectedClaimRole = null;
+      let isNewEntity = false;
+      let entities = [];
+
+      // DOM Elements
+      const steps = document.querySelectorAll('.step-content');
+      const stepDots = [
+        document.getElementById('stepDot1'),
+        document.getElementById('stepDot2'),
+        document.getElementById('stepDot3')
+      ];
+      const stepLines = [
+        document.getElementById('stepLine1'),
+        document.getElementById('stepLine2')
+      ];
+
+      // Initialize Google Sign-In
+      window.onload = function() {
+        google.accounts.id.initialize({
+          client_id: '902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com',
+          callback: handleGoogleSignIn,
+          auto_select: false,
+          context: 'signup'
+        });
+        
+        google.accounts.id.renderButton(
+          document.getElementById('googleSignInBtn2'),
+          { theme: 'outline', size: 'large', width: '100%', text: 'signup_with', shape: 'rectangular' }
+        );
+        
+        // Load entities
+        loadEntities();
+      };
+
+      // Load entities for selection
+      async function loadEntities() {
+        try {
+          const res = await fetch(`${API_URL}/entities/list/simple`);
+          const data = await res.json();
+          if (data.success) {
+            entities = data.entities;
+          }
+        } catch (error) {
+          console.error('Failed to load entities:', error);
+        }
+      }
+
+      // Step Navigation
+      function showStep(step) {
+        currentStep = step;
+        
+        steps.forEach((s, i) => {
+          s.classList.remove('active');
+          if (i + 1 === step) s.classList.add('active');
+        });
+
+        stepDots.forEach((dot, i) => {
+          dot.classList.remove('active', 'completed');
+          if (i + 1 === step) {
+            dot.classList.add('active');
+          } else if (i + 1 < step) {
+            dot.classList.add('completed');
+            dot.innerHTML = '<i class="fas fa-check"></i>';
+          } else {
+            dot.textContent = i + 1;
+          }
+        });
+
+        stepLines.forEach((line, i) => {
+          line.classList.remove('completed');
+          if (i + 1 < step) line.classList.add('completed');
+        });
+
+        // Configure step 2 based on user type
+        if (step === 2) {
+          if (selectedUserType === 'entity_representative') {
+            document.getElementById('entitySelectionSection').style.display = 'block';
+            document.getElementById('accountInfoSection').style.display = 'none';
+          } else {
+            document.getElementById('entitySelectionSection').style.display = 'none';
+            document.getElementById('accountInfoSection').style.display = 'block';
+          }
+        }
+
+        // Configure step 3
+        if (step === 3) {
+          if (selectedUserType === 'entity_representative') {
+            document.getElementById('entityAccountInfo').style.display = 'block';
+          } else {
+            document.getElementById('entityAccountInfo').style.display = 'none';
+          }
+          
+          // Show review notice for users needing approval
+          if (selectedUserType !== 'browser') {
+            document.getElementById('reviewNotice').style.display = 'block';
+          } else {
+            document.getElementById('reviewNotice').style.display = 'none';
+          }
+        }
+      }
+
+      // User Type Selection
+      document.querySelectorAll('.user-type-card').forEach(card => {
+        card.addEventListener('click', () => {
+          document.querySelectorAll('.user-type-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selectedUserType = card.dataset.type;
+          
+          // Show/hide public role section
+          const publicRoleSection = document.getElementById('publicRoleSection');
+          if (selectedUserType === 'individual_public') {
+            publicRoleSection.style.display = 'block';
+            document.getElementById('toStep2').disabled = !selectedPublicRole;
+          } else {
+            publicRoleSection.style.display = 'none';
+            selectedPublicRole = null;
+            document.getElementById('toStep2').disabled = false;
+          }
         });
       });
 
-      // Step Navigation
-      const steps = document.querySelectorAll(".step-content");
-      const dots = document.querySelectorAll(".step-dot");
-
-      function showStep(stepNum) {
-        steps.forEach((step) => {
-          step.classList.remove("active");
-          if (parseInt(step.dataset.step) === stepNum) {
-            step.classList.add("active");
-          }
+      // Public Role Selection
+      document.querySelectorAll('.role-card').forEach(card => {
+        card.addEventListener('click', () => {
+          document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selectedPublicRole = card.dataset.role;
+          document.getElementById('toStep2').disabled = false;
         });
+      });
 
-        dots.forEach((dot) => {
-          const dotStep = parseInt(dot.dataset.step);
-          dot.classList.remove("active", "completed");
-          if (dotStep === stepNum) {
-            dot.classList.add("active");
-          } else if (dotStep < stepNum) {
-            dot.classList.add("completed");
-          }
+      // Entity Type Tabs
+      document.querySelectorAll('.entity-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.entity-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          filterEntities();
+        });
+      });
+
+      // Entity Search
+      document.getElementById('entitySearch').addEventListener('input', filterEntities);
+
+      function filterEntities() {
+        const searchTerm = document.getElementById('entitySearch').value.toLowerCase();
+        const activeTab = document.querySelector('.entity-tab.active');
+        const entityType = activeTab?.dataset.entityType || '';
+        
+        let filtered = entities;
+        
+        if (entityType) {
+          filtered = filtered.filter(e => e.type === entityType);
+        }
+        
+        if (searchTerm) {
+          filtered = filtered.filter(e => e.name.toLowerCase().includes(searchTerm));
+        }
+        
+        renderEntityResults(filtered.slice(0, 10));
+      }
+
+      function renderEntityResults(results) {
+        const container = document.getElementById('entityResults');
+        
+        if (results.length === 0) {
+          container.innerHTML = `
+            <div style="padding: var(--space-4); text-align: center; color: var(--color-text-tertiary);">
+              <i class="fas fa-search" style="font-size: 2rem; margin-bottom: var(--space-2);"></i>
+              <p>No organizations found</p>
+            </div>
+          `;
+          return;
+        }
+        
+        container.innerHTML = results.map(entity => `
+          <div class="entity-result-item ${selectedEntity?.name === entity.name ? 'selected' : ''}" data-entity-id="${entity._id}" data-entity-name="${entity.name}" data-entity-type="${entity.type}">
+            <div class="entity-result-logo">
+              ${entity.logo ? `<img src="${entity.logo}" alt="${entity.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">` : '🏢'}
+            </div>
+            <div class="entity-result-info">
+              <h4>${entity.name}</h4>
+              <p>${entity.type}${entity.location ? ` • ${entity.location}` : ''}</p>
+            </div>
+          </div>
+        `).join('');
+        
+        // Add click handlers
+        container.querySelectorAll('.entity-result-item').forEach(item => {
+          item.addEventListener('click', () => selectEntity(item));
         });
       }
 
-      document
-        .getElementById("toStep2")
-        .addEventListener("click", () => showStep(2));
-      document
-        .getElementById("backToStep1")
-        .addEventListener("click", () => showStep(1));
-      document
-        .getElementById("toStep3")
-        .addEventListener("click", () => showStep(3));
-      document
-        .getElementById("backToStep2")
-        .addEventListener("click", () => showStep(2));
+      function selectEntity(item) {
+        const entityId = item.dataset.entityId;
+        const entityName = item.dataset.entityName;
+        const entityType = item.dataset.entityType;
+        
+        selectedEntity = { id: entityId, name: entityName, type: entityType };
+        isNewEntity = false;
+        
+        // Update UI
+        document.querySelectorAll('.entity-result-item').forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+        
+        // Show selected entity info
+        document.getElementById('selectedEntityInfo').style.display = 'block';
+        document.getElementById('selectedEntityName').textContent = entityName;
+        document.getElementById('selectedEntityType').textContent = entityType;
+        
+        // Show claim role section
+        document.getElementById('claimRoleSection').style.display = 'block';
+      }
+
+      function clearSelectedEntity() {
+        selectedEntity = null;
+        document.getElementById('selectedEntityInfo').style.display = 'none';
+        document.getElementById('claimRoleSection').style.display = 'none';
+        document.querySelectorAll('.entity-result-item').forEach(i => i.classList.remove('selected'));
+      }
+
+      // Add New Entity
+      document.getElementById('addNewEntity').addEventListener('click', () => {
+        isNewEntity = true;
+        selectedEntity = null;
+        document.getElementById('entitySelectionSection').style.display = 'none';
+        document.getElementById('newEntitySection').style.display = 'block';
+      });
+
+      function showEntitySelection() {
+        isNewEntity = false;
+        document.getElementById('newEntitySection').style.display = 'none';
+        document.getElementById('entitySelectionSection').style.display = 'block';
+      }
+
+      // Claim Role Selection
+      document.querySelectorAll('.claim-role-option').forEach(option => {
+        option.addEventListener('click', () => {
+          document.querySelectorAll('.claim-role-option').forEach(o => o.classList.remove('selected'));
+          option.classList.add('selected');
+          selectedClaimRole = option.dataset.claimRole;
+        });
+      });
+
+      // Navigation Buttons
+      document.getElementById('toStep2').addEventListener('click', () => showStep(2));
+      document.getElementById('backToStep1').addEventListener('click', () => showStep(1));
+      document.getElementById('toStep3').addEventListener('click', () => {
+        // Validate step 2
+        if (selectedUserType === 'entity_representative') {
+          if (!selectedEntity && !isNewEntity) {
+            showStatus('Please select an organization or add a new one', 'error');
+            return;
+          }
+          if (selectedEntity && !selectedClaimRole) {
+            showStatus('Please select your role at the organization', 'error');
+            return;
+          }
+          if (isNewEntity && !document.getElementById('newEntityName').value) {
+            showStatus('Please enter the organization name', 'error');
+            return;
+          }
+        }
+        showStep(3);
+      });
+      document.getElementById('backToStep2').addEventListener('click', () => showStep(2));
 
       // Password Strength
-      const password = document.getElementById("password");
-      const strengthFill = document.getElementById("strengthFill");
-      const strengthText = document.getElementById("strengthText");
-
-      password.addEventListener("input", (e) => {
+      document.getElementById('password').addEventListener('input', (e) => {
         const value = e.target.value;
         let strength = 0;
 
@@ -706,27 +1453,241 @@
         if (/[0-9]/.test(value)) strength++;
         if (/[^A-Za-z0-9]/.test(value)) strength++;
 
-        strengthFill.className = "strength-fill";
-
+        const fill = document.getElementById('strengthFill');
+        const text = document.getElementById('strengthText');
+        
+        fill.className = 'strength-fill';
         if (strength <= 1) {
-          strengthFill.classList.add("weak");
-          strengthText.textContent = "Weak password";
+          fill.classList.add('weak');
+          text.textContent = 'Weak password';
         } else if (strength <= 3) {
-          strengthFill.classList.add("medium");
-          strengthText.textContent = "Medium strength";
+          fill.classList.add('medium');
+          text.textContent = 'Medium strength';
         } else {
-          strengthFill.classList.add("strong");
-          strengthText.textContent = "Strong password";
+          fill.classList.add('strong');
+          text.textContent = 'Strong password';
         }
       });
 
-      // Form Submit
-      document
-        .getElementById("registerForm")
-        .addEventListener("submit", (e) => {
-          e.preventDefault();
-          alert("Account created successfully! Welcome to UP-NEXUS!");
+      // LinkedIn Modal
+      document.getElementById('linkedinBtn').addEventListener('click', () => {
+        document.getElementById('linkedinModal').classList.add('active');
+      });
+
+      function closeLinkedinModal() {
+        document.getElementById('linkedinModal').classList.remove('active');
+      }
+
+      document.getElementById('linkedinModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeLinkedinModal();
+      });
+
+      // Google Sign-In Handler
+      async function handleGoogleSignIn(response) {
+        showStatus('Creating account with Google...', 'pending');
+        
+        // Build entity claim data if applicable
+        let entityClaim = null;
+        if (selectedUserType === 'entity_representative') {
+          if (isNewEntity) {
+            entityClaim = {
+              isNewEntity: true,
+              newEntityData: {
+                name: document.getElementById('newEntityName').value,
+                type: document.getElementById('newEntityType').value,
+                city: document.getElementById('newEntityCity').value,
+                website: document.getElementById('newEntityWebsite').value,
+                linkedin: document.getElementById('newEntityLinkedin').value,
+                description: document.getElementById('newEntityDescription').value
+              },
+              claimRole: 'owner'
+            };
+          } else if (selectedEntity) {
+            entityClaim = {
+              entityId: selectedEntity.id,
+              claimRole: selectedClaimRole,
+              workEmail: document.getElementById('workEmail').value,
+              linkedinProfile: document.getElementById('linkedinProfile').value,
+              additionalNotes: document.getElementById('additionalNotes').value
+            };
+          }
+        }
+        
+        try {
+          const res = await fetch(`${API_URL}/users/auth/google`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              credential: response.credential,
+              userType: selectedUserType || 'browser',
+              publicRole: selectedPublicRole || 'none',
+              entityClaim
+            })
+          });
+          
+          const data = await res.json();
+          
+          if (data.success) {
+            localStorage.setItem('upnexus_token', data.token);
+            localStorage.setItem('upnexus_user', JSON.stringify(data.user));
+            
+            if (data.user.status === 'pending_review') {
+              showStatus('Account created! Your account is pending review.', 'success');
+              setTimeout(() => {
+                window.location.href = '/pages/dashboard/pending.html';
+              }, 2000);
+            } else {
+              showStatus('Account created! Redirecting...', 'success');
+              setTimeout(() => {
+                window.location.href = '/pages/dashboard/';
+              }, 1500);
+            }
+          } else {
+            showStatus(data.message || 'Registration failed', 'error');
+          }
+        } catch (error) {
+          console.error('Google sign-up error:', error);
+          showStatus('Registration failed. Please try again.', 'error');
+        }
+      }
+
+      // Form Submit (Email Registration)
+      document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (password !== confirmPassword) {
+          showStatus('Passwords do not match', 'error');
+          return;
+        }
+        
+        if (password.length < 8) {
+          showStatus('Password must be at least 8 characters', 'error');
+          return;
+        }
+        
+        if (!document.getElementById('terms').checked) {
+          showStatus('Please accept the terms and conditions', 'error');
+          return;
+        }
+        
+        // Get form data
+        let firstName, lastName, email;
+        if (selectedUserType === 'entity_representative') {
+          firstName = document.getElementById('firstName2').value;
+          lastName = document.getElementById('lastName2').value;
+          email = document.getElementById('email2').value;
+        } else {
+          firstName = document.getElementById('firstName').value;
+          lastName = document.getElementById('lastName').value;
+          email = document.getElementById('email').value;
+        }
+        
+        const phone = document.getElementById('phone')?.value || '';
+        const city = document.getElementById('city')?.value || '';
+        
+        // Build entity claim
+        let entityClaim = null;
+        if (selectedUserType === 'entity_representative') {
+          if (isNewEntity) {
+            entityClaim = {
+              isNewEntity: true,
+              newEntityData: {
+                name: document.getElementById('newEntityName').value,
+                type: document.getElementById('newEntityType').value,
+                city: document.getElementById('newEntityCity').value,
+                website: document.getElementById('newEntityWebsite').value,
+                linkedin: document.getElementById('newEntityLinkedin').value,
+                description: document.getElementById('newEntityDescription').value
+              },
+              claimRole: 'owner'
+            };
+          } else if (selectedEntity) {
+            entityClaim = {
+              entityId: selectedEntity.id,
+              claimRole: selectedClaimRole,
+              workEmail: document.getElementById('workEmail').value,
+              linkedinProfile: document.getElementById('linkedinProfile').value,
+              additionalNotes: document.getElementById('additionalNotes').value
+            };
+          }
+        }
+        
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.classList.add('loading');
+        showStatus('Creating account...', 'pending');
+        
+        try {
+          const res = await fetch(`${API_URL}/users/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email,
+              password,
+              firstName,
+              lastName,
+              phone,
+              city,
+              userType: selectedUserType || 'browser',
+              publicRole: selectedPublicRole || 'none',
+              entityClaim
+            })
+          });
+          
+          const data = await res.json();
+          
+          if (data.success) {
+            localStorage.setItem('upnexus_token', data.token);
+            localStorage.setItem('upnexus_user', JSON.stringify(data.user));
+            
+            if (data.user.status === 'pending_review') {
+              showStatus('Account created! Your account is pending admin review.', 'success');
+              setTimeout(() => {
+                window.location.href = '/pages/dashboard/pending.html';
+              }, 2000);
+            } else {
+              showStatus('Account created! Redirecting...', 'success');
+              setTimeout(() => {
+                window.location.href = '/pages/dashboard/';
+              }, 1500);
+            }
+          } else {
+            showStatus(data.message || 'Registration failed', 'error');
+          }
+        } catch (error) {
+          console.error('Registration error:', error);
+          showStatus('Registration failed. Please try again.', 'error');
+        } finally {
+          submitBtn.classList.remove('loading');
+        }
+      });
+
+      // Show Status Message
+      function showStatus(message, type) {
+        const statusEl = document.getElementById('statusMessage');
+        statusEl.textContent = message;
+        statusEl.className = `status-message show ${type}`;
+      }
+
+      // Check if already logged in
+      const existingToken = localStorage.getItem('upnexus_token');
+      if (existingToken) {
+        fetch(`${API_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${existingToken}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = '/pages/dashboard/';
+          }
+        })
+        .catch(() => {
+          localStorage.removeItem('upnexus_token');
+          localStorage.removeItem('upnexus_user');
         });
+      }
     </script>
   </body>
 </html>

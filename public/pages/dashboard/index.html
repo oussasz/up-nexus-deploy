@@ -750,15 +750,19 @@
               <i class="fas fa-question-circle"></i>
               Help Center
             </a>
+            <a href="#" class="nav-link" onclick="logout(); return false;">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            </a>
           </div>
         </nav>
 
         <div class="sidebar-footer">
           <div class="user-card">
-            <div class="user-avatar">AM</div>
+            <div class="user-avatar profile-avatar">?</div>
             <div class="user-info">
-              <div class="user-name">Ahmed Malik</div>
-              <div class="user-role">Startup Founder</div>
+              <div class="user-name profile-name">Loading...</div>
+              <div class="user-role profile-role">Member</div>
             </div>
             <button class="header-btn" style="width: 32px; height: 32px">
               <i class="fas fa-ellipsis-v"></i>
@@ -768,7 +772,7 @@
       </aside>
 
       <!-- Main Content -->
-      <main class="main-content">
+      <main class="main-content" id="mainContent">
         <!-- Header -->
         <header class="dashboard-header">
           <div class="header-left">
@@ -1058,7 +1062,222 @@
       </main>
     </div>
 
+    <script src="/js/config.js"></script>
     <script>
+      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || 
+        (window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : window.location.origin + '/api');
+      
+      let currentUser = null;
+
+      // Check authentication
+      async function checkAuth() {
+        const token = localStorage.getItem('userToken');
+        
+        if (!token) {
+          window.location.href = '/pages/auth/login.html';
+          return null;
+        }
+
+        try {
+          const response = await fetch(`${API_URL}/users/me`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          const data = await response.json();
+          
+          if (!data.success) {
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userData');
+            window.location.href = '/pages/auth/login.html';
+            return null;
+          }
+
+          currentUser = data.user;
+          localStorage.setItem('userData', JSON.stringify(currentUser));
+          return currentUser;
+        } catch (error) {
+          console.error('Auth check failed:', error);
+          return null;
+        }
+      }
+
+      // Update UI based on user status
+      function updateUIForStatus(user) {
+        const mainContent = document.getElementById('mainContent');
+        
+        if (user.status === 'pending_review') {
+          mainContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 2rem;">
+              <div style="background: rgba(251, 191, 36, 0.1); border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                <i class="fas fa-clock" style="font-size: 3rem; color: #fbbf24;"></i>
+              </div>
+              <h2 style="font-size: 1.75rem; margin-bottom: 1rem;">Account Under Review</h2>
+              <p style="color: var(--color-text-secondary); max-width: 500px; margin-bottom: 2rem;">
+                Your account is currently being reviewed by our team. This usually takes 1-2 business days.
+                We'll notify you at <strong>${user.email}</strong> once your account is approved.
+              </p>
+              <div style="background: var(--color-bg-secondary); border-radius: 12px; padding: 1.5rem; max-width: 400px; border: 1px solid var(--color-border);">
+                <h4 style="margin-bottom: 0.75rem;">What happens next?</h4>
+                <ul style="text-align: left; color: var(--color-text-secondary); font-size: 0.9rem; padding-left: 1.5rem;">
+                  <li style="margin-bottom: 0.5rem;">Our team reviews your application</li>
+                  <li style="margin-bottom: 0.5rem;">You'll receive an email notification</li>
+                  <li>Once approved, you'll get full access</li>
+                </ul>
+              </div>
+              <a href="/" style="margin-top: 2rem; color: var(--color-primary); text-decoration: none; font-weight: 500;">
+                <i class="fas fa-arrow-left"></i> Return to Home
+              </a>
+            </div>
+          `;
+        } else if (user.status === 'rejected') {
+          mainContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 2rem;">
+              <div style="background: rgba(239, 68, 68, 0.1); border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                <i class="fas fa-times-circle" style="font-size: 3rem; color: #ef4444;"></i>
+              </div>
+              <h2 style="font-size: 1.75rem; margin-bottom: 1rem;">Application Not Approved</h2>
+              <p style="color: var(--color-text-secondary); max-width: 500px; margin-bottom: 1rem;">
+                Unfortunately, your application was not approved at this time.
+              </p>
+              ${user.statusReason ? `<p style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; max-width: 500px; margin-bottom: 2rem;"><strong>Reason:</strong> ${user.statusReason}</p>` : ''}
+              <p style="color: var(--color-text-secondary); font-size: 0.9rem;">
+                If you believe this is an error, please contact us at <a href="mailto:support@up-nexus.com" style="color: var(--color-primary);">support@up-nexus.com</a>
+              </p>
+              <a href="/" style="margin-top: 2rem; color: var(--color-primary); text-decoration: none; font-weight: 500;">
+                <i class="fas fa-arrow-left"></i> Return to Home
+              </a>
+            </div>
+          `;
+        } else if (user.status === 'suspended') {
+          mainContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 2rem;">
+              <div style="background: rgba(249, 115, 22, 0.1); border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                <i class="fas fa-ban" style="font-size: 3rem; color: #f97316;"></i>
+              </div>
+              <h2 style="font-size: 1.75rem; margin-bottom: 1rem;">Account Suspended</h2>
+              <p style="color: var(--color-text-secondary); max-width: 500px; margin-bottom: 1rem;">
+                Your account has been temporarily suspended.
+              </p>
+              ${user.statusReason ? `<p style="background: rgba(249, 115, 22, 0.1); padding: 1rem; border-radius: 8px; max-width: 500px; margin-bottom: 2rem;"><strong>Reason:</strong> ${user.statusReason}</p>` : ''}
+              <p style="color: var(--color-text-secondary); font-size: 0.9rem;">
+                Please contact support at <a href="mailto:support@up-nexus.com" style="color: var(--color-primary);">support@up-nexus.com</a> for assistance.
+              </p>
+              <a href="/" style="margin-top: 2rem; color: var(--color-primary); text-decoration: none; font-weight: 500;">
+                <i class="fas fa-arrow-left"></i> Return to Home
+              </a>
+            </div>
+          `;
+        } else {
+          // Active user - update welcome message
+          updateUserInfo(user);
+          // Load user's entity claims if they're an entity representative
+          if (user.userType === 'entity_representative') {
+            loadUserClaims();
+          }
+        }
+      }
+
+      // Load user's entity claims
+      async function loadUserClaims() {
+        try {
+          const token = localStorage.getItem('userToken');
+          const response = await fetch(`${API_URL}/entity-claims/my-claims`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          
+          const data = await response.json();
+          if (data.success && data.claims.length > 0) {
+            displayEntityClaims(data.claims);
+          }
+        } catch (error) {
+          console.error('Failed to load claims:', error);
+        }
+      }
+
+      // Display entity claims in the dashboard
+      function displayEntityClaims(claims) {
+        const welcomeSection = document.querySelector('.welcome-section');
+        if (!welcomeSection) return;
+
+        const claimsHtml = `
+          <div class="content-section" style="margin-top: var(--space-6);">
+            <div class="section-header">
+              <h3 class="section-title">My Entities</h3>
+            </div>
+            <div style="display: grid; gap: 1rem;">
+              ${claims.map(claim => `
+                <div style="background: var(--color-bg-secondary); border-radius: 12px; padding: 1rem; border: 1px solid var(--color-border); display: flex; align-items: center; gap: 1rem;">
+                  <div style="width: 48px; height: 48px; background: var(--color-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: black; font-weight: 600;">
+                    ${claim.isNewEntity ? (claim.newEntityData?.name?.[0] || '?') : (claim.entityId?.name?.[0] || '?')}
+                  </div>
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600;">
+                      ${claim.isNewEntity ? claim.newEntityData?.name : claim.entityId?.name || 'Unknown Entity'}
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--color-text-secondary);">
+                      ${claim.claimRole} • ${claim.isNewEntity ? claim.newEntityData?.type : claim.entityId?.type || 'Entity'}
+                    </div>
+                  </div>
+                  <div>
+                    <span style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;
+                      ${claim.status === 'approved' ? 'background: rgba(16, 185, 129, 0.1); color: #10b981;' : 
+                        claim.status === 'pending' ? 'background: rgba(251, 191, 36, 0.1); color: #fbbf24;' :
+                        'background: rgba(239, 68, 68, 0.1); color: #ef4444;'}">
+                      <i class="fas ${claim.status === 'approved' ? 'fa-check-circle' : claim.status === 'pending' ? 'fa-clock' : 'fa-times-circle'}"></i>
+                      ${claim.status.charAt(0).toUpperCase() + claim.status.slice(1)}
+                    </span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        
+        welcomeSection.insertAdjacentHTML('afterend', claimsHtml);
+      }
+
+      // Update user info in the UI
+      function updateUserInfo(user) {
+        const userName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User';
+        const userInitials = `${(user.firstName || 'U')[0]}${(user.lastName || '')[0] || ''}`.toUpperCase();
+        
+        // Update greeting
+        const hour = new Date().getHours();
+        const greeting = document.querySelector('.welcome-greeting');
+        if (greeting) {
+          let greetingText = 'Hello';
+          if (hour < 12) greetingText = 'Good morning';
+          else if (hour < 18) greetingText = 'Good afternoon';
+          else greetingText = 'Good evening';
+          greeting.textContent = `${greetingText}, ${user.firstName || 'there'}! 👋`;
+        }
+
+        // Update sidebar profile
+        const profileName = document.querySelector('.profile-name');
+        const profileRole = document.querySelector('.profile-role');
+        const profileAvatar = document.querySelector('.profile-avatar');
+        
+        if (profileName) profileName.textContent = userName;
+        if (profileRole) {
+          const roles = {
+            browser: 'Member',
+            entity_representative: 'Entity Representative',
+            individual_public: user.publicRole || 'Public Profile'
+          };
+          profileRole.textContent = roles[user.userType] || 'Member';
+        }
+        if (profileAvatar) profileAvatar.textContent = userInitials;
+      }
+
+      // Logout function
+      function logout() {
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userData');
+        window.location.href = '/pages/auth/login.html';
+      }
+
       // Mobile Menu Toggle
       const menuToggle = document.getElementById("menuToggle");
       const sidebar = document.getElementById("sidebar");
@@ -1076,16 +1295,13 @@
         }
       });
 
-      // Dynamic greeting based on time
-      const hour = new Date().getHours();
-      const greeting = document.querySelector(".welcome-greeting");
-      if (hour < 12) {
-        greeting.textContent = "Good morning, Ahmed! 👋";
-      } else if (hour < 18) {
-        greeting.textContent = "Good afternoon, Ahmed! 👋";
-      } else {
-        greeting.textContent = "Good evening, Ahmed! 👋";
-      }
+      // Initialize
+      document.addEventListener('DOMContentLoaded', async () => {
+        const user = await checkAuth();
+        if (user) {
+          updateUIForStatus(user);
+        }
+      });
     </script>
   </body>
 </html>

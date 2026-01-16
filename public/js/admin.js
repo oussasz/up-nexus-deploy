@@ -12,10 +12,15 @@ const API_URL =
 // State
 let entities = [];
 let announcements = [];
+let users = [];
+let pendingUsers = [];
+let pendingClaims = [];
 let currentEditId = null;
 let currentAnnouncementEditId = null;
 let deleteEntityId = null;
 let deleteAnnouncementId = null;
+let rejectItemId = null;
+let rejectItemType = null; // 'user' or 'claim'
 
 // DOM Elements
 const sidebar = document.getElementById("sidebar");
@@ -86,8 +91,19 @@ function showSection(sectionId) {
     "add-announcement": currentAnnouncementEditId
       ? "Edit Announcement"
       : "Add New Announcement",
+    "pending-reviews": "Pending Reviews",
+    users: "Manage Users",
   };
   pageTitle.textContent = titles[sectionId] || "Dashboard";
+
+  // Load data for specific sections
+  if (sectionId === "pending-reviews") {
+    fetchPendingUsers();
+    fetchPendingClaims();
+  }
+  if (sectionId === "users") {
+    fetchUsers();
+  }
 
   if (sectionId === "add-entity") {
     document.getElementById("formTitle").textContent = currentEditId
@@ -690,6 +706,9 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchEntities();
   fetchAnnouncements();
 
+  // Initialize user management
+  initUserManagement();
+
   // Event listeners
   document.querySelectorAll(".nav-item").forEach((item) => {
     item.addEventListener("click", (e) => {
@@ -1114,4 +1133,469 @@ async function deleteAnnouncement() {
     // Reset confirm button handler
     confirmBtn.onclick = deleteEntity;
   }
+}
+
+// ============================================
+// USER MANAGEMENT FUNCTIONS
+// ============================================
+
+// Fetch pending users
+async function fetchPendingUsers() {
+  try {
+    const response = await fetch(`${API_URL}/users?status=pending_review`, {
+      headers: getAuthHeaders(),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      pendingUsers = data.users;
+      renderPendingUsers();
+      updatePendingBadge();
+    } else {
+      console.error("Failed to fetch pending users:", data.message);
+    }
+  } catch (error) {
+    console.error("Error fetching pending users:", error);
+    document.getElementById("pendingUsersList").innerHTML =
+      '<p class="empty-message">Failed to load pending users</p>';
+  }
+}
+
+// Fetch pending claims
+async function fetchPendingClaims() {
+  try {
+    const response = await fetch(`${API_URL}/entity-claims?status=pending`, {
+      headers: getAuthHeaders(),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      pendingClaims = data.claims;
+      renderPendingClaims();
+      updatePendingBadge();
+    } else {
+      console.error("Failed to fetch pending claims:", data.message);
+    }
+  } catch (error) {
+    console.error("Error fetching pending claims:", error);
+    document.getElementById("pendingClaimsList").innerHTML =
+      '<p class="empty-message">Failed to load pending claims</p>';
+  }
+}
+
+// Fetch all users
+async function fetchUsers() {
+  try {
+    const response = await fetch(`${API_URL}/users`, {
+      headers: getAuthHeaders(),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      users = data.users;
+      renderUsersTable();
+    } else {
+      console.error("Failed to fetch users:", data.message);
+    }
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    document.getElementById("usersTableBody").innerHTML =
+      '<tr><td colspan="6" class="empty-message">Failed to load users</td></tr>';
+  }
+}
+
+// Update pending badge count
+function updatePendingBadge() {
+  const badge = document.getElementById("pendingBadge");
+  const totalPending = pendingUsers.length + pendingClaims.length;
+  
+  if (totalPending > 0) {
+    badge.textContent = totalPending;
+    badge.style.display = "flex";
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+// Render pending users
+function renderPendingUsers() {
+  const container = document.getElementById("pendingUsersList");
+
+  if (pendingUsers.length === 0) {
+    container.innerHTML = '<p class="empty-message">No pending user reviews</p>';
+    return;
+  }
+
+  container.innerHTML = pendingUsers
+    .map(
+      (user) => `
+    <div class="review-card">
+      <div class="review-avatar">
+        ${user.firstName ? user.firstName.charAt(0).toUpperCase() : "U"}${user.lastName ? user.lastName.charAt(0).toUpperCase() : ""}
+      </div>
+      <div class="review-info">
+        <h4>${user.firstName || ""} ${user.lastName || ""}</h4>
+        <p>${user.email}</p>
+        <div class="review-meta">
+          <span class="user-type-badge user-type-${user.userType}">${formatUserType(user.userType)}</span>
+          ${user.publicRole ? `<span class="user-type-badge">${user.publicRole}</span>` : ""}
+          <span>Joined ${formatDate(user.createdAt)}</span>
+        </div>
+      </div>
+      <div class="review-actions">
+        <button class="btn-approve" onclick="approveUser('${user._id}')">
+          <i class="fas fa-check"></i> Approve
+        </button>
+        <button class="btn-reject" onclick="openRejectModal('${user._id}', 'user')">
+          <i class="fas fa-times"></i> Reject
+        </button>
+      </div>
+    </div>
+  `
+    )
+    .join("");
+}
+
+// Render pending claims
+function renderPendingClaims() {
+  const container = document.getElementById("pendingClaimsList");
+
+  if (pendingClaims.length === 0) {
+    container.innerHTML = '<p class="empty-message">No pending entity claims</p>';
+    return;
+  }
+
+  container.innerHTML = pendingClaims
+    .map(
+      (claim) => `
+    <div class="review-card">
+      <div class="review-avatar">
+        ${claim.userId?.firstName ? claim.userId.firstName.charAt(0).toUpperCase() : "?"}${claim.userId?.lastName ? claim.userId.lastName.charAt(0).toUpperCase() : ""}
+      </div>
+      <div class="review-info">
+        <h4>${claim.userId?.firstName || ""} ${claim.userId?.lastName || ""}</h4>
+        <p>${claim.userId?.email || "Unknown user"}</p>
+        <div class="review-meta">
+          ${claim.isNewEntity 
+            ? `<span class="user-type-badge user-type-entity_representative">New Entity: ${claim.newEntityData?.name || "Unknown"} (${claim.newEntityData?.type || "Unknown"})</span>`
+            : `<span class="user-type-badge user-type-entity_representative">Claim: ${claim.entityId?.name || "Unknown Entity"}</span>`
+          }
+          <span>Role: ${formatClaimRole(claim.claimRole)}</span>
+          ${claim.workEmail ? `<span>Work: ${claim.workEmail}</span>` : ""}
+        </div>
+        ${claim.linkedinProfile ? `<p style="font-size: 0.8rem; color: #0077b5;"><i class="fab fa-linkedin"></i> ${claim.linkedinProfile}</p>` : ""}
+      </div>
+      <div class="review-actions">
+        <button class="btn-approve" onclick="approveClaim('${claim._id}')">
+          <i class="fas fa-check"></i> Approve
+        </button>
+        <button class="btn-reject" onclick="openRejectModal('${claim._id}', 'claim')">
+          <i class="fas fa-times"></i> Reject
+        </button>
+      </div>
+    </div>
+  `
+    )
+    .join("");
+}
+
+// Render users table
+function renderUsersTable() {
+  const tbody = document.getElementById("usersTableBody");
+  const searchTerm = document.getElementById("searchUserInput")?.value.toLowerCase() || "";
+  const statusFilter = document.getElementById("filterUserStatus")?.value || "";
+  const typeFilter = document.getElementById("filterUserType")?.value || "";
+
+  let filteredUsers = users.filter((user) => {
+    const fullName = `${user.firstName || ""} ${user.lastName || ""}`.toLowerCase();
+    const matchesSearch =
+      fullName.includes(searchTerm) ||
+      user.email.toLowerCase().includes(searchTerm);
+    const matchesStatus = !statusFilter || user.status === statusFilter;
+    const matchesType = !typeFilter || user.userType === typeFilter;
+    return matchesSearch && matchesStatus && matchesType;
+  });
+
+  if (filteredUsers.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-message">No users found</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filteredUsers
+    .map(
+      (user) => `
+    <tr>
+      <td>
+        <div class="entity-cell">
+          <div class="entity-info">
+            <span class="entity-name">${user.firstName || ""} ${user.lastName || ""}</span>
+          </div>
+        </div>
+      </td>
+      <td>${user.email}</td>
+      <td><span class="user-type-badge user-type-${user.userType}">${formatUserType(user.userType)}</span></td>
+      <td>
+        <span class="status-badge status-${user.status}">
+          ${formatStatus(user.status)}
+        </span>
+      </td>
+      <td>${formatDate(user.createdAt)}</td>
+      <td>
+        <div class="action-buttons">
+          ${user.status === "pending_review" 
+            ? `
+              <button class="btn-icon" onclick="approveUser('${user._id}')" title="Approve">
+                <i class="fas fa-check" style="color: #10b981;"></i>
+              </button>
+              <button class="btn-icon" onclick="openRejectModal('${user._id}', 'user')" title="Reject">
+                <i class="fas fa-times" style="color: #ef4444;"></i>
+              </button>
+            `
+            : user.status === "active"
+            ? `
+              <button class="btn-icon" onclick="suspendUser('${user._id}')" title="Suspend">
+                <i class="fas fa-ban" style="color: #f97316;"></i>
+              </button>
+            `
+            : user.status === "suspended"
+            ? `
+              <button class="btn-icon" onclick="reactivateUser('${user._id}')" title="Reactivate">
+                <i class="fas fa-undo" style="color: #10b981;"></i>
+              </button>
+            `
+            : ""
+          }
+        </div>
+      </td>
+    </tr>
+  `
+    )
+    .join("");
+}
+
+// Format user type
+function formatUserType(type) {
+  const types = {
+    browser: "Browser",
+    entity_representative: "Entity Rep",
+    individual_public: "Public Profile",
+  };
+  return types[type] || type;
+}
+
+// Format claim role
+function formatClaimRole(role) {
+  const roles = {
+    owner: "Owner",
+    founder: "Founder",
+    admin: "Admin",
+    manager: "Manager",
+    team_member: "Team Member",
+  };
+  return roles[role] || role;
+}
+
+// Format status
+function formatStatus(status) {
+  const statuses = {
+    active: "Active",
+    pending_review: "Pending",
+    rejected: "Rejected",
+    suspended: "Suspended",
+  };
+  return statuses[status] || status;
+}
+
+// Approve user
+async function approveUser(userId) {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}/review`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ action: "approve" }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showToast("User approved successfully!");
+      fetchPendingUsers();
+      fetchUsers();
+    } else {
+      showToast(data.message || "Failed to approve user", "error");
+    }
+  } catch (error) {
+    console.error("Error approving user:", error);
+    showToast("Failed to approve user", "error");
+  }
+}
+
+// Reject user
+async function rejectUser(userId, reason = "") {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}/review`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ action: "reject", reason }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showToast("User rejected");
+      fetchPendingUsers();
+      fetchUsers();
+    } else {
+      showToast(data.message || "Failed to reject user", "error");
+    }
+  } catch (error) {
+    console.error("Error rejecting user:", error);
+    showToast("Failed to reject user", "error");
+  }
+}
+
+// Suspend user
+async function suspendUser(userId) {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}/review`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ action: "suspend" }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showToast("User suspended");
+      fetchUsers();
+    } else {
+      showToast(data.message || "Failed to suspend user", "error");
+    }
+  } catch (error) {
+    console.error("Error suspending user:", error);
+    showToast("Failed to suspend user", "error");
+  }
+}
+
+// Reactivate user
+async function reactivateUser(userId) {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}/review`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ action: "reactivate" }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showToast("User reactivated!");
+      fetchUsers();
+    } else {
+      showToast(data.message || "Failed to reactivate user", "error");
+    }
+  } catch (error) {
+    console.error("Error reactivating user:", error);
+    showToast("Failed to reactivate user", "error");
+  }
+}
+
+// Approve claim
+async function approveClaim(claimId) {
+  try {
+    const response = await fetch(`${API_URL}/entity-claims/${claimId}/review`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ action: "approve" }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showToast("Entity claim approved!");
+      fetchPendingClaims();
+    } else {
+      showToast(data.message || "Failed to approve claim", "error");
+    }
+  } catch (error) {
+    console.error("Error approving claim:", error);
+    showToast("Failed to approve claim", "error");
+  }
+}
+
+// Reject claim
+async function rejectClaim(claimId, reason = "") {
+  try {
+    const response = await fetch(`${API_URL}/entity-claims/${claimId}/review`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ action: "reject", reason }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showToast("Entity claim rejected");
+      fetchPendingClaims();
+    } else {
+      showToast(data.message || "Failed to reject claim", "error");
+    }
+  } catch (error) {
+    console.error("Error rejecting claim:", error);
+    showToast("Failed to reject claim", "error");
+  }
+}
+
+// Open reject modal
+function openRejectModal(itemId, itemType) {
+  rejectItemId = itemId;
+  rejectItemType = itemType;
+  document.getElementById("rejectItemType").textContent = itemType === "user" ? "User" : "Entity Claim";
+  document.getElementById("rejectReason").value = "";
+  document.getElementById("rejectModal").classList.add("show");
+}
+
+// Close reject modal
+function closeRejectModal() {
+  rejectItemId = null;
+  rejectItemType = null;
+  document.getElementById("rejectModal").classList.remove("show");
+}
+
+// Confirm rejection
+function confirmRejection() {
+  const reason = document.getElementById("rejectReason").value;
+  
+  if (rejectItemType === "user") {
+    rejectUser(rejectItemId, reason);
+  } else if (rejectItemType === "claim") {
+    rejectClaim(rejectItemId, reason);
+  }
+  
+  closeRejectModal();
+}
+
+// Initialize user management event listeners
+function initUserManagement() {
+  // User search and filter listeners
+  document.getElementById("searchUserInput")?.addEventListener("input", () => renderUsersTable());
+  document.getElementById("filterUserStatus")?.addEventListener("change", () => renderUsersTable());
+  document.getElementById("filterUserType")?.addEventListener("change", () => renderUsersTable());
+
+  // Reject modal listeners
+  document.getElementById("confirmRejectBtn")?.addEventListener("click", confirmRejection);
+  
+  // Close modal on outside click
+  document.getElementById("rejectModal")?.addEventListener("click", (e) => {
+    if (e.target.id === "rejectModal") {
+      closeRejectModal();
+    }
+  });
+
+  // Fetch pending data on load to update badge
+  fetchPendingUsers();
+  fetchPendingClaims();
 }

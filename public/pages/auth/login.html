@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="icon" type="image/png" href="/icon.png" />
     <link rel="apple-touch-icon" href="/icon.png" />
+    <!-- Google Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
       /* Auth Page Styles */
       .auth-page {
@@ -98,11 +100,6 @@
         filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
       }
 
-      .auth-logo .logo-x {
-        color: white;
-        text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
-      }
-
       .auth-tagline {
         font-size: var(--font-size-3xl);
         font-weight: var(--font-weight-bold);
@@ -173,17 +170,18 @@
       /* Social Login */
       .social-login {
         display: flex;
-        gap: var(--space-4);
+        flex-direction: column;
+        gap: var(--space-3);
         margin-bottom: var(--space-8);
       }
 
       .social-btn {
-        flex: 1;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: var(--space-2);
-        padding: var(--space-3) var(--space-4);
+        gap: var(--space-3);
+        padding: var(--space-4);
         background: var(--color-bg-tertiary);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-lg);
@@ -191,6 +189,7 @@
         font-weight: var(--font-weight-medium);
         cursor: pointer;
         transition: all var(--transition-fast);
+        font-size: var(--font-size-base);
       }
 
       .social-btn:hover {
@@ -198,11 +197,14 @@
         border-color: var(--color-primary);
       }
 
-      .social-btn.google i {
-        color: #db4437;
-      }
       .social-btn.linkedin i {
         color: #0077b5;
+        font-size: 1.2rem;
+      }
+
+      /* Google One Tap Container */
+      #googleSignInBtn > div {
+        width: 100% !important;
       }
 
       /* Divider */
@@ -332,6 +334,137 @@
         font-weight: var(--font-weight-semibold);
       }
 
+      /* Coming Soon Modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-10);
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        animation: modalIn 0.3s ease;
+      }
+
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .modal-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto var(--space-6);
+        background: linear-gradient(135deg, #0077b5, #00a0dc);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-icon i {
+        font-size: 2.5rem;
+        color: white;
+      }
+
+      .modal-content h2 {
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--space-3);
+      }
+
+      .modal-content p {
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-6);
+        line-height: 1.6;
+      }
+
+      .modal-close {
+        padding: var(--space-3) var(--space-8);
+        background: var(--gradient-primary);
+        border: none;
+        border-radius: var(--radius-lg);
+        color: var(--color-text-on-primary);
+        font-weight: var(--font-weight-semibold);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .modal-close:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(244, 176, 0, 0.3);
+      }
+
+      /* Status Messages */
+      .status-message {
+        padding: var(--space-4);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--space-6);
+        display: none;
+      }
+
+      .status-message.show {
+        display: block;
+      }
+
+      .status-message.success {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #10b981;
+      }
+
+      .status-message.error {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+      }
+
+      .status-message.pending {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        color: #f59e0b;
+      }
+
+      /* Loading State */
+      .btn.loading {
+        pointer-events: none;
+        opacity: 0.7;
+      }
+
+      .btn.loading::after {
+        content: "";
+        width: 16px;
+        height: 16px;
+        border: 2px solid transparent;
+        border-top-color: currentColor;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-left: var(--space-2);
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
       /* Mobile */
       @media (max-width: 1024px) {
         .auth-branding {
@@ -340,12 +473,6 @@
 
         .auth-form-panel {
           padding: var(--space-8);
-        }
-      }
-
-      @media (max-width: 480px) {
-        .social-login {
-          flex-direction: column;
         }
       }
     </style>
@@ -395,7 +522,7 @@
         <div class="auth-form-container">
           <div class="auth-form-header">
             <a
-              href="/pages/../"
+              href="/"
               class="logo"
               style="
                 display: flex;
@@ -413,15 +540,18 @@
             <p>Sign in to continue to your account</p>
           </div>
 
+          <!-- Status Message -->
+          <div class="status-message" id="statusMessage"></div>
+
           <!-- Social Login -->
           <div class="social-login">
-            <button class="social-btn google">
-              <i class="fab fa-google"></i>
-              Google
-            </button>
-            <button class="social-btn linkedin">
+            <!-- Google Sign-In Button -->
+            <div id="googleSignInBtn"></div>
+            
+            <!-- LinkedIn Button (Coming Soon) -->
+            <button class="social-btn linkedin" id="linkedinBtn">
               <i class="fab fa-linkedin-in"></i>
-              LinkedIn
+              Continue with LinkedIn
             </button>
           </div>
 
@@ -433,7 +563,7 @@
               <label class="form-label">Email Address</label>
               <div class="form-input-wrapper">
                 <i class="fas fa-envelope"></i>
-                <input type="email" placeholder="Enter your email" required />
+                <input type="email" id="emailInput" placeholder="Enter your email" required />
               </div>
             </div>
 
@@ -443,7 +573,7 @@
                 <i class="fas fa-lock"></i>
                 <input
                   type="password"
-                  id="password"
+                  id="passwordInput"
                   placeholder="Enter your password"
                   required
                 />
@@ -452,20 +582,20 @@
                   class="toggle-password"
                   onclick="togglePassword()"
                 >
-                  <i class="fas fa-eye"></i>
+                  <i class="fas fa-eye" id="toggleIcon"></i>
                 </button>
               </div>
             </div>
 
             <div class="form-row">
               <label class="form-checkbox">
-                <input type="checkbox" />
+                <input type="checkbox" id="rememberMe" />
                 <span>Remember me</span>
               </label>
               <a href="forgot" class="forgot-link">Forgot password?</a>
             </div>
 
-            <button type="submit" class="btn btn-primary submit-btn">
+            <button type="submit" class="btn btn-primary submit-btn" id="submitBtn">
               Sign In
               <i class="fas fa-arrow-right"></i>
             </button>
@@ -481,26 +611,197 @@
       </div>
     </div>
 
-    <script>
-      function togglePassword() {
-        const password = document.getElementById("password");
-        const icon = document.querySelector(".toggle-password i");
+    <!-- LinkedIn Coming Soon Modal -->
+    <div class="modal-overlay" id="linkedinModal">
+      <div class="modal-content">
+        <div class="modal-icon">
+          <i class="fab fa-linkedin-in"></i>
+        </div>
+        <h2>Coming Soon!</h2>
+        <p>
+          LinkedIn sign-in is currently under development. 
+          We're working hard to bring this feature to you soon!
+        </p>
+        <p style="font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
+          In the meantime, please use Google sign-in or email registration.
+        </p>
+        <button class="modal-close" onclick="closeLinkedinModal()">
+          Got it!
+        </button>
+      </div>
+    </div>
 
-        if (password.type === "password") {
-          password.type = "text";
-          icon.classList.remove("fa-eye");
-          icon.classList.add("fa-eye-slash");
-        } else {
-          password.type = "password";
-          icon.classList.remove("fa-eye-slash");
-          icon.classList.add("fa-eye");
+    <script src="/js/config.js"></script>
+    <script>
+      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || '/api';
+      
+      // Initialize Google Sign-In
+      window.onload = function() {
+        google.accounts.id.initialize({
+          client_id: '902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com',
+          callback: handleGoogleSignIn,
+          auto_select: false,
+          context: 'signin'
+        });
+        
+        google.accounts.id.renderButton(
+          document.getElementById('googleSignInBtn'),
+          { 
+            theme: 'outline', 
+            size: 'large', 
+            width: '100%',
+            text: 'continue_with',
+            shape: 'rectangular',
+            logo_alignment: 'left'
+          }
+        );
+      };
+      
+      // Handle Google Sign-In
+      async function handleGoogleSignIn(response) {
+        showStatus('Signing in with Google...', 'pending');
+        
+        try {
+          const res = await fetch(`${API_URL}/users/auth/google`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              credential: response.credential,
+              userType: 'browser' // Login is always for existing users or new browsers
+            })
+          });
+          
+          const data = await res.json();
+          
+          if (data.success) {
+            // Store token and user data
+            localStorage.setItem('upnexus_token', data.token);
+            localStorage.setItem('upnexus_user', JSON.stringify(data.user));
+            
+            if (data.isNewUser) {
+              showStatus('Account created! Redirecting...', 'success');
+            } else {
+              showStatus('Login successful! Redirecting...', 'success');
+            }
+            
+            // Redirect based on user status
+            setTimeout(() => {
+              if (data.user.status === 'pending_review') {
+                window.location.href = '/pages/dashboard/pending.html';
+              } else {
+                window.location.href = '/pages/dashboard/';
+              }
+            }, 1500);
+          } else {
+            showStatus(data.message || 'Authentication failed', 'error');
+          }
+        } catch (error) {
+          console.error('Google sign-in error:', error);
+          showStatus('Authentication failed. Please try again.', 'error');
         }
       }
-
-      document.getElementById("loginForm").addEventListener("submit", (e) => {
+      
+      // Email/Password Login
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        alert("Login functionality would be implemented here!");
+        
+        const email = document.getElementById('emailInput').value;
+        const password = document.getElementById('passwordInput').value;
+        const submitBtn = document.getElementById('submitBtn');
+        
+        submitBtn.classList.add('loading');
+        showStatus('Signing in...', 'pending');
+        
+        try {
+          const res = await fetch(`${API_URL}/users/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          
+          const data = await res.json();
+          
+          if (data.success) {
+            localStorage.setItem('upnexus_token', data.token);
+            localStorage.setItem('upnexus_user', JSON.stringify(data.user));
+            
+            showStatus('Login successful! Redirecting...', 'success');
+            
+            setTimeout(() => {
+              if (data.user.status === 'pending_review') {
+                window.location.href = '/pages/dashboard/pending.html';
+              } else {
+                window.location.href = '/pages/dashboard/';
+              }
+            }, 1500);
+          } else {
+            showStatus(data.message || 'Invalid email or password', 'error');
+          }
+        } catch (error) {
+          console.error('Login error:', error);
+          showStatus('Login failed. Please try again.', 'error');
+        } finally {
+          submitBtn.classList.remove('loading');
+        }
       });
+      
+      // LinkedIn Modal
+      document.getElementById('linkedinBtn').addEventListener('click', () => {
+        document.getElementById('linkedinModal').classList.add('active');
+      });
+      
+      function closeLinkedinModal() {
+        document.getElementById('linkedinModal').classList.remove('active');
+      }
+      
+      // Close modal on overlay click
+      document.getElementById('linkedinModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) {
+          closeLinkedinModal();
+        }
+      });
+      
+      // Toggle Password Visibility
+      function togglePassword() {
+        const password = document.getElementById('passwordInput');
+        const icon = document.getElementById('toggleIcon');
+
+        if (password.type === 'password') {
+          password.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          password.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      }
+      
+      // Show Status Message
+      function showStatus(message, type) {
+        const statusEl = document.getElementById('statusMessage');
+        statusEl.textContent = message;
+        statusEl.className = `status-message show ${type}`;
+      }
+      
+      // Check if user is already logged in
+      const existingToken = localStorage.getItem('upnexus_token');
+      if (existingToken) {
+        // Verify token is still valid
+        fetch(`${API_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${existingToken}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = '/pages/dashboard/';
+          }
+        })
+        .catch(() => {
+          localStorage.removeItem('upnexus_token');
+          localStorage.removeItem('upnexus_user');
+        });
+      }
     </script>
   </body>
 </html>

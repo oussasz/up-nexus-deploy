@@ -1550,44 +1550,47 @@
   }
 
   .logo-text {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .logo-x {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 
   .nav-container {
     height: 60px;
-    padding: 0 var(--space-3);
+    padding: 0 var(--space-2);
   }
 
   .nav-actions {
-    gap: var(--space-1);
+    gap: 0.25rem;
   }
 
   .nav-actions .btn {
-    padding: var(--space-2) var(--space-3);
-    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.65rem;
     white-space: nowrap;
+    border-width: 1px;
   }
 
   .nav-actions .btn-ghost {
-    padding: var(--space-2);
+    padding: 0.4rem 0.5rem;
   }
 
   .nav-actions .btn-primary {
-    padding: var(--space-2) var(--space-3);
+    padding: 0.4rem 0.6rem;
   }
 
   .nav-actions .btn i {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    margin-right: 0.15rem;
   }
 
   .mobile-menu-toggle {
-    padding: var(--space-1);
-    font-size: 1.25rem;
+    padding: 0.25rem;
+    font-size: 1.1rem;
+    margin-left: 0.25rem;
   }
 
   .nav-actions .btn-outline {
