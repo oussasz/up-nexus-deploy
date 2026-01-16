@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | UP-NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="icon" type="image/png" href="../../icon.png" />
+    <link rel="apple-touch-icon" href="../../icon.png" />
+    <style>
+      :root {
+        --sidebar-width: 260px;
+        --header-height: 70px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--color-bg-primary);
+        color: var(--color-text-primary);
+        min-height: 100vh;
+      }
+
+      /* Layout */
+      .dashboard {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: var(--sidebar-width);
+        background: var(--color-bg-secondary);
+        border-right: 1px solid var(--color-border);
+        position: fixed;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+        transition: transform var(--transition-base);
+      }
+
+      .sidebar-header {
+        padding: var(--space-5) var(--space-6);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .sidebar-logo {
+        font-size: 1.25rem;
+        font-weight: var(--font-weight-black);
+      }
+
+      .logo-x {
+        color: var(--color-primary);
+      }
+
+      .sidebar-nav {
+        flex: 1;
+        padding: var(--space-4);
+        overflow-y: auto;
+      }
+
+      .nav-section {
+        margin-bottom: var(--space-6);
+      }
+
+      .nav-section-title {
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-tertiary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: var(--space-2) var(--space-3);
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-3) var(--space-4);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        transition: all var(--transition-fast);
+        margin-bottom: var(--space-1);
+      }
+
+      .nav-link:hover {
+        background: var(--color-bg-tertiary);
+        color: var(--color-text-primary);
+      }
+
+      .nav-link.active {
+        background: var(--color-primary-10);
+        color: var(--color-primary);
+      }
+
+      .nav-link i {
+        width: 20px;
+        text-align: center;
+      }
+
+      .nav-badge {
+        margin-left: auto;
+        background: var(--color-accent-red);
+        color: white;
+        font-size: var(--font-size-xs);
+        padding: 2px 8px;
+        border-radius: var(--radius-full);
+      }
+
+      .sidebar-footer {
+        padding: var(--space-4);
+        border-top: 1px solid var(--color-border);
+      }
+
+      .user-card {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-3);
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-lg);
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: var(--gradient-primary);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: var(--font-weight-bold);
+      }
+
+      .user-info {
+        flex: 1;
+        overflow: hidden;
+      }
+
+      .user-name {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .user-role {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        margin-left: var(--sidebar-width);
+      }
+
+      /* Header */
+      .dashboard-header {
+        height: var(--header-height);
+        background: var(--color-bg-secondary);
+        border-bottom: 1px solid var(--color-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 var(--space-6);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+      }
+
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        font-size: 1.25rem;
+        cursor: pointer;
+      }
+
+      .page-title {
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+      }
+
+      .search-bar {
+        position: relative;
+      }
+
+      .search-bar input {
+        width: 280px;
+        padding: var(--space-3) var(--space-4) var(--space-3) var(--space-10);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-sm);
+      }
+
+      .search-bar i {
+        position: absolute;
+        left: var(--space-4);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--color-text-tertiary);
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .header-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        position: relative;
+      }
+
+      .header-btn:hover {
+        background: var(--color-bg-tertiary);
+        color: var(--color-text-primary);
+      }
+
+      .notification-dot {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 8px;
+        height: 8px;
+        background: var(--color-accent-red);
+        border-radius: var(--radius-full);
+      }
+
+      /* Dashboard Content */
+      .dashboard-content {
+        padding: var(--space-6);
+      }
+
+      /* Welcome Section */
+      .welcome-section {
+        margin-bottom: var(--space-8);
+      }
+
+      .welcome-card {
+        background: var(--gradient-hero);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-8);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .welcome-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 60%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 60%
+        );
+      }
+
+      .welcome-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .welcome-greeting {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-2);
+      }
+
+      .welcome-message {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: var(--font-size-base);
+        margin-bottom: var(--space-6);
+      }
+
+      .quick-actions {
+        display: flex;
+        gap: var(--space-3);
+        flex-wrap: wrap;
+      }
+
+      .quick-action-btn {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-3) var(--space-5);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: var(--radius-lg);
+        color: white;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .quick-action-btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-2px);
+      }
+
+      /* Stats Grid */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-5);
+        margin-bottom: var(--space-8);
+      }
+
+      .stat-card {
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-5);
+      }
+
+      .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: var(--space-3);
+      }
+
+      .stat-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-lg);
+        font-size: 1.1rem;
+      }
+
+      .stat-icon.primary {
+        background: var(--color-primary-10);
+        color: var(--color-primary);
+      }
+
+      .stat-icon.green {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--color-accent-green);
+      }
+
+      .stat-icon.blue {
+        background: rgba(59, 130, 246, 0.1);
+        color: var(--color-accent-blue);
+      }
+
+      .stat-icon.purple {
+        background: rgba(139, 92, 246, 0.1);
+        color: #8b5cf6;
+      }
+
+      .stat-change {
+        display: flex;
+        align-items: center;
+        gap: var(--space-1);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-medium);
+      }
+
+      .stat-change.positive {
+        color: var(--color-accent-green);
+      }
+      .stat-change.negative {
+        color: var(--color-accent-red);
+      }
+
+      .stat-value {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-1);
+      }
+
+      .stat-label {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      /* Two Column Layout */
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: var(--space-6);
+      }
+
+      .content-section {
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--space-5);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .section-title {
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .section-link {
+        font-size: var(--font-size-sm);
+        color: var(--color-primary);
+      }
+
+      /* Activity Feed */
+      .activity-feed {
+        padding: var(--space-4);
+      }
+
+      .activity-item {
+        display: flex;
+        gap: var(--space-4);
+        padding: var(--space-4);
+        border-radius: var(--radius-lg);
+        transition: background var(--transition-fast);
+      }
+
+      .activity-item:hover {
+        background: var(--color-bg-tertiary);
+      }
+
+      .activity-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: var(--radius-full);
+        background: var(--color-bg-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .activity-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: var(--radius-full);
+        object-fit: cover;
+      }
+
+      .activity-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .activity-text {
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--space-1);
+      }
+
+      .activity-text strong {
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .activity-time {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+      }
+
+      /* Upcoming Events */
+      .events-list {
+        padding: var(--space-4);
+      }
+
+      .event-item {
+        display: flex;
+        gap: var(--space-4);
+        padding: var(--space-4);
+        border-radius: var(--radius-lg);
+        transition: background var(--transition-fast);
+      }
+
+      .event-item:hover {
+        background: var(--color-bg-tertiary);
+      }
+
+      .event-date {
+        width: 50px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .event-day {
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-primary);
+      }
+
+      .event-month {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+        text-transform: uppercase;
+      }
+
+      .event-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .event-title {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--space-1);
+      }
+
+      .event-meta {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+      }
+
+      .event-meta i {
+        margin-right: var(--space-1);
+      }
+
+      /* Connections */
+      .connections-list {
+        padding: var(--space-4);
+      }
+
+      .connection-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-3);
+        border-radius: var(--radius-lg);
+        transition: background var(--transition-fast);
+      }
+
+      .connection-item:hover {
+        background: var(--color-bg-tertiary);
+      }
+
+      .connection-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-full);
+        background: var(--gradient-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-sm);
+      }
+
+      .connection-info {
+        flex: 1;
+      }
+
+      .connection-name {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+      }
+
+      .connection-role {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+      }
+
+      .connection-action {
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--font-size-xs);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        background: none;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .connection-action:hover {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+      }
+
+      /* Responsive */
+      @media (max-width: 1280px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .menu-toggle {
+          display: block;
+        }
+
+        .search-bar {
+          display: none;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .quick-actions {
+          flex-direction: column;
+        }
+
+        .welcome-card {
+          padding: var(--space-6);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <a href="../../index.html" class="sidebar-logo">
+            <span class="logo-text">
+              <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+              ><span class="logo-x"><img src="../../icon.png" alt="X" /></span
+              ><span class="logo-us">US</span>
+            </span>
+          </a>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-section">
+            <div class="nav-section-title">Main</div>
+            <a href="#" class="nav-link active">
+              <i class="fas fa-home"></i>
+              Dashboard
+            </a>
+            <a href="../ecosystem.html" class="nav-link">
+              <i class="fas fa-users"></i>
+              Ecosystem
+            </a>
+            <a href="../announcements.html" class="nav-link">
+              <i class="fas fa-bullhorn"></i>
+              Announcements
+              <span class="nav-badge">3</span>
+            </a>
+            <a href="#" class="nav-link">
+              <i class="fas fa-newspaper"></i>
+              News Feed
+            </a>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">My Workspace</div>
+            <a href="#" class="nav-link">
+              <i class="fas fa-user-circle"></i>
+              My Profile
+            </a>
+            <a href="#" class="nav-link">
+              <i class="fas fa-paper-plane"></i>
+              My Posts
+            </a>
+            <a href="#" class="nav-link">
+              <i class="fas fa-envelope"></i>
+              Messages
+              <span class="nav-badge">5</span>
+            </a>
+            <a href="#" class="nav-link">
+              <i class="fas fa-bookmark"></i>
+              Saved Items
+            </a>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+            <a href="#" class="nav-link">
+              <i class="fas fa-cog"></i>
+              Settings
+            </a>
+            <a href="#" class="nav-link">
+              <i class="fas fa-credit-card"></i>
+              Subscription
+            </a>
+            <a href="#" class="nav-link">
+              <i class="fas fa-question-circle"></i>
+              Help Center
+            </a>
+          </div>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-card">
+            <div class="user-avatar">AM</div>
+            <div class="user-info">
+              <div class="user-name">Ahmed Malik</div>
+              <div class="user-role">Startup Founder</div>
+            </div>
+            <button class="header-btn" style="width: 32px; height: 32px">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="dashboard-header">
+          <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">
+              <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="page-title">Dashboard</h1>
+          </div>
+
+          <div class="header-right">
+            <div class="search-bar">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Search ecosystem..." />
+            </div>
+
+            <div class="header-actions">
+              <button class="header-btn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-dot"></span>
+              </button>
+              <button class="header-btn">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+          <!-- Welcome Section -->
+          <div class="welcome-section">
+            <div class="welcome-card">
+              <div class="welcome-content">
+                <h2 class="welcome-greeting">Good morning, Ahmed! 👋</h2>
+                <p class="welcome-message">
+                  You have 3 new connection requests and 2 upcoming events this
+                  week. Keep building your network!
+                </p>
+                <div class="quick-actions">
+                  <button class="quick-action-btn">
+                    <i class="fas fa-plus"></i>
+                    Post Announcement
+                  </button>
+                  <button class="quick-action-btn">
+                    <i class="fas fa-user-plus"></i>
+                    Find Investors
+                  </button>
+                  <button class="quick-action-btn">
+                    <i class="fas fa-calendar"></i>
+                    View Events
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon primary">
+                  <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-change positive">
+                  <i class="fas fa-arrow-up"></i>
+                  12%
+                </div>
+              </div>
+              <div class="stat-value">2,847</div>
+              <div class="stat-label">Profile Views</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon green">
+                  <i class="fas fa-handshake"></i>
+                </div>
+                <div class="stat-change positive">
+                  <i class="fas fa-arrow-up"></i>
+                  8%
+                </div>
+              </div>
+              <div class="stat-value">156</div>
+              <div class="stat-label">Connections</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon blue">
+                  <i class="fas fa-paper-plane"></i>
+                </div>
+                <div class="stat-change negative">
+                  <i class="fas fa-arrow-down"></i>
+                  3%
+                </div>
+              </div>
+              <div class="stat-value">24</div>
+              <div class="stat-label">Active Posts</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon purple">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-change positive">
+                  <i class="fas fa-arrow-up"></i>
+                  25%
+                </div>
+              </div>
+              <div class="stat-value">4.8</div>
+              <div class="stat-label">Rating Score</div>
+            </div>
+          </div>
+
+          <!-- Content Grid -->
+          <div class="content-grid">
+            <!-- Activity Feed -->
+            <div class="content-section">
+              <div class="section-header">
+                <h3 class="section-title">Recent Activity</h3>
+                <a href="#" class="section-link">View All</a>
+              </div>
+              <div class="activity-feed">
+                <div class="activity-item">
+                  <div class="activity-avatar">
+                    <i
+                      class="fas fa-user"
+                      style="color: var(--color-text-tertiary)"
+                    ></i>
+                  </div>
+                  <div class="activity-content">
+                    <p class="activity-text">
+                      <strong>Algeria Ventures</strong> viewed your profile and
+                      requested a connection
+                    </p>
+                    <span class="activity-time">2 hours ago</span>
+                  </div>
+                </div>
+
+                <div class="activity-item">
+                  <div class="activity-avatar">
+                    <i
+                      class="fas fa-bullhorn"
+                      style="color: var(--color-primary)"
+                    ></i>
+                  </div>
+                  <div class="activity-content">
+                    <p class="activity-text">
+                      Your announcement
+                      <strong>"Looking for Technical Co-founder"</strong>
+                      received 45 views
+                    </p>
+                    <span class="activity-time">5 hours ago</span>
+                  </div>
+                </div>
+
+                <div class="activity-item">
+                  <div class="activity-avatar">
+                    <i
+                      class="fas fa-user"
+                      style="color: var(--color-text-tertiary)"
+                    ></i>
+                  </div>
+                  <div class="activity-content">
+                    <p class="activity-text">
+                      <strong>Sara Benali</strong> mentioned you in a comment on
+                      Startup Weekend post
+                    </p>
+                    <span class="activity-time">Yesterday</span>
+                  </div>
+                </div>
+
+                <div class="activity-item">
+                  <div class="activity-avatar">
+                    <i class="fas fa-star" style="color: #f59e0b"></i>
+                  </div>
+                  <div class="activity-content">
+                    <p class="activity-text">
+                      Your profile was featured in
+                      <strong>"Rising Startups"</strong> category
+                    </p>
+                    <span class="activity-time">2 days ago</span>
+                  </div>
+                </div>
+
+                <div class="activity-item">
+                  <div class="activity-avatar">
+                    <i
+                      class="fas fa-envelope"
+                      style="color: var(--color-accent-blue)"
+                    ></i>
+                  </div>
+                  <div class="activity-content">
+                    <p class="activity-text">
+                      <strong>TechHub Incubator</strong> sent you a message
+                      about their acceleration program
+                    </p>
+                    <span class="activity-time">3 days ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+              <!-- Upcoming Events -->
+              <div
+                class="content-section"
+                style="margin-bottom: var(--space-6)"
+              >
+                <div class="section-header">
+                  <h3 class="section-title">Upcoming Events</h3>
+                  <a href="#" class="section-link">See All</a>
+                </div>
+                <div class="events-list">
+                  <div class="event-item">
+                    <div class="event-date">
+                      <div class="event-day">15</div>
+                      <div class="event-month">Jan</div>
+                    </div>
+                    <div class="event-info">
+                      <h4 class="event-title">Startup Weekend Algiers</h4>
+                      <div class="event-meta">
+                        <span><i class="fas fa-clock"></i>9:00 AM</span>
+                        <span
+                          ><i class="fas fa-map-marker-alt"></i>Algiers</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="event-item">
+                    <div class="event-date">
+                      <div class="event-day">22</div>
+                      <div class="event-month">Jan</div>
+                    </div>
+                    <div class="event-info">
+                      <h4 class="event-title">Investor Pitch Night</h4>
+                      <div class="event-meta">
+                        <span><i class="fas fa-clock"></i>6:00 PM</span>
+                        <span><i class="fas fa-video"></i>Online</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Suggested Connections -->
+              <div class="content-section">
+                <div class="section-header">
+                  <h3 class="section-title">Suggested Connections</h3>
+                  <a href="../ecosystem.html" class="section-link">Explore</a>
+                </div>
+                <div class="connections-list">
+                  <div class="connection-item">
+                    <div class="connection-avatar">YB</div>
+                    <div class="connection-info">
+                      <div class="connection-name">Yasmine Bouzid</div>
+                      <div class="connection-role">Angel Investor</div>
+                    </div>
+                    <button class="connection-action">Connect</button>
+                  </div>
+
+                  <div class="connection-item">
+                    <div class="connection-avatar">KM</div>
+                    <div class="connection-info">
+                      <div class="connection-name">Karim Mansouri</div>
+                      <div class="connection-role">Tech Mentor</div>
+                    </div>
+                    <button class="connection-action">Connect</button>
+                  </div>
+
+                  <div class="connection-item">
+                    <div class="connection-avatar">NS</div>
+                    <div class="connection-info">
+                      <div class="connection-name">Nadia Saidi</div>
+                      <div class="connection-role">Startup Founder</div>
+                    </div>
+                    <button class="connection-action">Connect</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // Mobile Menu Toggle
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebar = document.getElementById("sidebar");
+
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+      });
+
+      // Close sidebar when clicking outside on mobile
+      document.addEventListener("click", (e) => {
+        if (window.innerWidth <= 1024) {
+          if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            sidebar.classList.remove("open");
+          }
+        }
+      });
+
+      // Dynamic greeting based on time
+      const hour = new Date().getHours();
+      const greeting = document.querySelector(".welcome-greeting");
+      if (hour < 12) {
+        greeting.textContent = "Good morning, Ahmed! 👋";
+      } else if (hour < 18) {
+        greeting.textContent = "Good afternoon, Ahmed! 👋";
+      } else {
+        greeting.textContent = "Good evening, Ahmed! 👋";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Announcements | UP-NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="icon" type="image/png" href="../icon.png" />
+    <link rel="apple-touch-icon" href="../icon.png" />
+    <style>
+      /* Announcements Page Styles */
+      .page-hero {
+        padding: 160px 0 80px;
+        background: var(--color-bg-tertiary);
+        text-align: center;
+      }
+
+      .page-title {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: var(--font-weight-black);
+        margin-bottom: var(--space-4);
+      }
+
+      .page-subtitle {
+        font-size: var(--font-size-lg);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Stats Bar */
+      .announcement-stats-bar {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-8);
+        margin-top: var(--space-8);
+        flex-wrap: wrap;
+      }
+
+      .announcement-stat-item {
+        text-align: center;
+      }
+
+      .announcement-stat-value {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-primary);
+      }
+
+      .announcement-stat-label {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      /* Announcement Controls */
+      .announcement-controls {
+        padding: var(--space-8) 0;
+        background: var(--color-bg-secondary);
+        border-bottom: 1px solid var(--color-border);
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+      }
+
+      .controls-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+        flex-wrap: wrap;
+      }
+
+      .category-tabs {
+        display: flex;
+        gap: var(--space-2);
+        flex-wrap: wrap;
+      }
+
+      .category-tab {
+        padding: var(--space-2) var(--space-4);
+        background: transparent;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .category-tab:hover,
+      .category-tab.active {
+        background: var(--color-primary-10);
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+      }
+
+      /* Announcements Grid */
+      .announcements-section {
+        padding: var(--space-16) 0;
+        min-height: 400px;
+      }
+
+      .announcements-layout {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: var(--space-8);
+      }
+
+      .announcements-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-6);
+      }
+
+      /* Loading State */
+      .loading-state {
+        text-align: center;
+        padding: var(--space-16);
+        color: var(--color-text-secondary);
+      }
+
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 3px solid var(--color-border);
+        border-top-color: var(--color-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto var(--space-4);
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: var(--space-16);
+        color: var(--color-text-secondary);
+      }
+
+      .empty-state i {
+        font-size: 4rem;
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-4);
+        display: block;
+      }
+
+      /* Announcement Card */
+      .announcement-card {
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-6);
+        transition: all var(--transition-base);
+      }
+
+      .announcement-card:hover {
+        border-color: var(--color-primary);
+        transform: translateX(4px);
+      }
+
+      .announcement-card.pinned {
+        border-color: var(--color-primary);
+        background: linear-gradient(
+          135deg,
+          var(--color-bg-tertiary),
+          rgba(244, 176, 0, 0.05)
+        );
+      }
+
+      .announcement-header {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-4);
+        margin-bottom: var(--space-4);
+      }
+
+      .announcement-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-lg);
+        background: var(--gradient-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: var(--font-weight-bold);
+        flex-shrink: 0;
+      }
+
+      .announcement-meta {
+        flex: 1;
+      }
+
+      .announcement-author {
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--space-1);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .announcement-date {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-tertiary);
+      }
+
+      .announcement-category {
+        padding: var(--space-1) var(--space-3);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .category-Funding {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+      }
+      .category-Job {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+      }
+      .category-Event {
+        background: rgba(139, 92, 246, 0.1);
+        color: #8b5cf6;
+      }
+      .category-Program {
+        background: rgba(244, 176, 0, 0.1);
+        color: #f4b000;
+      }
+      .category-News {
+        background: rgba(249, 115, 22, 0.1);
+        color: #f97316;
+      }
+      .category-Other {
+        background: rgba(107, 114, 128, 0.1);
+        color: #6b7280;
+      }
+
+      .pinned-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        padding: var(--space-1) var(--space-2);
+        background: rgba(244, 176, 0, 0.1);
+        color: var(--color-primary);
+        border-radius: var(--radius-sm);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+        margin-left: var(--space-2);
+      }
+
+      .announcement-title {
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-3);
+        color: var(--color-text-primary);
+        cursor: pointer;
+      }
+
+      .announcement-title:hover {
+        color: var(--color-primary);
+      }
+
+      .announcement-description {
+        color: var(--color-text-secondary);
+        line-height: 1.7;
+        margin-bottom: var(--space-4);
+      }
+
+      .announcement-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-4);
+        margin-bottom: var(--space-4);
+        padding: var(--space-4);
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-lg);
+      }
+
+      .announcement-detail {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      .announcement-detail i {
+        color: var(--color-primary);
+      }
+
+      .announcement-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin-bottom: var(--space-4);
+      }
+
+      .announcement-tag {
+        padding: var(--space-1) var(--space-3);
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-sm);
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+      }
+
+      .announcement-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--color-border);
+      }
+
+      .announcement-stats {
+        display: flex;
+        gap: var(--space-4);
+      }
+
+      .announcement-stat {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        color: var(--color-text-tertiary);
+        font-size: var(--font-size-sm);
+      }
+
+      /* Sidebar */
+      .announcements-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-6);
+      }
+
+      .sidebar-card {
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-6);
+      }
+
+      .sidebar-title {
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-4);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .sidebar-title i {
+        color: var(--color-primary);
+      }
+
+      /* Post CTA */
+      .post-cta {
+        background: var(--gradient-card);
+        border-color: var(--color-primary-20);
+      }
+
+      .post-cta p {
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--space-4);
+        color: var(--color-text-secondary);
+      }
+
+      .post-cta .btn {
+        width: 100%;
+      }
+
+      /* Category Summary */
+      .category-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+      }
+
+      .category-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--space-3);
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-md);
+        font-size: var(--font-size-sm);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .category-item:hover {
+        background: var(--color-primary-10);
+      }
+
+      .category-item-name {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .category-item-count {
+        background: var(--color-bg-tertiary);
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-primary);
+      }
+
+      /* Stats Widget */
+      .stats-widget {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: var(--space-4);
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-lg);
+      }
+
+      .stat-item-value {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-black);
+        color: var(--color-primary);
+      }
+
+      .stat-item-label {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+      }
+
+      /* Detail Modal */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        padding: var(--space-4);
+      }
+
+      .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-content {
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-xl);
+        max-width: 700px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: var(--space-4);
+        right: var(--space-4);
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: var(--space-2);
+        z-index: 10;
+      }
+
+      .modal-close:hover {
+        color: var(--color-text-primary);
+      }
+
+      .modal-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      }
+
+      .modal-body {
+        padding: var(--space-8);
+      }
+
+      .modal-category {
+        display: inline-block;
+        margin-bottom: var(--space-4);
+      }
+
+      .modal-title {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-4);
+      }
+
+      .modal-meta {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        margin-bottom: var(--space-6);
+        color: var(--color-text-tertiary);
+        font-size: var(--font-size-sm);
+      }
+
+      .modal-content-text {
+        color: var(--color-text-secondary);
+        line-height: 1.8;
+        margin-bottom: var(--space-6);
+        white-space: pre-wrap;
+      }
+
+      .modal-details {
+        padding: var(--space-6);
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--space-6);
+      }
+
+      .modal-detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--space-3) 0;
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .modal-detail-row:last-child {
+        border-bottom: none;
+      }
+
+      .modal-detail-label {
+        color: var(--color-text-tertiary);
+        font-size: var(--font-size-sm);
+      }
+
+      .modal-detail-value {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+      }
+
+      .modal-detail-value a {
+        color: var(--color-primary);
+        text-decoration: none;
+      }
+
+      .modal-detail-value a:hover {
+        text-decoration: underline;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: var(--space-4);
+      }
+
+      .modal-actions .btn {
+        flex: 1;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .announcements-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .announcements-sidebar {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        .sidebar-card {
+          flex: 1;
+          min-width: 280px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .controls-wrapper {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .category-tabs {
+          justify-content: center;
+        }
+
+        .modal-actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled" id="navbar">
+      <div class="container nav-container">
+        <a href="../index.html" class="logo">
+          <span class="logo-text">
+            <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+            ><span class="logo-x"><img src="../icon.png" alt="X" /></span
+            ><span class="logo-us">US</span>
+          </span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="ecosystem.html">Ecosystem</a></li>
+          <li><a href="#" class="active">Announcements</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="auth/login.html" class="btn btn-ghost">Log In</a>
+          <a href="auth/register.html" class="btn btn-primary">
+            <i class="fas fa-rocket"></i>
+            Join Free
+          </a>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <span class="section-badge">
+          <i class="fas fa-bullhorn"></i>
+          Opportunities
+        </span>
+        <h1 class="page-title">Announcements</h1>
+        <p class="page-subtitle">
+          Discover funding opportunities, job openings, events, and programs
+          from the ecosystem
+        </p>
+        <div class="announcement-stats-bar" id="announcementStatsBar">
+          <div class="announcement-stat-item">
+            <div class="announcement-stat-value" id="totalAnnouncements">-</div>
+            <div class="announcement-stat-label">Total</div>
+          </div>
+          <div class="announcement-stat-item">
+            <div class="announcement-stat-value" id="totalFunding">-</div>
+            <div class="announcement-stat-label">Funding</div>
+          </div>
+          <div class="announcement-stat-item">
+            <div class="announcement-stat-value" id="totalJobs">-</div>
+            <div class="announcement-stat-label">Jobs</div>
+          </div>
+          <div class="announcement-stat-item">
+            <div class="announcement-stat-value" id="totalEvents">-</div>
+            <div class="announcement-stat-label">Events</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls -->
+    <div class="announcement-controls">
+      <div class="container">
+        <div class="controls-wrapper">
+          <div class="category-tabs" id="categoryTabs">
+            <button class="category-tab active" data-category="">All</button>
+            <button class="category-tab" data-category="Funding">
+              💰 Funding
+            </button>
+            <button class="category-tab" data-category="Job">💼 Jobs</button>
+            <button class="category-tab" data-category="Event">
+              📅 Events
+            </button>
+            <button class="category-tab" data-category="Program">
+              🎓 Programs
+            </button>
+            <button class="category-tab" data-category="News">📰 News</button>
+          </div>
+          <button
+            class="btn btn-primary"
+            onclick="showLoginModal('Please log in to post an announcement')"
+          >
+            <i class="fas fa-plus"></i>
+            Post Announcement
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Announcements -->
+    <section class="announcements-section">
+      <div class="container">
+        <div class="announcements-layout">
+          <!-- Main Content -->
+          <div class="announcements-list" id="announcementsList">
+            <div class="loading-state">
+              <div class="loading-spinner"></div>
+              <p>Loading announcements...</p>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <aside class="announcements-sidebar">
+            <!-- Post CTA -->
+            <div class="sidebar-card post-cta">
+              <h3 class="sidebar-title">
+                <i class="fas fa-megaphone"></i>
+                Share Your Opportunity
+              </h3>
+              <p>
+                Post funding opportunities, job openings, events, and programs
+                to reach the entire ecosystem.
+              </p>
+              <button
+                class="btn btn-primary"
+                onclick="showLoginModal('Please log in to post an announcement')"
+              >
+                <i class="fas fa-plus"></i>
+                Post Announcement
+              </button>
+            </div>
+
+            <!-- Categories -->
+            <div class="sidebar-card">
+              <h3 class="sidebar-title">
+                <i class="fas fa-folder"></i>
+                Categories
+              </h3>
+              <div class="category-list" id="categoryList">
+                <div class="category-item" data-category="Funding">
+                  <span class="category-item-name">💰 Funding</span>
+                  <span class="category-item-count" id="countFunding">0</span>
+                </div>
+                <div class="category-item" data-category="Job">
+                  <span class="category-item-name">💼 Jobs</span>
+                  <span class="category-item-count" id="countJob">0</span>
+                </div>
+                <div class="category-item" data-category="Event">
+                  <span class="category-item-name">📅 Events</span>
+                  <span class="category-item-count" id="countEvent">0</span>
+                </div>
+                <div class="category-item" data-category="Program">
+                  <span class="category-item-name">🎓 Programs</span>
+                  <span class="category-item-count" id="countProgram">0</span>
+                </div>
+                <div class="category-item" data-category="News">
+                  <span class="category-item-name">📰 News</span>
+                  <span class="category-item-count" id="countNews">0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="sidebar-card">
+              <h3 class="sidebar-title">
+                <i class="fas fa-chart-bar"></i>
+                This Week
+              </h3>
+              <div class="stats-widget">
+                <div class="stat-item">
+                  <div class="stat-item-value" id="weeklyNew">0</div>
+                  <div class="stat-item-label">New Posts</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-item-value" id="totalViews">0</div>
+                  <div class="stat-item-label">Total Views</div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+      <div
+        class="modal-content"
+        style="max-width: 400px; text-align: center; padding: var(--space-10)"
+      >
+        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+        <div
+          style="
+            width: 72px;
+            height: 72px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-6);
+            font-size: 1.75rem;
+            color: white;
+          "
+        >
+          <i class="fas fa-lock"></i>
+        </div>
+        <h3
+          style="font-size: var(--font-size-xl); margin-bottom: var(--space-2)"
+        >
+          Login Required
+        </h3>
+        <p
+          id="loginModalMessage"
+          style="
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-6);
+          "
+        >
+          Please log in to continue
+        </p>
+        <div style="display: flex; flex-direction: column; gap: var(--space-3)">
+          <a href="auth/login.html" class="btn btn-primary" style="width: 100%">
+            <i class="fas fa-sign-in-alt"></i>
+            Log In
+          </a>
+          <a
+            href="auth/register.html"
+            class="btn btn-outline"
+            style="width: 100%"
+          >
+            Create Free Account
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div
+          class="footer-bottom"
+          style="border-top: none; padding: var(--space-8) 0"
+        >
+          <p>&copy; 2026 UP-NEXUS. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/config.js"></script>
+    <script>
+      // API Configuration - use config or fallback
+      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || (
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000/api"
+          : window.location.origin + "/api"
+      );
+
+      // State
+      let allAnnouncements = [];
+      let currentFilter = "";
+
+      // Category colors
+      const categoryColors = {
+        Funding: "#10b981",
+        Job: "#3b82f6",
+        Event: "#8b5cf6",
+        Program: "#f4b000",
+        News: "#f97316",
+        Other: "#6b7280",
+      };
+
+      // Load on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        loadAnnouncements();
+        setupCategoryListeners();
+      });
+
+      // Setup category filter listeners
+      function setupCategoryListeners() {
+        // Tab filters
+        document.querySelectorAll(".category-tab").forEach((tab) => {
+          tab.addEventListener("click", () => {
+            document
+              .querySelectorAll(".category-tab")
+              .forEach((t) => t.classList.remove("active"));
+            tab.classList.add("active");
+            currentFilter = tab.dataset.category;
+            filterAnnouncements();
+          });
+        });
+
+        // Sidebar category items
+        document.querySelectorAll(".category-item").forEach((item) => {
+          item.addEventListener("click", () => {
+            currentFilter = item.dataset.category;
+            document.querySelectorAll(".category-tab").forEach((t) => {
+              t.classList.toggle(
+                "active",
+                t.dataset.category === currentFilter
+              );
+            });
+            filterAnnouncements();
+          });
+        });
+      }
+
+      // Load announcements from API
+      async function loadAnnouncements() {
+        try {
+          const response = await fetch(`${API_URL}/announcements`);
+          const data = await response.json();
+
+          if (data.success) {
+            allAnnouncements = data.announcements;
+            updateStats();
+            renderAnnouncements(allAnnouncements);
+          } else {
+            showError("Failed to load announcements");
+          }
+        } catch (error) {
+          console.error("Error loading announcements:", error);
+          showError("Unable to connect to server. Please try again later.");
+        }
+      }
+
+      // Update statistics
+      function updateStats() {
+        document.getElementById("totalAnnouncements").textContent =
+          allAnnouncements.length;
+
+        const funding = allAnnouncements.filter(
+          (a) => a.category === "Funding"
+        ).length;
+        const jobs = allAnnouncements.filter(
+          (a) => a.category === "Job"
+        ).length;
+        const events = allAnnouncements.filter(
+          (a) => a.category === "Event"
+        ).length;
+        const programs = allAnnouncements.filter(
+          (a) => a.category === "Program"
+        ).length;
+        const news = allAnnouncements.filter(
+          (a) => a.category === "News"
+        ).length;
+
+        document.getElementById("totalFunding").textContent = funding;
+        document.getElementById("totalJobs").textContent = jobs;
+        document.getElementById("totalEvents").textContent = events;
+
+        // Sidebar counts
+        document.getElementById("countFunding").textContent = funding;
+        document.getElementById("countJob").textContent = jobs;
+        document.getElementById("countEvent").textContent = events;
+        document.getElementById("countProgram").textContent = programs;
+        document.getElementById("countNews").textContent = news;
+
+        // Weekly stats (simplified - count from last 7 days)
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        const weeklyNew = allAnnouncements.filter(
+          (a) => new Date(a.createdAt) > weekAgo
+        ).length;
+        document.getElementById("weeklyNew").textContent = weeklyNew;
+
+        // Total views
+        const totalViews = allAnnouncements.reduce(
+          (sum, a) => sum + (a.views || 0),
+          0
+        );
+        document.getElementById("totalViews").textContent =
+          totalViews > 1000 ? (totalViews / 1000).toFixed(1) + "K" : totalViews;
+      }
+
+      // Filter announcements
+      function filterAnnouncements() {
+        let filtered = allAnnouncements;
+
+        if (currentFilter) {
+          filtered = allAnnouncements.filter(
+            (a) => a.category === currentFilter
+          );
+        }
+
+        renderAnnouncements(filtered);
+      }
+
+      // Render announcements
+      function renderAnnouncements(announcements) {
+        const list = document.getElementById("announcementsList");
+
+        if (announcements.length === 0) {
+          list.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-bullhorn"></i>
+              <h3>No announcements yet</h3>
+              <p>Be the first to post an announcement!</p>
+            </div>
+          `;
+          return;
+        }
+
+        list.innerHTML = announcements
+          .map((announcement) => createAnnouncementCard(announcement))
+          .join("");
+      }
+
+      // Create announcement card
+      function createAnnouncementCard(announcement) {
+        const color =
+          categoryColors[announcement.category] || categoryColors.Other;
+        const initial = (announcement.author || "U")[0].toUpperCase();
+        const excerpt =
+          announcement.excerpt ||
+          (announcement.content
+            ? announcement.content.substring(0, 200) + "..."
+            : "");
+
+        // Format date
+        const date = new Date(
+          announcement.publishedAt || announcement.createdAt
+        );
+        const timeAgo = getTimeAgo(date);
+
+        // Build details section based on category
+        let detailsHtml = "";
+        if (
+          announcement.category === "Event" &&
+          (announcement.eventDate || announcement.eventLocation)
+        ) {
+          detailsHtml = `
+            <div class="announcement-details">
+              ${
+                announcement.eventDate
+                  ? `<div class="announcement-detail"><i class="fas fa-calendar"></i> ${formatDate(
+                      announcement.eventDate
+                    )}</div>`
+                  : ""
+              }
+              ${
+                announcement.eventLocation
+                  ? `<div class="announcement-detail"><i class="fas fa-map-marker-alt"></i> ${announcement.eventLocation}</div>`
+                  : ""
+              }
+            </div>
+          `;
+        } else if (
+          announcement.category === "Job" &&
+          (announcement.company || announcement.jobType)
+        ) {
+          detailsHtml = `
+            <div class="announcement-details">
+              ${
+                announcement.company
+                  ? `<div class="announcement-detail"><i class="fas fa-building"></i> ${announcement.company}</div>`
+                  : ""
+              }
+              ${
+                announcement.jobType
+                  ? `<div class="announcement-detail"><i class="fas fa-briefcase"></i> ${announcement.jobType}</div>`
+                  : ""
+              }
+              ${
+                announcement.salary
+                  ? `<div class="announcement-detail"><i class="fas fa-money-bill"></i> ${announcement.salary}</div>`
+                  : ""
+              }
+              ${
+                announcement.deadline
+                  ? `<div class="announcement-detail"><i class="fas fa-clock"></i> Deadline: ${formatDate(
+                      announcement.deadline
+                    )}</div>`
+                  : ""
+              }
+            </div>
+          `;
+        } else if (
+          announcement.category === "Funding" &&
+          announcement.fundingAmount
+        ) {
+          detailsHtml = `
+            <div class="announcement-details">
+              ${
+                announcement.fundingAmount
+                  ? `<div class="announcement-detail"><i class="fas fa-coins"></i> ${announcement.fundingAmount}</div>`
+                  : ""
+              }
+              ${
+                announcement.deadline
+                  ? `<div class="announcement-detail"><i class="fas fa-clock"></i> Deadline: ${formatDate(
+                      announcement.deadline
+                    )}</div>`
+                  : ""
+              }
+            </div>
+          `;
+        }
+
+        // Tags
+        const tagsHtml = (announcement.tags || [])
+          .slice(0, 4)
+          .map((tag) => `<span class="announcement-tag">${tag}</span>`)
+          .join("");
+
+        // Action button text
+        let actionText = "Read More";
+        if (announcement.applyLink) {
+          actionText =
+            announcement.category === "Job"
+              ? "Apply Now"
+              : announcement.category === "Event"
+              ? "Register"
+              : announcement.category === "Funding"
+              ? "Apply"
+              : "Learn More";
+        }
+
+        return `
+          <article class="announcement-card ${
+            announcement.isPinned ? "pinned" : ""
+          }">
+            <div class="announcement-header">
+              <div class="announcement-avatar" style="background: linear-gradient(135deg, ${color}, ${color}dd)">
+                ${initial}
+              </div>
+              <div class="announcement-meta">
+                <div class="announcement-author">
+                  ${announcement.author || "UP-NEXUS Team"}
+                  ${
+                    announcement.isPinned
+                      ? '<span class="pinned-badge"><i class="fas fa-thumbtack"></i> Pinned</span>'
+                      : ""
+                  }
+                </div>
+                <div class="announcement-date">${timeAgo}</div>
+              </div>
+              <span class="announcement-category category-${
+                announcement.category
+              }">${announcement.category}</span>
+            </div>
+            <h2 class="announcement-title" onclick="viewAnnouncement('${
+              announcement._id
+            }')">${announcement.title}</h2>
+            <p class="announcement-description">${excerpt}</p>
+            ${detailsHtml}
+            ${
+              tagsHtml ? `<div class="announcement-tags">${tagsHtml}</div>` : ""
+            }
+            <div class="announcement-footer">
+              <div class="announcement-stats">
+                <span class="announcement-stat">
+                  <i class="far fa-eye"></i> ${announcement.views || 0} views
+                </span>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="viewAnnouncement('${
+                announcement._id
+              }')">${actionText}</button>
+            </div>
+          </article>
+        `;
+      }
+
+      // View announcement detail
+      function viewAnnouncement(id) {
+        const announcement = allAnnouncements.find((a) => a._id === id);
+        if (!announcement) return;
+
+        const color =
+          categoryColors[announcement.category] || categoryColors.Other;
+        const date = new Date(
+          announcement.publishedAt || announcement.createdAt
+        );
+
+        let modalHtml = "";
+
+        // Cover image
+        if (announcement.image) {
+          modalHtml += `<img src="${announcement.image}" alt="${announcement.title}" class="modal-image" onerror="this.style.display='none'" />`;
+        }
+
+        modalHtml += `
+          <div class="modal-body">
+            <span class="announcement-category category-${
+              announcement.category
+            } modal-category">${announcement.category}</span>
+            ${
+              announcement.isPinned
+                ? '<span class="pinned-badge" style="margin-left: 8px;"><i class="fas fa-thumbtack"></i> Pinned</span>'
+                : ""
+            }
+            <h2 class="modal-title">${announcement.title}</h2>
+            <div class="modal-meta">
+              <span><i class="fas fa-user"></i> ${
+                announcement.author || "UP-NEXUS Team"
+              }</span>
+              <span><i class="fas fa-calendar"></i> ${formatDate(date)}</span>
+              <span><i class="fas fa-eye"></i> ${
+                announcement.views || 0
+              } views</span>
+            </div>
+            <div class="modal-content-text">${
+              announcement.content || announcement.excerpt || ""
+            }</div>
+        `;
+
+        // Category-specific details
+        let hasDetails = false;
+        let detailsHtml = '<div class="modal-details">';
+
+        if (announcement.category === "Event") {
+          if (announcement.eventDate) {
+            hasDetails = true;
+            detailsHtml += `<div class="modal-detail-row"><span class="modal-detail-label">Event Date</span><span class="modal-detail-value">${formatDateTime(
+              announcement.eventDate
+            )}</span></div>`;
+          }
+          if (announcement.eventLocation) {
+            hasDetails = true;
+            detailsHtml += `<div class="modal-detail-row"><span class="modal-detail-label">Location</span><span class="modal-detail-value">${announcement.eventLocation}</span></div>`;
+          }
+        } else if (announcement.category === "Job") {
+          if (announcement.company) {
+            hasDetails = true;
+            detailsHtml += `<div class="modal-detail-row"><span class="modal-detail-label">Company</span><span class="modal-detail-value">${announcement.company}</span></div>`;
+          }
+          if (announcement.jobType) {
+            hasDetails = true;
+            detailsHtml += `<div class="modal-detail-row"><span class="modal-detail-label">Job Type</span><span class="modal-detail-value">${announcement.jobType}</span></div>`;
+          }
+          if (announcement.salary) {
+            hasDetails = true;
+            detailsHtml += `<div class="modal-detail-row"><span class="modal-detail-label">Salary</span><span class="modal-detail-value">${announcement.salary}</span></div>`;
+          }
+          if (announcement.deadline) {
+            hasDetails = true;
+            detailsHtml += `<div class="modal-detail-row"><span class="modal-detail-label">Deadline</span><span class="modal-detail-value">${formatDate(
+              announcement.deadline
+            )}</span></div>`;
+          }
+        } else if (announcement.category === "Funding") {
+          if (announcement.fundingAmount) {
+            hasDetails = true;
+            detailsHtml += `<div class="modal-detail-row"><span class="modal-detail-label">Amount</span><span class="modal-detail-value">${announcement.fundingAmount}</span></div>`;
+          }
+          if (announcement.eligibility) {
+            hasDetails = true;
+            detailsHtml += `<div class="modal-detail-row"><span class="modal-detail-label">Eligibility</span><span class="modal-detail-value">${announcement.eligibility}</span></div>`;
+          }
+          if (announcement.deadline) {
+            hasDetails = true;
+            detailsHtml += `<div class="modal-detail-row"><span class="modal-detail-label">Deadline</span><span class="modal-detail-value">${formatDate(
+              announcement.deadline
+            )}</span></div>`;
+          }
+        }
+
+        detailsHtml += "</div>";
+        if (hasDetails) modalHtml += detailsHtml;
+
+        // Tags
+        if (announcement.tags && announcement.tags.length > 0) {
+          modalHtml += `
+            <div class="announcement-tags" style="margin-bottom: var(--space-6);">
+              ${announcement.tags
+                .map((tag) => `<span class="announcement-tag">${tag}</span>`)
+                .join("")}
+            </div>
+          `;
+        }
+
+        // Action buttons
+        modalHtml += '<div class="modal-actions">';
+        if (announcement.applyLink) {
+          modalHtml += `<a href="${announcement.applyLink}" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Apply / Register</a>`;
+        }
+        if (announcement.externalLink) {
+          modalHtml += `<a href="${announcement.externalLink}" target="_blank" class="btn btn-outline"><i class="fas fa-link"></i> Learn More</a>`;
+        }
+        if (!announcement.applyLink && !announcement.externalLink) {
+          modalHtml += `<button class="btn btn-primary" onclick="closeModal()">Close</button>`;
+        }
+        modalHtml += "</div></div>";
+
+        document.getElementById("modalContent").innerHTML = modalHtml;
+        document.getElementById("detailModal").classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      // Close detail modal
+      function closeModal() {
+        document.getElementById("detailModal").classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      // Login modal functions
+      function showLoginModal(message) {
+        document.getElementById("loginModalMessage").textContent =
+          message || "Please log in to continue";
+        document.getElementById("loginModal").classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLoginModal() {
+        document.getElementById("loginModal").classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      // Close modals on overlay click
+      document.getElementById("detailModal").addEventListener("click", (e) => {
+        if (e.target.id === "detailModal") closeModal();
+      });
+      document.getElementById("loginModal").addEventListener("click", (e) => {
+        if (e.target.id === "loginModal") closeLoginModal();
+      });
+
+      // Close on Escape
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeModal();
+          closeLoginModal();
+        }
+      });
+
+      // Show error
+      function showError(message) {
+        document.getElementById("announcementsList").innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Error</h3>
+            <p>${message}</p>
+            <button class="btn btn-primary" onclick="loadAnnouncements()" style="margin-top: var(--space-4);">
+              <i class="fas fa-redo"></i> Try Again
+            </button>
+          </div>
+        `;
+      }
+
+      // Utility functions
+      function getTimeAgo(date) {
+        const seconds = Math.floor((new Date() - date) / 1000);
+        const intervals = [
+          { label: "year", seconds: 31536000 },
+          { label: "month", seconds: 2592000 },
+          { label: "week", seconds: 604800 },
+          { label: "day", seconds: 86400 },
+          { label: "hour", seconds: 3600 },
+          { label: "minute", seconds: 60 },
+        ];
+
+        for (const interval of intervals) {
+          const count = Math.floor(seconds / interval.seconds);
+          if (count >= 1) {
+            return `${count} ${interval.label}${count > 1 ? "s" : ""} ago`;
+          }
+        }
+        return "Just now";
+      }
+
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+      }
+
+      function formatDateTime(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      // Mobile menu toggle
+      document
+        .getElementById("mobileMenuToggle")
+        ?.addEventListener("click", () => {
+          document.getElementById("navLinks").classList.toggle("open");
+        });
+    </script>
+  </body>
+</html>

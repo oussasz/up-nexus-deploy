@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - UP-NEXUS</title>
+    <link rel="icon" type="image/png" href="../../icon.png" />
+    <link rel="apple-touch-icon" href="../../icon.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <style>
+      :root {
+        --admin-bg: #0a0a0a;
+        --admin-card: #141414;
+        --admin-border: #2a2a2a;
+        --admin-primary: #f4b000;
+        --admin-primary-hover: #ff6b00;
+        --admin-text: #ffffff;
+        --admin-text-muted: #888888;
+        --admin-danger: #ef4444;
+        --admin-success: #22c55e;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--admin-bg);
+        color: var(--admin-text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: radial-gradient(
+            ellipse at top,
+            rgba(244, 176, 0, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at bottom,
+            rgba(255, 107, 0, 0.05) 0%,
+            transparent 50%
+          );
+      }
+
+      .login-container {
+        width: 100%;
+        max-width: 420px;
+        padding: 2rem;
+      }
+
+      .login-card {
+        background: var(--admin-card);
+        border: 1px solid var(--admin-border);
+        border-radius: 16px;
+        padding: 2.5rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .login-logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        text-decoration: none;
+      }
+
+      .login-logo .logo-text {
+        font-size: 2.2rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+      }
+
+      .login-logo .logo-up {
+        color: var(--admin-text-muted);
+      }
+
+      .login-logo .logo-ne,
+      .login-logo .logo-us {
+        background: linear-gradient(
+          135deg,
+          var(--admin-primary),
+          var(--admin-primary-hover)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .login-logo .logo-x {
+        width: 32px;
+        height: 32px;
+        margin: 0 -3px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .login-logo .logo-x img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+          filter 0.3s ease;
+      }
+
+      .login-logo:hover .logo-x img {
+        transform: rotate(180deg) scale(1.15);
+        filter: drop-shadow(0 0 8px var(--admin-primary));
+      }
+
+      .login-logo span:first-child {
+        color: var(--admin-text);
+      }
+
+      .login-logo span:last-child {
+        background: linear-gradient(
+          135deg,
+          var(--admin-primary),
+          var(--admin-primary-hover)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .login-subtitle {
+        color: var(--admin-text-muted);
+        font-size: 0.95rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--admin-text-muted);
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        background: var(--admin-bg);
+        border: 1px solid var(--admin-border);
+        border-radius: 8px;
+        color: var(--admin-text);
+        font-size: 1rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--admin-primary);
+        box-shadow: 0 0 0 3px rgba(244, 176, 0, 0.1);
+      }
+
+      .form-input::placeholder {
+        color: #555;
+      }
+
+      .btn-login {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(
+          135deg,
+          var(--admin-primary),
+          var(--admin-primary-hover)
+        );
+        border: none;
+        border-radius: 8px;
+        color: #000;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(244, 176, 0, 0.3);
+      }
+
+      .btn-login:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .error-message {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: var(--admin-danger);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        font-size: 0.875rem;
+        display: none;
+      }
+
+      .error-message.show {
+        display: block;
+      }
+
+      .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--admin-text-muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.2s;
+      }
+
+      .back-link:hover {
+        color: var(--admin-primary);
+      }
+
+      .setup-notice {
+        background: rgba(244, 176, 0, 0.1);
+        border: 1px solid rgba(244, 176, 0, 0.3);
+        color: var(--admin-primary);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        font-size: 0.85rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <a href="../../index.html" class="login-logo">
+            <span class="logo-text">
+              <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+              ><span class="logo-x"><img src="../../icon.png" alt="X" /></span
+              ><span class="logo-us">US</span>
+            </span>
+          </a>
+          <p class="login-subtitle">Admin Dashboard</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label" for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              class="form-input"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn-login" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i> Sign In
+          </button>
+        </form>
+
+        <a href="../../index.html" class="back-link">
+          <i class="fas fa-arrow-left"></i> Back to Website
+        </a>
+      </div>
+    </div>
+
+    <script src="../../js/config.js"></script>
+    <script>
+      // API URL - use config or fallback
+      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || (
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000/api"
+          : window.location.origin + "/api"
+      );
+
+      // Check if already logged in
+      const token = localStorage.getItem("adminToken");
+      if (token) {
+        window.location.href = "dashboard.html";
+      }
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+          const loginBtn = document.getElementById("loginBtn");
+          const errorMessage = document.getElementById("errorMessage");
+
+          loginBtn.disabled = true;
+          loginBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+          errorMessage.classList.remove("show");
+
+          try {
+            const response = await fetch(`${API_URL}/auth/login`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              localStorage.setItem("adminToken", data.token);
+              localStorage.setItem("adminUser", JSON.stringify(data.admin));
+              window.location.href = "dashboard.html";
+            } else {
+              errorMessage.textContent = data.message || "Login failed";
+              errorMessage.classList.add("show");
+            }
+          } catch (error) {
+            console.error("Login error:", error);
+            errorMessage.textContent =
+              "Unable to connect to server. Make sure the backend is running.";
+            errorMessage.classList.add("show");
+          } finally {
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+[
+  { "id": 1, "name": "Podcast", "icon": "🎙" },
+  { "id": 2, "name": "Video", "icon": "📺" },
+  { "id": 3, "name": "Newsletter", "icon": "✉️" }
+]
+

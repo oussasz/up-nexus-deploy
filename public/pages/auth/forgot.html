@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset Password | UP-NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <link rel="icon" type="image/png" href="../../icon.png" />
+    <link rel="apple-touch-icon" href="../../icon.png" />
+    <style>
+      .auth-page {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: var(--space-8);
+        background: var(--color-bg-primary);
+        position: relative;
+      }
+
+      .auth-page::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -30%;
+        width: 80%;
+        height: 100%;
+        background: radial-gradient(
+          circle,
+          var(--color-primary-20) 0%,
+          transparent 60%
+        );
+        pointer-events: none;
+      }
+
+      .auth-card {
+        width: 100%;
+        max-width: 440px;
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-10);
+        position: relative;
+        z-index: 1;
+      }
+
+      .auth-header {
+        text-align: center;
+        margin-bottom: var(--space-8);
+      }
+
+      .auth-logo {
+        display: inline-flex;
+        justify-content: center;
+        margin-bottom: var(--space-6);
+        text-decoration: none;
+      }
+
+      .auth-logo .logo-text {
+        font-size: 1.75rem;
+        font-weight: var(--font-weight-black);
+        display: flex;
+        align-items: center;
+      }
+
+      .auth-logo .logo-up {
+        color: var(--color-text-secondary);
+      }
+
+      .auth-logo .logo-ne,
+      .auth-logo .logo-us {
+        color: var(--color-text-primary);
+      }
+
+      .auth-logo .logo-x {
+        width: 26px;
+        height: 26px;
+        margin: 0 -2px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .auth-logo .logo-x img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+          filter 0.3s ease;
+      }
+
+      .auth-logo:hover .logo-x img {
+        transform: rotate(180deg) scale(1.15);
+        filter: drop-shadow(0 0 8px var(--color-primary));
+      }
+
+      .auth-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto var(--space-4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient-primary);
+        border-radius: var(--radius-xl);
+        font-size: 1.5rem;
+      }
+
+      .auth-header h1 {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--space-2);
+      }
+
+      .auth-header p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        line-height: 1.6;
+      }
+
+      /* Form Styles */
+      .form-group {
+        margin-bottom: var(--space-5);
+      }
+
+      .form-label {
+        display: block;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-2);
+      }
+
+      .form-input {
+        width: 100%;
+        padding: var(--space-4);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-base);
+        transition: all var(--transition-fast);
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-20);
+      }
+
+      .btn-block {
+        width: 100%;
+        padding: var(--space-4);
+        margin-top: var(--space-2);
+      }
+
+      /* Success State */
+      .success-state {
+        display: none;
+        text-align: center;
+      }
+
+      .success-state.active {
+        display: block;
+      }
+
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto var(--space-6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-accent-green);
+        border-radius: var(--radius-full);
+        font-size: 2rem;
+        animation: scaleIn 0.3s ease;
+      }
+
+      @keyframes scaleIn {
+        from {
+          transform: scale(0);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .success-state h2 {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--space-3);
+      }
+
+      .success-state p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--space-6);
+        line-height: 1.6;
+      }
+
+      .email-highlight {
+        color: var(--color-primary);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      /* Resend */
+      .resend-section {
+        padding-top: var(--space-6);
+        border-top: 1px solid var(--color-border);
+        text-align: center;
+      }
+
+      .resend-section p {
+        color: var(--color-text-tertiary);
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--space-3);
+      }
+
+      .resend-link {
+        color: var(--color-primary);
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+      }
+
+      .resend-link.disabled {
+        color: var(--color-text-tertiary);
+        pointer-events: none;
+      }
+
+      /* Footer */
+      .auth-footer {
+        text-align: center;
+        margin-top: var(--space-8);
+      }
+
+      .auth-footer a {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        transition: color var(--transition-fast);
+      }
+
+      .auth-footer a:hover {
+        color: var(--color-primary);
+      }
+
+      /* Help Text */
+      .help-box {
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-lg);
+        padding: var(--space-4);
+        margin-top: var(--space-6);
+      }
+
+      .help-box h4 {
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--space-2);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .help-box ul {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+        list-style: disc;
+        padding-left: var(--space-6);
+      }
+
+      .help-box li {
+        margin-bottom: var(--space-1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-page">
+      <div class="auth-card">
+        <!-- Initial State -->
+        <div id="requestState">
+          <div class="auth-header">
+            <a href="../../index.html" class="auth-logo">
+              <span class="logo-text">
+                <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+                ><span class="logo-x"><img src="../../icon.png" alt="X" /></span
+                ><span class="logo-us">US</span>
+              </span>
+            </a>
+            <div class="auth-icon">
+              <i class="fas fa-key"></i>
+            </div>
+            <h1>Forgot your password?</h1>
+            <p>
+              No worries! Enter your email address and we'll send you a link to
+              reset your password.
+            </p>
+          </div>
+
+          <form id="forgotForm">
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input
+                type="email"
+                class="form-input"
+                id="emailInput"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              <i class="fas fa-paper-plane"></i>
+              Send Reset Link
+            </button>
+          </form>
+
+          <div class="help-box">
+            <h4><i class="fas fa-info-circle"></i> Can't find your email?</h4>
+            <ul>
+              <li>Check your spam or junk folder</li>
+              <li>Verify you're using the correct email</li>
+              <li>Contact support if issues persist</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Success State -->
+        <div id="successState" class="success-state">
+          <div class="success-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <h2>Check your email</h2>
+          <p>
+            We've sent a password reset link to<br />
+            <span class="email-highlight" id="sentEmail"
+              >example@email.com</span
+            >
+          </p>
+
+          <a href="login.html" class="btn btn-primary btn-block">
+            <i class="fas fa-arrow-left"></i>
+            Back to Login
+          </a>
+
+          <div class="resend-section">
+            <p>Didn't receive the email?</p>
+            <span class="resend-link" id="resendLink">Resend email</span>
+            <span class="resend-timer" id="resendTimer"></span>
+          </div>
+        </div>
+
+        <div class="auth-footer">
+          <a href="login.html">
+            <i class="fas fa-arrow-left"></i>
+            Back to login
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const forgotForm = document.getElementById("forgotForm");
+      const requestState = document.getElementById("requestState");
+      const successState = document.getElementById("successState");
+      const sentEmail = document.getElementById("sentEmail");
+      const resendLink = document.getElementById("resendLink");
+      const resendTimer = document.getElementById("resendTimer");
+
+      forgotForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("emailInput").value;
+        sentEmail.textContent = email;
+
+        // Show success state
+        requestState.style.display = "none";
+        successState.classList.add("active");
+
+        // Start resend cooldown
+        startCooldown();
+      });
+
+      let cooldownInterval;
+      function startCooldown() {
+        let seconds = 60;
+        resendLink.classList.add("disabled");
+        resendTimer.textContent = ` (${seconds}s)`;
+
+        cooldownInterval = setInterval(() => {
+          seconds--;
+          resendTimer.textContent = ` (${seconds}s)`;
+
+          if (seconds <= 0) {
+            clearInterval(cooldownInterval);
+            resendLink.classList.remove("disabled");
+            resendTimer.textContent = "";
+          }
+        }, 1000);
+      }
+
+      resendLink.addEventListener("click", () => {
+        if (!resendLink.classList.contains("disabled")) {
+          // Simulate resend
+          startCooldown();
+          // Show feedback
+          resendLink.textContent = "Email sent!";
+          setTimeout(() => {
+            resendLink.textContent = "Resend email";
+          }, 2000);
+        }
+      });
+    </script>
+  </body>
+</html>

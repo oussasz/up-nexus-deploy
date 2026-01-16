@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | UP-NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <link rel="icon" type="image/png" href="../../icon.png" />
+    <link rel="apple-touch-icon" href="../../icon.png" />
+    <style>
+      /* Auth Page Styles */
+      .auth-page {
+        min-height: 100vh;
+        display: flex;
+      }
+
+      /* Left Panel - Branding */
+      .auth-branding {
+        flex: 1;
+        background: var(--gradient-hero);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: var(--space-16);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .auth-branding::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+      }
+
+      .auth-branding-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        max-width: 500px;
+      }
+
+      .auth-logo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: var(--space-8);
+      }
+
+      .auth-logo .logo-text {
+        font-size: 2.5rem;
+        font-weight: var(--font-weight-black);
+        display: flex;
+        align-items: center;
+      }
+
+      .auth-logo .logo-up {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .auth-logo .logo-ne,
+      .auth-logo .logo-us {
+        color: #ffffff;
+      }
+
+      .auth-logo .logo-x {
+        width: 36px;
+        height: 36px;
+        margin: 0 -3px;
+      }
+
+      .auth-logo .logo-x img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: brightness(1.2);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+          filter 0.3s ease;
+      }
+
+      .auth-logo:hover .logo-x img {
+        transform: rotate(180deg) scale(1.15);
+        filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+      }
+
+      .auth-logo .logo-x {
+        color: white;
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+      }
+
+      .auth-tagline {
+        font-size: var(--font-size-3xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-6);
+        line-height: 1.3;
+      }
+
+      .auth-description {
+        font-size: var(--font-size-lg);
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.7;
+        margin-bottom: var(--space-12);
+      }
+
+      .auth-features {
+        text-align: left;
+      }
+
+      .auth-feature {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        margin-bottom: var(--space-4);
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .auth-feature i {
+        width: 32px;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+      }
+
+      /* Right Panel - Form */
+      .auth-form-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: var(--space-16);
+        background: var(--color-bg-primary);
+      }
+
+      .auth-form-container {
+        width: 100%;
+        max-width: 420px;
+      }
+
+      .auth-form-header {
+        text-align: center;
+        margin-bottom: var(--space-10);
+      }
+
+      .auth-form-header h1 {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--space-3);
+      }
+
+      .auth-form-header p {
+        color: var(--color-text-secondary);
+      }
+
+      /* Social Login */
+      .social-login {
+        display: flex;
+        gap: var(--space-4);
+        margin-bottom: var(--space-8);
+      }
+
+      .social-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+        padding: var(--space-3) var(--space-4);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .social-btn:hover {
+        background: var(--color-bg-hover);
+        border-color: var(--color-primary);
+      }
+
+      .social-btn.google i {
+        color: #db4437;
+      }
+      .social-btn.linkedin i {
+        color: #0077b5;
+      }
+
+      /* Divider */
+      .auth-divider {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        margin-bottom: var(--space-8);
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+      }
+
+      .auth-divider::before,
+      .auth-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--color-border);
+      }
+
+      /* Form */
+      .auth-form {
+        margin-bottom: var(--space-8);
+      }
+
+      .form-group {
+        margin-bottom: var(--space-5);
+      }
+
+      .form-label {
+        display: block;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-2);
+      }
+
+      .form-input-wrapper {
+        position: relative;
+      }
+
+      .form-input-wrapper i {
+        position: absolute;
+        left: var(--space-4);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--color-text-muted);
+      }
+
+      .form-input-wrapper input {
+        width: 100%;
+        padding: var(--space-4) var(--space-4) var(--space-4) var(--space-12);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-base);
+        transition: all var(--transition-fast);
+      }
+
+      .form-input-wrapper input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-20);
+      }
+
+      .form-input-wrapper .toggle-password {
+        position: absolute;
+        right: var(--space-4);
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--color-text-muted);
+        cursor: pointer;
+      }
+
+      .form-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-6);
+      }
+
+      .form-checkbox {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+      }
+
+      .form-checkbox input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--color-primary);
+      }
+
+      .form-checkbox span {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      .forgot-link {
+        font-size: var(--font-size-sm);
+        color: var(--color-primary);
+        font-weight: var(--font-weight-medium);
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: var(--space-4);
+        font-size: var(--font-size-base);
+      }
+
+      /* Footer */
+      .auth-footer {
+        text-align: center;
+      }
+
+      .auth-footer p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+      }
+
+      .auth-footer a {
+        color: var(--color-primary);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      /* Mobile */
+      @media (max-width: 1024px) {
+        .auth-branding {
+          display: none;
+        }
+
+        .auth-form-panel {
+          padding: var(--space-8);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .social-login {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-page">
+      <!-- Left Panel - Branding -->
+      <div class="auth-branding">
+        <div class="auth-branding-content">
+          <div class="auth-logo">
+            <span class="logo-text">
+              <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+              ><span class="logo-x"><img src="../../icon.png" alt="X" /></span
+              ><span class="logo-us">US</span>
+            </span>
+          </div>
+          <h2 class="auth-tagline">
+            Join Algeria's Entrepreneurial Revolution
+          </h2>
+          <p class="auth-description">
+            Connect with thousands of startups, investors, and ecosystem
+            players. Your journey to success starts here.
+          </p>
+          <div class="auth-features">
+            <div class="auth-feature">
+              <i class="fas fa-check"></i>
+              <span>Access to 500+ startups and investors</span>
+            </div>
+            <div class="auth-feature">
+              <i class="fas fa-check"></i>
+              <span>Personalized opportunity recommendations</span>
+            </div>
+            <div class="auth-feature">
+              <i class="fas fa-check"></i>
+              <span>Exclusive events and programs</span>
+            </div>
+            <div class="auth-feature">
+              <i class="fas fa-check"></i>
+              <span>Direct messaging with ecosystem players</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel - Form -->
+      <div class="auth-form-panel">
+        <div class="auth-form-container">
+          <div class="auth-form-header">
+            <a
+              href="../../index.html"
+              class="logo"
+              style="
+                display: flex;
+                justify-content: center;
+                margin-bottom: var(--space-8);
+              "
+            >
+              <span class="logo-text">
+                <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+                ><span class="logo-x"><img src="../../icon.png" alt="X" /></span
+                ><span class="logo-us">US</span>
+              </span>
+            </a>
+            <h1>Welcome Back</h1>
+            <p>Sign in to continue to your account</p>
+          </div>
+
+          <!-- Social Login -->
+          <div class="social-login">
+            <button class="social-btn google">
+              <i class="fab fa-google"></i>
+              Google
+            </button>
+            <button class="social-btn linkedin">
+              <i class="fab fa-linkedin-in"></i>
+              LinkedIn
+            </button>
+          </div>
+
+          <div class="auth-divider">or continue with email</div>
+
+          <!-- Login Form -->
+          <form class="auth-form" id="loginForm">
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <div class="form-input-wrapper">
+                <i class="fas fa-envelope"></i>
+                <input type="email" placeholder="Enter your email" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <div class="form-input-wrapper">
+                <i class="fas fa-lock"></i>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  onclick="togglePassword()"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label class="form-checkbox">
+                <input type="checkbox" />
+                <span>Remember me</span>
+              </label>
+              <a href="forgot.html" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary submit-btn">
+              Sign In
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </form>
+
+          <div class="auth-footer">
+            <p>
+              Don't have an account?
+              <a href="register.html">Sign up for free</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function togglePassword() {
+        const password = document.getElementById("password");
+        const icon = document.querySelector(".toggle-password i");
+
+        if (password.type === "password") {
+          password.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          password.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      }
+
+      document.getElementById("loginForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Login functionality would be implemented here!");
+      });
+    </script>
+  </body>
+</html>

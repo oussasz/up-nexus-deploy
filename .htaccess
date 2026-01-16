@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Handle API requests - proxy to Node.js
+RewriteCond %{REQUEST_URI} ^/api
+RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
+
+# Frontend routes - serve static files or fallback to index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.html [L]

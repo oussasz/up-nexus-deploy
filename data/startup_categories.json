@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ai",
+    "name": "AI"
+  },
+  {
+    "id": "agritech",
+    "name": "AgriTech"
+  },
+  {
+    "id": "cloudtech",
+    "name": "CloudTech"
+  },
+  {
+    "id": "cybersecurity",
+    "name": "Cyber Security"
+  },
+  {
+    "id": "ecommerce",
+    "name": "E-Commerce"
+  },
+  {
+    "id": "egov",
+    "name": "E-Gov"
+  },
+  {
+    "id": "edtech",
+    "name": "EdTech"
+  },
+  {
+    "id": "energy",
+    "name": "Energy"
+  },
+  {
+    "id": "environmental",
+    "name": "Environmental Services"
+  },
+  {
+    "id": "fashion",
+    "name": "Fashion"
+  },
+  {
+    "id": "fintech",
+    "name": "FinTech"
+  },
+  {
+    "id": "foodtech",
+    "name": "Food-Tech"
+  },
+  {
+    "id": "hardware",
+    "name": "Hardware Solutions"
+  },
+  {
+    "id": "healthtech",
+    "name": "HealthTech"
+  },
+  {
+    "id": "hrtech",
+    "name": "HRTech"
+  },
+  {
+    "id": "industrial",
+    "name": "Industrial"
+  },
+  {
+    "id": "insurtech",
+    "name": "InsurTech"
+  },
+  {
+    "id": "iot",
+    "name": "IoT"
+  },
+  {
+    "id": "legaltech",
+    "name": "LegalTech"
+  },
+  {
+    "id": "logistics",
+    "name": "Logistics"
+  },
+  {
+    "id": "marketplace",
+    "name": "Marketplace"
+  },
+  {
+    "id": "materials",
+    "name": "Materials"
+  },
+  {
+    "id": "mobility",
+    "name": "Mobility"
+  },
+  {
+    "id": "realestate",
+    "name": "Real Estate"
+  },
+  {
+    "id": "retail",
+    "name": "Retail"
+  },
+  {
+    "id": "robotics",
+    "name": "Robotics"
+  },
+  {
+    "id": "saas",
+    "name": "SaaS"
+  },
+  {
+    "id": "technology",
+    "name": "Technology"
+  },
+  {
+    "id": "vr",
+    "name": "Virtual Reality"
+  },
+  {
+    "id": "web3",
+    "name": "Web3"
+  }
+]

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account | UP-NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <link rel="icon" type="image/png" href="../../icon.png" />
+    <link rel="apple-touch-icon" href="../../icon.png" />
+    <style>
+      /* Auth Page Styles */
+      .auth-page {
+        min-height: 100vh;
+        display: flex;
+      }
+
+      /* Left Panel - Branding */
+      .auth-branding {
+        flex: 0 0 45%;
+        background: var(--gradient-hero);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: var(--space-16);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .auth-branding::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+      }
+
+      .auth-branding-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        max-width: 400px;
+      }
+
+      .auth-logo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: var(--space-6);
+      }
+
+      .auth-logo .logo-text {
+        font-size: 2rem;
+        font-weight: var(--font-weight-black);
+        display: flex;
+        align-items: center;
+      }
+
+      .auth-logo .logo-up {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .auth-logo .logo-ne,
+      .auth-logo .logo-us {
+        color: #ffffff;
+      }
+
+      .auth-logo .logo-x {
+        width: 30px;
+        height: 30px;
+        margin: 0 -3px;
+      }
+
+      .auth-logo .logo-x img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: brightness(1.2);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+          filter 0.3s ease;
+      }
+
+      .auth-logo:hover .logo-x img {
+        transform: rotate(180deg) scale(1.15);
+        filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+      }
+
+      .auth-tagline {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-4);
+        line-height: 1.3;
+      }
+
+      .auth-description {
+        font-size: var(--font-size-base);
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.7;
+      }
+
+      /* Right Panel - Form */
+      .auth-form-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: var(--space-12);
+        background: var(--color-bg-primary);
+        overflow-y: auto;
+      }
+
+      .auth-form-container {
+        width: 100%;
+        max-width: 480px;
+      }
+
+      .auth-form-header {
+        text-align: center;
+        margin-bottom: var(--space-8);
+      }
+
+      .auth-form-header h1 {
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--space-2);
+      }
+
+      .auth-form-header p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+      }
+
+      /* Steps Indicator */
+      .steps-indicator {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-4);
+        margin-bottom: var(--space-8);
+      }
+
+      .step-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: var(--radius-full);
+        background: var(--color-bg-tertiary);
+        transition: all var(--transition-base);
+      }
+
+      .step-dot.active {
+        background: var(--color-primary);
+        width: 32px;
+      }
+
+      .step-dot.completed {
+        background: var(--color-accent-green);
+      }
+
+      /* Role Selection */
+      .role-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+        margin-bottom: var(--space-8);
+      }
+
+      .role-card {
+        padding: var(--space-5);
+        background: var(--color-bg-tertiary);
+        border: 2px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        text-align: center;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .role-card:hover {
+        border-color: var(--color-primary-20);
+        background: var(--color-bg-hover);
+      }
+
+      .role-card.selected {
+        border-color: var(--color-primary);
+        background: var(--color-primary-10);
+      }
+
+      .role-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto var(--space-3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-lg);
+        color: var(--color-primary);
+        font-size: 1.25rem;
+        transition: all var(--transition-fast);
+      }
+
+      .role-card.selected .role-icon {
+        background: var(--gradient-primary);
+        color: white;
+      }
+
+      .role-name {
+        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--space-1);
+      }
+
+      .role-desc {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+      }
+
+      /* Form Styles */
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+      }
+
+      .form-group {
+        margin-bottom: var(--space-4);
+      }
+
+      .form-label {
+        display: block;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-2);
+      }
+
+      .form-input {
+        width: 100%;
+        padding: var(--space-3) var(--space-4);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-base);
+        transition: all var(--transition-fast);
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-20);
+      }
+
+      .form-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 40px;
+      }
+
+      /* Password Strength */
+      .password-strength {
+        margin-top: var(--space-2);
+      }
+
+      .strength-bar {
+        height: 4px;
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-full);
+        margin-bottom: var(--space-2);
+        overflow: hidden;
+      }
+
+      .strength-fill {
+        height: 100%;
+        width: 0;
+        transition: all var(--transition-base);
+      }
+
+      .strength-fill.weak {
+        width: 33%;
+        background: var(--color-accent-red);
+      }
+      .strength-fill.medium {
+        width: 66%;
+        background: #f59e0b;
+      }
+      .strength-fill.strong {
+        width: 100%;
+        background: var(--color-accent-green);
+      }
+
+      .strength-text {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+      }
+
+      /* Terms */
+      .terms-check {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-3);
+        margin-bottom: var(--space-6);
+      }
+
+      .terms-check input {
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        accent-color: var(--color-primary);
+      }
+
+      .terms-check label {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        line-height: 1.5;
+      }
+
+      .terms-check a {
+        color: var(--color-primary);
+      }
+
+      /* Buttons */
+      .form-actions {
+        display: flex;
+        gap: var(--space-4);
+      }
+
+      .form-actions .btn {
+        flex: 1;
+        padding: var(--space-4);
+      }
+
+      /* Footer */
+      .auth-footer {
+        text-align: center;
+        margin-top: var(--space-8);
+      }
+
+      .auth-footer p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+      }
+
+      .auth-footer a {
+        color: var(--color-primary);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      /* Step Content */
+      .step-content {
+        display: none;
+      }
+
+      .step-content.active {
+        display: block;
+      }
+
+      /* Mobile */
+      @media (max-width: 1024px) {
+        .auth-branding {
+          display: none;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .role-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .form-actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-page">
+      <!-- Left Panel - Branding -->
+      <div class="auth-branding">
+        <div class="auth-branding-content">
+          <div class="auth-logo">
+            <span class="logo-text">
+              <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+              ><span class="logo-x"><img src="../../icon.png" alt="X" /></span
+              ><span class="logo-us">US</span>
+            </span>
+          </div>
+          <h2 class="auth-tagline">Start Your Entrepreneurial Journey</h2>
+          <p class="auth-description">
+            Join thousands of startups, investors, and ecosystem players
+            building Algeria's future together.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Panel - Form -->
+      <div class="auth-form-panel">
+        <div class="auth-form-container">
+          <div class="auth-form-header">
+            <a
+              href="../../index.html"
+              class="logo"
+              style="
+                display: flex;
+                justify-content: center;
+                margin-bottom: var(--space-6);
+              "
+            >
+              <span class="logo-text">
+                <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+                ><span class="logo-x"><img src="../../icon.png" alt="X" /></span
+                ><span class="logo-us">US</span>
+              </span>
+            </a>
+            <h1>Create Your Account</h1>
+            <p>Join the ecosystem in just a few steps</p>
+          </div>
+
+          <!-- Steps Indicator -->
+          <div class="steps-indicator">
+            <div class="step-dot active" data-step="1"></div>
+            <div class="step-dot" data-step="2"></div>
+            <div class="step-dot" data-step="3"></div>
+          </div>
+
+          <form id="registerForm">
+            <!-- Step 1: Choose Role -->
+            <div class="step-content active" data-step="1">
+              <h3
+                style="
+                  text-align: center;
+                  margin-bottom: var(--space-6);
+                  color: var(--color-text-secondary);
+                  font-size: var(--font-size-sm);
+                "
+              >
+                What best describes you?
+              </h3>
+
+              <div class="role-grid">
+                <div class="role-card" data-role="startup">
+                  <div class="role-icon"><i class="fas fa-rocket"></i></div>
+                  <div class="role-name">Startup</div>
+                  <div class="role-desc">Building a company</div>
+                </div>
+                <div class="role-card" data-role="investor">
+                  <div class="role-icon"><i class="fas fa-chart-pie"></i></div>
+                  <div class="role-name">Investor</div>
+                  <div class="role-desc">Looking to invest</div>
+                </div>
+                <div class="role-card" data-role="incubator">
+                  <div class="role-icon"><i class="fas fa-building"></i></div>
+                  <div class="role-name">Incubator</div>
+                  <div class="role-desc">Supporting startups</div>
+                </div>
+                <div class="role-card" data-role="freelancer">
+                  <div class="role-icon">
+                    <i class="fas fa-laptop-code"></i>
+                  </div>
+                  <div class="role-name">Freelancer</div>
+                  <div class="role-desc">Offering services</div>
+                </div>
+                <div class="role-card" data-role="mentor">
+                  <div class="role-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                  </div>
+                  <div class="role-name">Mentor</div>
+                  <div class="role-desc">Sharing expertise</div>
+                </div>
+                <div class="role-card" data-role="project">
+                  <div class="role-icon"><i class="fas fa-lightbulb"></i></div>
+                  <div class="role-name">Project Holder</div>
+                  <div class="role-desc">Have an idea</div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="toStep2"
+                  disabled
+                >
+                  Continue
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2: Personal Info -->
+            <div class="step-content" data-step="2">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="Enter first name"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="Enter last name"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input
+                  type="email"
+                  class="form-input"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input
+                  type="tel"
+                  class="form-input"
+                  placeholder="+213 XXX XXX XXX"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Location</label>
+                <select class="form-input form-select">
+                  <option value="">Select your city</option>
+                  <option value="algiers">Algiers</option>
+                  <option value="oran">Oran</option>
+                  <option value="constantine">Constantine</option>
+                  <option value="annaba">Annaba</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="backToStep1"
+                >
+                  <i class="fas fa-arrow-left"></i>
+                  Back
+                </button>
+                <button type="button" class="btn btn-primary" id="toStep3">
+                  Continue
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 3: Security -->
+            <div class="step-content" data-step="3">
+              <div class="form-group">
+                <label class="form-label">Create Password</label>
+                <input
+                  type="password"
+                  class="form-input"
+                  id="password"
+                  placeholder="Create a strong password"
+                  required
+                />
+                <div class="password-strength">
+                  <div class="strength-bar">
+                    <div class="strength-fill" id="strengthFill"></div>
+                  </div>
+                  <span class="strength-text" id="strengthText"
+                    >Password strength</span
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <input
+                  type="password"
+                  class="form-input"
+                  placeholder="Confirm your password"
+                  required
+                />
+              </div>
+
+              <div class="terms-check">
+                <input type="checkbox" id="terms" required />
+                <label for="terms">
+                  I agree to the <a href="#">Terms of Service</a> and
+                  <a href="#">Privacy Policy</a>. I understand that UP-NEXUS
+                  will process my data as described.
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="backToStep2"
+                >
+                  <i class="fas fa-arrow-left"></i>
+                  Back
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Create Account
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="auth-footer">
+            <p>Already have an account? <a href="login.html">Sign in</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Role Selection
+      let selectedRole = null;
+      const roleCards = document.querySelectorAll(".role-card");
+      const toStep2Btn = document.getElementById("toStep2");
+
+      roleCards.forEach((card) => {
+        card.addEventListener("click", () => {
+          roleCards.forEach((c) => c.classList.remove("selected"));
+          card.classList.add("selected");
+          selectedRole = card.dataset.role;
+          toStep2Btn.disabled = false;
+        });
+      });
+
+      // Step Navigation
+      const steps = document.querySelectorAll(".step-content");
+      const dots = document.querySelectorAll(".step-dot");
+
+      function showStep(stepNum) {
+        steps.forEach((step) => {
+          step.classList.remove("active");
+          if (parseInt(step.dataset.step) === stepNum) {
+            step.classList.add("active");
+          }
+        });
+
+        dots.forEach((dot) => {
+          const dotStep = parseInt(dot.dataset.step);
+          dot.classList.remove("active", "completed");
+          if (dotStep === stepNum) {
+            dot.classList.add("active");
+          } else if (dotStep < stepNum) {
+            dot.classList.add("completed");
+          }
+        });
+      }
+
+      document
+        .getElementById("toStep2")
+        .addEventListener("click", () => showStep(2));
+      document
+        .getElementById("backToStep1")
+        .addEventListener("click", () => showStep(1));
+      document
+        .getElementById("toStep3")
+        .addEventListener("click", () => showStep(3));
+      document
+        .getElementById("backToStep2")
+        .addEventListener("click", () => showStep(2));
+
+      // Password Strength
+      const password = document.getElementById("password");
+      const strengthFill = document.getElementById("strengthFill");
+      const strengthText = document.getElementById("strengthText");
+
+      password.addEventListener("input", (e) => {
+        const value = e.target.value;
+        let strength = 0;
+
+        if (value.length >= 8) strength++;
+        if (/[A-Z]/.test(value)) strength++;
+        if (/[0-9]/.test(value)) strength++;
+        if (/[^A-Za-z0-9]/.test(value)) strength++;
+
+        strengthFill.className = "strength-fill";
+
+        if (strength <= 1) {
+          strengthFill.classList.add("weak");
+          strengthText.textContent = "Weak password";
+        } else if (strength <= 3) {
+          strengthFill.classList.add("medium");
+          strengthText.textContent = "Medium strength";
+        } else {
+          strengthFill.classList.add("strong");
+          strengthText.textContent = "Strong password";
+        }
+      });
+
+      // Form Submit
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          alert("Account created successfully! Welcome to UP-NEXUS!");
+        });
+    </script>
+  </body>
+</html>

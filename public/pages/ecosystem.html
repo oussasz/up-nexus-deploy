@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecosystem Directory | UP-NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="icon" type="image/png" href="../icon.png" />
+    <link rel="apple-touch-icon" href="../icon.png" />
+    <style>
+      /* Ecosystem Page Specific Styles */
+      .page-hero {
+        padding: 160px 0 80px;
+        background: var(--color-bg-tertiary);
+        text-align: center;
+      }
+
+      .page-title {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: var(--font-weight-black);
+        margin-bottom: var(--space-4);
+      }
+
+      .page-subtitle {
+        font-size: var(--font-size-lg);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Stats Bar */
+      .ecosystem-stats {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-8);
+        margin-top: var(--space-8);
+        flex-wrap: wrap;
+      }
+
+      .ecosystem-stat {
+        text-align: center;
+      }
+
+      .ecosystem-stat-value {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-primary);
+      }
+
+      .ecosystem-stat-label {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      /* Search & Filters */
+      .ecosystem-controls {
+        padding: var(--space-8) 0;
+        background: var(--color-bg-secondary);
+        border-bottom: 1px solid var(--color-border);
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+      }
+
+      .search-bar {
+        display: flex;
+        gap: var(--space-4);
+        max-width: 800px;
+        margin: 0 auto var(--space-6);
+      }
+
+      .search-input-wrapper {
+        flex: 1;
+        position: relative;
+      }
+
+      .search-input-wrapper i {
+        position: absolute;
+        left: var(--space-4);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--color-text-muted);
+      }
+
+      .search-input-wrapper input {
+        width: 100%;
+        padding: var(--space-4) var(--space-4) var(--space-4) var(--space-12);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-base);
+      }
+
+      .search-input-wrapper input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+      }
+
+      .filter-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+        justify-content: center;
+      }
+
+      .filter-tag {
+        padding: var(--space-2) var(--space-4);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .filter-tag:hover,
+      .filter-tag.active {
+        background: var(--color-primary-10);
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+      }
+
+      /* Directory Grid */
+      .directory-section {
+        padding: var(--space-16) 0;
+        min-height: 400px;
+      }
+
+      .directory-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: var(--space-6);
+      }
+
+      /* Loading State */
+      .loading-state {
+        text-align: center;
+        padding: var(--space-16);
+        color: var(--color-text-secondary);
+        grid-column: 1 / -1;
+      }
+
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 3px solid var(--color-border);
+        border-top-color: var(--color-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto var(--space-4);
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: var(--space-16);
+        color: var(--color-text-secondary);
+        grid-column: 1 / -1;
+      }
+
+      .empty-state i {
+        font-size: 4rem;
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-4);
+        display: block;
+      }
+
+      /* Profile Card */
+      .profile-card {
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-6);
+        transition: all var(--transition-base);
+      }
+
+      .profile-card:hover {
+        border-color: var(--color-primary);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .profile-header {
+        display: flex;
+        gap: var(--space-4);
+        margin-bottom: var(--space-4);
+      }
+
+      .profile-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-lg);
+        background: var(--gradient-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .profile-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: var(--color-bg-secondary);
+      }
+
+      .profile-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .profile-name {
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-1);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .profile-name span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .verified-badge {
+        color: var(--color-accent-blue);
+        font-size: 1rem;
+        flex-shrink: 0;
+      }
+
+      .featured-badge {
+        color: var(--color-primary);
+        font-size: 1rem;
+        flex-shrink: 0;
+      }
+
+      .profile-type {
+        display: inline-flex;
+        padding: var(--space-1) var(--space-3);
+        background: var(--color-primary-10);
+        color: var(--color-primary);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .profile-description {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        line-height: 1.6;
+        margin-bottom: var(--space-4);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 2.8em;
+      }
+
+      .profile-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-4);
+        margin-bottom: var(--space-4);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-tertiary);
+      }
+
+      .profile-meta-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .profile-meta-item i {
+        color: var(--color-primary);
+      }
+
+      .profile-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin-bottom: var(--space-4);
+        min-height: 28px;
+      }
+
+      .profile-tag {
+        padding: var(--space-1) var(--space-2);
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-sm);
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+      }
+
+      .profile-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--color-border);
+      }
+
+      .profile-links {
+        display: flex;
+        gap: var(--space-3);
+      }
+
+      .profile-link {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        background: var(--color-bg-secondary);
+        color: var(--color-text-secondary);
+        transition: all var(--transition-fast);
+        text-decoration: none;
+      }
+
+      .profile-link:hover {
+        background: var(--color-primary);
+        color: white;
+      }
+
+      .profile-actions .btn {
+        padding: var(--space-2) var(--space-4);
+      }
+
+      /* Type-specific colors */
+      .type-ProjectHolder {
+        background: rgba(255, 107, 0, 0.1);
+        color: #ff6b00;
+      }
+      .type-Startup {
+        background: rgba(255, 140, 0, 0.1);
+        color: #ff8c00;
+      }
+      .type-Incubator {
+        background: rgba(244, 176, 0, 0.1);
+        color: #f4b000;
+      }
+      .type-Accelerator {
+        background: rgba(156, 39, 176, 0.1);
+        color: #9c27b0;
+      }
+      .type-Investor {
+        background: rgba(76, 175, 80, 0.1);
+        color: #4caf50;
+      }
+      .type-PublicFunder {
+        background: rgba(33, 150, 243, 0.1);
+        color: #2196f3;
+      }
+      .type-Freelancer {
+        background: rgba(0, 188, 212, 0.1);
+        color: #00bcd4;
+      }
+      .type-ResearchCenter {
+        background: rgba(103, 58, 183, 0.1);
+        color: #673ab7;
+      }
+      .type-MentorAdvisor {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+      }
+      .type-ServiceProvider {
+        background: rgba(233, 30, 99, 0.1);
+        color: #e91e63;
+      }
+      .type-CoworkingSpace {
+        background: rgba(121, 85, 72, 0.1);
+        color: #795548;
+      }
+      .type-CommunityNetwork {
+        background: rgba(96, 125, 139, 0.1);
+        color: #607d8b;
+      }
+
+      /* Results count */
+      .results-info {
+        margin-bottom: var(--space-6);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+      }
+
+      .results-info strong {
+        color: var(--color-primary);
+      }
+
+      /* Entity Detail Modal */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        padding: var(--space-4);
+      }
+
+      .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-content {
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-xl);
+        max-width: 600px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+      }
+
+      .modal-header {
+        padding: var(--space-6);
+        border-bottom: 1px solid var(--color-border);
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-4);
+      }
+
+      .modal-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .modal-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: var(--color-bg-secondary);
+      }
+
+      .modal-title-section {
+        flex: 1;
+      }
+
+      .modal-title {
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-2);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: var(--space-4);
+        right: var(--space-4);
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: var(--space-2);
+      }
+
+      .modal-close:hover {
+        color: var(--color-text-primary);
+      }
+
+      .modal-body {
+        padding: var(--space-6);
+      }
+
+      .modal-section {
+        margin-bottom: var(--space-6);
+      }
+
+      .modal-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .modal-section-title {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-primary);
+        margin-bottom: var(--space-3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .modal-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+      }
+
+      .modal-info-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+      }
+
+      .modal-info-label {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+      }
+
+      .modal-info-value {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-primary);
+      }
+
+      .modal-info-value a {
+        color: var(--color-primary);
+        text-decoration: none;
+      }
+
+      .modal-info-value a:hover {
+        text-decoration: underline;
+      }
+
+      .modal-social-links {
+        display: flex;
+        gap: var(--space-3);
+      }
+
+      .modal-social-link {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        background: var(--color-bg-secondary);
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        transition: all var(--transition-fast);
+      }
+
+      .modal-social-link:hover {
+        background: var(--color-primary);
+        color: white;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .search-bar {
+          flex-direction: column;
+        }
+
+        .directory-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .ecosystem-stats {
+          gap: var(--space-4);
+        }
+
+        .modal-header {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .modal-info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled" id="navbar">
+      <div class="container nav-container">
+        <a href="../index.html" class="logo">
+          <span class="logo-text">
+            <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+            ><span class="logo-x"><img src="../icon.png" alt="X" /></span
+            ><span class="logo-us">US</span>
+          </span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="#" class="active">Ecosystem</a></li>
+          <li><a href="announcements.html">Announcements</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button
+            class="btn btn-ghost"
+            onclick="window.location.href='auth/login.html'"
+          >
+            Log In
+          </button>
+          <button
+            class="btn btn-primary"
+            onclick="window.location.href='auth/register.html'"
+          >
+            <i class="fas fa-rocket"></i>
+            Join Free
+          </button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <span class="section-badge">
+          <i class="fas fa-network-wired"></i>
+          Directory
+        </span>
+        <h1 class="page-title">Explore the Ecosystem</h1>
+        <p class="page-subtitle">
+          Discover startups, investors, incubators, and all actors in Algeria's
+          entrepreneurial ecosystem
+        </p>
+        <div class="ecosystem-stats" id="ecosystemStats">
+          <div class="ecosystem-stat">
+            <div class="ecosystem-stat-value" id="totalEntities">-</div>
+            <div class="ecosystem-stat-label">Total Entities</div>
+          </div>
+          <div class="ecosystem-stat">
+            <div class="ecosystem-stat-value" id="totalStartups">-</div>
+            <div class="ecosystem-stat-label">Startups</div>
+          </div>
+          <div class="ecosystem-stat">
+            <div class="ecosystem-stat-value" id="totalInvestors">-</div>
+            <div class="ecosystem-stat-label">Investors</div>
+          </div>
+          <div class="ecosystem-stat">
+            <div class="ecosystem-stat-value" id="totalIncubators">-</div>
+            <div class="ecosystem-stat-label">Incubators</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search & Filters -->
+    <div class="ecosystem-controls">
+      <div class="container">
+        <div class="search-bar">
+          <div class="search-input-wrapper">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search by name, sector, location..."
+              oninput="filterEntities()"
+            />
+          </div>
+          <button class="btn btn-primary" onclick="filterEntities()">
+            <i class="fas fa-search"></i>
+            Search
+          </button>
+        </div>
+
+        <div class="filter-tags" id="filterTags">
+          <button class="filter-tag active" data-type="">All</button>
+          <button class="filter-tag" data-type="Project Holder">
+            Project Holders
+          </button>
+          <button class="filter-tag" data-type="Startup">Startups</button>
+          <button class="filter-tag" data-type="Incubator">Incubators</button>
+          <button class="filter-tag" data-type="Accelerator">
+            Accelerators
+          </button>
+          <button class="filter-tag" data-type="Investor">Investors</button>
+          <button class="filter-tag" data-type="Public Funder">
+            Public Funders
+          </button>
+          <button class="filter-tag" data-type="Freelancer">Freelancers</button>
+          <button class="filter-tag" data-type="Research Center">
+            Research Centers
+          </button>
+          <button class="filter-tag" data-type="Mentor & Advisor">
+            Mentors
+          </button>
+          <button class="filter-tag" data-type="Service Provider">
+            Service Providers
+          </button>
+          <button class="filter-tag" data-type="Coworking Space">
+            Coworking Spaces
+          </button>
+          <button class="filter-tag" data-type="Community & Network">
+            Communities
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Directory -->
+    <section class="directory-section">
+      <div class="container">
+        <div class="results-info" id="resultsInfo"></div>
+        <div class="directory-grid" id="directoryGrid">
+          <div class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading ecosystem...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Entity Detail Modal -->
+    <div class="modal-overlay" id="entityModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div
+          class="footer-bottom"
+          style="border-top: none; padding: var(--space-8) 0"
+        >
+          <p>&copy; 2026 UP-NEXUS. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/config.js"></script>
+    <script>
+      // API Configuration - use config or fallback
+      const API_URL = window.UP_NEXUS_CONFIG?.API_URL || (
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000/api"
+          : window.location.origin + "/api"
+      );
+
+      // State
+      let allEntities = [];
+      let currentFilter = "";
+      let currentSearch = "";
+
+      // Entity type colors
+      const typeColors = {
+        "Project Holder": "#ff6b00",
+        Startup: "#ff8c00",
+        Incubator: "#f4b000",
+        Accelerator: "#9c27b0",
+        Investor: "#4caf50",
+        "Public Funder": "#2196f3",
+        Freelancer: "#00bcd4",
+        "Research Center": "#673ab7",
+        "Mentor & Advisor": "#ffc107",
+        "Service Provider": "#e91e63",
+        "Coworking Space": "#795548",
+        "Community & Network": "#607d8b",
+      };
+
+      // Load entities on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        loadEntities();
+        setupFilterListeners();
+      });
+
+      // Setup filter tag listeners
+      function setupFilterListeners() {
+        document.querySelectorAll(".filter-tag").forEach((tag) => {
+          tag.addEventListener("click", () => {
+            document
+              .querySelectorAll(".filter-tag")
+              .forEach((t) => t.classList.remove("active"));
+            tag.classList.add("active");
+            currentFilter = tag.dataset.type;
+            filterEntities();
+          });
+        });
+      }
+
+      // Load entities from API
+      async function loadEntities() {
+        try {
+          const response = await fetch(`${API_URL}/entities`);
+          const data = await response.json();
+
+          if (data.success) {
+            allEntities = data.entities;
+            updateStats();
+            renderEntities(allEntities);
+          } else {
+            showError("Failed to load entities");
+          }
+        } catch (error) {
+          console.error("Error loading entities:", error);
+          showError("Unable to connect to server. Please try again later.");
+        }
+      }
+
+      // Update statistics
+      function updateStats() {
+        document.getElementById("totalEntities").textContent =
+          allEntities.length;
+        document.getElementById("totalStartups").textContent =
+          allEntities.filter((e) => e.type === "Startup").length;
+        document.getElementById("totalInvestors").textContent =
+          allEntities.filter((e) => e.type === "Investor").length;
+        document.getElementById("totalIncubators").textContent =
+          allEntities.filter((e) => e.type === "Incubator").length;
+      }
+
+      // Filter entities
+      function filterEntities() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+
+        let filtered = allEntities.filter((entity) => {
+          // Type filter
+          const matchesType = !currentFilter || entity.type === currentFilter;
+
+          // Search filter
+          const matchesSearch =
+            !searchTerm ||
+            entity.name.toLowerCase().includes(searchTerm) ||
+            (entity.description &&
+              entity.description.toLowerCase().includes(searchTerm)) ||
+            (entity.shortDescription &&
+              entity.shortDescription.toLowerCase().includes(searchTerm)) ||
+            (entity.sector &&
+              entity.sector.toLowerCase().includes(searchTerm)) ||
+            (entity.wilaya &&
+              entity.wilaya.toLowerCase().includes(searchTerm)) ||
+            (entity.location &&
+              entity.location.toLowerCase().includes(searchTerm)) ||
+            (entity.tags &&
+              entity.tags.some((tag) =>
+                tag.toLowerCase().includes(searchTerm)
+              ));
+
+          return matchesType && matchesSearch;
+        });
+
+        renderEntities(filtered);
+      }
+
+      // Render entities
+      function renderEntities(entities) {
+        const grid = document.getElementById("directoryGrid");
+        const resultsInfo = document.getElementById("resultsInfo");
+
+        if (entities.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-search"></i>
+              <h3>No entities found</h3>
+              <p>Try adjusting your search or filters</p>
+            </div>
+          `;
+          resultsInfo.innerHTML = "";
+          return;
+        }
+
+        resultsInfo.innerHTML = `Showing <strong>${entities.length}</strong> ${
+          entities.length === 1 ? "entity" : "entities"
+        }${currentFilter ? ` in <strong>${currentFilter}</strong>` : ""}`;
+
+        grid.innerHTML = entities
+          .map((entity) => createEntityCard(entity))
+          .join("");
+      }
+
+      // Create entity card HTML
+      function createEntityCard(entity) {
+        const typeClass = entity.type.replace(/[^a-zA-Z]/g, "");
+        const color = typeColors[entity.type] || "#f4b000";
+
+        // Avatar: logo or first letter
+        const avatarContent = entity.logo
+          ? `<img src="${entity.logo}" alt="${
+              entity.name
+            }" onerror="this.parentElement.innerHTML='${
+              entity.icon || entity.name.charAt(0).toUpperCase()
+            }'" />`
+          : entity.icon || entity.name.charAt(0).toUpperCase();
+
+        // Description
+        const description =
+          entity.shortDescription ||
+          entity.description ||
+          "No description available";
+
+        // Location
+        const location = entity.wilaya || entity.location || "";
+
+        // Tags (max 3)
+        const tags = (entity.tags || []).slice(0, 3);
+        const tagsHtml =
+          tags.length > 0
+            ? tags
+                .map((tag) => `<span class="profile-tag">${tag}</span>`)
+                .join("")
+            : entity.sector
+            ? `<span class="profile-tag">${entity.sector}</span>`
+            : "";
+
+        // Social links
+        let socialLinks = "";
+        if (entity.website) {
+          socialLinks += `<a href="${entity.website}" target="_blank" class="profile-link" title="Website"><i class="fas fa-globe"></i></a>`;
+        }
+        if (entity.socialMedia?.linkedin) {
+          socialLinks += `<a href="${entity.socialMedia.linkedin}" target="_blank" class="profile-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>`;
+        }
+        if (entity.socialMedia?.twitter) {
+          socialLinks += `<a href="${entity.socialMedia.twitter}" target="_blank" class="profile-link" title="Twitter"><i class="fab fa-twitter"></i></a>`;
+        }
+        if (entity.email) {
+          socialLinks += `<a href="mailto:${entity.email}" class="profile-link" title="Email"><i class="fas fa-envelope"></i></a>`;
+        }
+
+        return `
+          <div class="profile-card">
+            <div class="profile-header">
+              <div class="profile-avatar" style="background: linear-gradient(135deg, ${color}, ${color}dd)">
+                ${avatarContent}
+              </div>
+              <div class="profile-info">
+                <h3 class="profile-name">
+                  <span>${entity.name}</span>
+                  ${
+                    entity.isVerified
+                      ? '<i class="fas fa-check-circle verified-badge" title="Verified"></i>'
+                      : ""
+                  }
+                  ${
+                    entity.isFeatured
+                      ? '<i class="fas fa-star featured-badge" title="Featured"></i>'
+                      : ""
+                  }
+                </h3>
+                <span class="profile-type type-${typeClass}">${
+          entity.type
+        }</span>
+              </div>
+            </div>
+            <p class="profile-description">${description}</p>
+            <div class="profile-meta">
+              ${
+                location
+                  ? `<span class="profile-meta-item"><i class="fas fa-map-marker-alt"></i> ${location}</span>`
+                  : ""
+              }
+              ${
+                entity.foundedYear
+                  ? `<span class="profile-meta-item"><i class="fas fa-calendar"></i> Founded ${entity.foundedYear}</span>`
+                  : ""
+              }
+              ${
+                entity.teamSize
+                  ? `<span class="profile-meta-item"><i class="fas fa-users"></i> ${entity.teamSize}</span>`
+                  : ""
+              }
+            </div>
+            <div class="profile-tags">
+              ${tagsHtml}
+            </div>
+            <div class="profile-footer">
+              <div class="profile-links">
+                ${
+                  socialLinks ||
+                  '<span style="color: var(--color-text-muted); font-size: 0.75rem;">No links</span>'
+                }
+              </div>
+              <div class="profile-actions">
+                <button class="btn btn-primary btn-sm" onclick="viewProfile('${
+                  entity._id
+                }')">View Details</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // View profile modal
+      function viewProfile(id) {
+        const entity = allEntities.find((e) => e._id === id);
+        if (!entity) return;
+
+        const color = typeColors[entity.type] || "#f4b000";
+        const typeClass = entity.type.replace(/[^a-zA-Z]/g, "");
+
+        // Avatar
+        const avatarContent = entity.logo
+          ? `<img src="${entity.logo}" alt="${entity.name}" />`
+          : entity.icon || entity.name.charAt(0).toUpperCase();
+
+        // Build modal content
+        let modalHtml = `
+          <div class="modal-header">
+            <div class="modal-avatar" style="background: linear-gradient(135deg, ${color}, ${color}dd)">
+              ${avatarContent}
+            </div>
+            <div class="modal-title-section">
+              <h2 class="modal-title">
+                ${entity.name}
+                ${
+                  entity.isVerified
+                    ? '<i class="fas fa-check-circle verified-badge"></i>'
+                    : ""
+                }
+                ${
+                  entity.isFeatured
+                    ? '<i class="fas fa-star featured-badge"></i>'
+                    : ""
+                }
+              </h2>
+              <span class="profile-type type-${typeClass}">${entity.type}</span>
+            </div>
+          </div>
+          <div class="modal-body">
+        `;
+
+        // Description
+        if (entity.description || entity.shortDescription) {
+          modalHtml += `
+            <div class="modal-section">
+              <h4 class="modal-section-title">About</h4>
+              <p style="color: var(--color-text-secondary); line-height: 1.6;">
+                ${entity.description || entity.shortDescription}
+              </p>
+            </div>
+          `;
+        }
+
+        // Basic Info
+        modalHtml += `<div class="modal-section"><h4 class="modal-section-title">Details</h4><div class="modal-info-grid">`;
+
+        if (entity.wilaya || entity.location) {
+          modalHtml += `
+            <div class="modal-info-item">
+              <span class="modal-info-label">Location</span>
+              <span class="modal-info-value">${entity.wilaya || ""} ${
+            entity.location || ""
+          }</span>
+            </div>
+          `;
+        }
+        if (entity.foundedYear) {
+          modalHtml += `
+            <div class="modal-info-item">
+              <span class="modal-info-label">Founded</span>
+              <span class="modal-info-value">${entity.foundedYear}</span>
+            </div>
+          `;
+        }
+        if (entity.teamSize) {
+          modalHtml += `
+            <div class="modal-info-item">
+              <span class="modal-info-label">Team Size</span>
+              <span class="modal-info-value">${entity.teamSize}</span>
+            </div>
+          `;
+        }
+        if (entity.sector) {
+          modalHtml += `
+            <div class="modal-info-item">
+              <span class="modal-info-label">Sector</span>
+              <span class="modal-info-value">${entity.sector}</span>
+            </div>
+          `;
+        }
+        if (entity.stage) {
+          modalHtml += `
+            <div class="modal-info-item">
+              <span class="modal-info-label">Stage</span>
+              <span class="modal-info-value">${entity.stage}</span>
+            </div>
+          `;
+        }
+
+        modalHtml += `</div></div>`;
+
+        // Contact
+        if (entity.email || entity.phone || entity.website) {
+          modalHtml += `<div class="modal-section"><h4 class="modal-section-title">Contact</h4><div class="modal-info-grid">`;
+
+          if (entity.email) {
+            modalHtml += `
+              <div class="modal-info-item">
+                <span class="modal-info-label">Email</span>
+                <span class="modal-info-value"><a href="mailto:${entity.email}">${entity.email}</a></span>
+              </div>
+            `;
+          }
+          if (entity.phone) {
+            modalHtml += `
+              <div class="modal-info-item">
+                <span class="modal-info-label">Phone</span>
+                <span class="modal-info-value"><a href="tel:${entity.phone}">${entity.phone}</a></span>
+              </div>
+            `;
+          }
+          if (entity.website) {
+            modalHtml += `
+              <div class="modal-info-item">
+                <span class="modal-info-label">Website</span>
+                <span class="modal-info-value"><a href="${entity.website}" target="_blank">${entity.website}</a></span>
+              </div>
+            `;
+          }
+
+          modalHtml += `</div></div>`;
+        }
+
+        // Social Media
+        const hasSocial =
+          entity.socialMedia?.linkedin ||
+          entity.socialMedia?.twitter ||
+          entity.socialMedia?.facebook ||
+          entity.socialMedia?.instagram;
+        if (hasSocial) {
+          modalHtml += `
+            <div class="modal-section">
+              <h4 class="modal-section-title">Social Media</h4>
+              <div class="modal-social-links">
+          `;
+          if (entity.socialMedia?.linkedin) {
+            modalHtml += `<a href="${entity.socialMedia.linkedin}" target="_blank" class="modal-social-link"><i class="fab fa-linkedin-in"></i></a>`;
+          }
+          if (entity.socialMedia?.twitter) {
+            modalHtml += `<a href="${entity.socialMedia.twitter}" target="_blank" class="modal-social-link"><i class="fab fa-twitter"></i></a>`;
+          }
+          if (entity.socialMedia?.facebook) {
+            modalHtml += `<a href="${entity.socialMedia.facebook}" target="_blank" class="modal-social-link"><i class="fab fa-facebook-f"></i></a>`;
+          }
+          if (entity.socialMedia?.instagram) {
+            modalHtml += `<a href="${entity.socialMedia.instagram}" target="_blank" class="modal-social-link"><i class="fab fa-instagram"></i></a>`;
+          }
+          modalHtml += `</div></div>`;
+        }
+
+        // Tags
+        if (entity.tags && entity.tags.length > 0) {
+          modalHtml += `
+            <div class="modal-section">
+              <h4 class="modal-section-title">Tags</h4>
+              <div class="profile-tags">
+                ${entity.tags
+                  .map((tag) => `<span class="profile-tag">${tag}</span>`)
+                  .join("")}
+              </div>
+            </div>
+          `;
+        }
+
+        modalHtml += `</div>`;
+
+        document.getElementById("modalContent").innerHTML = modalHtml;
+        document.getElementById("entityModal").classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      // Close modal
+      function closeModal() {
+        document.getElementById("entityModal").classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      // Close modal on overlay click
+      document.getElementById("entityModal").addEventListener("click", (e) => {
+        if (e.target.id === "entityModal") {
+          closeModal();
+        }
+      });
+
+      // Close modal on Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+      });
+
+      // Show error state
+      function showError(message) {
+        document.getElementById("directoryGrid").innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Error</h3>
+            <p>${message}</p>
+            <button class="btn btn-primary" onclick="loadEntities()" style="margin-top: var(--space-4);">
+              <i class="fas fa-redo"></i> Try Again
+            </button>
+          </div>
+        `;
+      }
+
+      // Mobile menu toggle
+      document
+        .getElementById("mobileMenuToggle")
+        ?.addEventListener("click", () => {
+          document.getElementById("navLinks").classList.toggle("open");
+        });
+    </script>
+  </body>
+</html>

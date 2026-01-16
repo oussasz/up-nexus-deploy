@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - UP-NEXUS</title>
+    <link rel="icon" type="image/png" href="../../icon.png" />
+    <link rel="apple-touch-icon" href="../../icon.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/admin.css" />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="logo">
+          <span class="logo-text">
+            <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+            ><span class="logo-x"><img src="../../icon.png" alt="X" /></span
+            ><span class="logo-us">US</span>
+          </span>
+        </a>
+        <p class="logo-subtitle">Admin Panel</p>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="dashboard">
+          <i class="fas fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-section="entities">
+          <i class="fas fa-cubes"></i>
+          <span>Entities</span>
+        </a>
+        <a href="#" class="nav-item" data-section="add-entity">
+          <i class="fas fa-plus-circle"></i>
+          <span>Add Entity</span>
+        </a>
+        <a href="#" class="nav-item" data-section="announcements">
+          <i class="fas fa-bullhorn"></i>
+          <span>Announcements</span>
+        </a>
+        <a href="#" class="nav-item" data-section="add-announcement">
+          <i class="fas fa-newspaper"></i>
+          <span>Add Announcement</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-info">
+          <div class="admin-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="admin-details">
+            <p class="admin-name" id="adminName">Admin</p>
+            <p class="admin-role" id="adminRole">Administrator</p>
+          </div>
+        </div>
+        <button class="btn-logout" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="main-header">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        <div class="header-actions">
+          <a href="../../index.html" class="btn-view-site" target="_blank">
+            <i class="fas fa-external-link-alt"></i>
+            <span>View Site</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Dashboard Section -->
+      <section class="content-section active" id="section-dashboard">
+        <div class="stats-grid stats-grid-expanded">
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(255, 107, 0, 0.1); color: #ff6b00"
+            >
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statProjectHolders">0</p>
+              <p class="stat-label">Project Holders</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(255, 140, 0, 0.1); color: #ff8c00"
+            >
+              <i class="fas fa-rocket"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statStartups">0</p>
+              <p class="stat-label">Startups</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(244, 176, 0, 0.1); color: #f4b000"
+            >
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statIncubators">0</p>
+              <p class="stat-label">Incubators</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(156, 39, 176, 0.1); color: #9c27b0"
+            >
+              <i class="fas fa-bolt"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statAccelerators">0</p>
+              <p class="stat-label">Accelerators</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(76, 175, 80, 0.1); color: #4caf50"
+            >
+              <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statInvestors">0</p>
+              <p class="stat-label">Investors</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(33, 150, 243, 0.1); color: #2196f3"
+            >
+              <i class="fas fa-landmark"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statPublicFunders">0</p>
+              <p class="stat-label">Public Funders</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(0, 188, 212, 0.1); color: #00bcd4"
+            >
+              <i class="fas fa-laptop-code"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statFreelancers">0</p>
+              <p class="stat-label">Freelancers</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(103, 58, 183, 0.1); color: #673ab7"
+            >
+              <i class="fas fa-flask"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statResearchCenters">0</p>
+              <p class="stat-label">Research Centers</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(255, 193, 7, 0.1); color: #ffc107"
+            >
+              <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statMentors">0</p>
+              <p class="stat-label">Mentors & Advisors</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(233, 30, 99, 0.1); color: #e91e63"
+            >
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statServiceProviders">0</p>
+              <p class="stat-label">Service Providers</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(121, 85, 72, 0.1); color: #795548"
+            >
+              <i class="fas fa-couch"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statCoworkingSpaces">0</p>
+              <p class="stat-label">Coworking Spaces</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: rgba(96, 125, 139, 0.1); color: #607d8b"
+            >
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statCommunities">0</p>
+              <p class="stat-label">Communities</p>
+            </div>
+          </div>
+          <div class="stat-card stat-total">
+            <div
+              class="stat-icon"
+              style="background: rgba(255, 255, 255, 0.1); color: #fff"
+            >
+              <i class="fas fa-globe"></i>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="statTotal">0</p>
+              <p class="stat-label">Total Entities</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="recent-section">
+          <h2 class="section-title">Recent Entities</h2>
+          <div class="recent-entities" id="recentEntities">
+            <p class="empty-message">Loading...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Entities Section -->
+      <section class="content-section" id="section-entities">
+        <div class="section-header">
+          <div class="filter-group">
+            <select class="filter-select" id="filterType">
+              <option value="">All Types</option>
+              <option value="Project Holder">Project Holders</option>
+              <option value="Startup">Startups</option>
+              <option value="Incubator">Incubators</option>
+              <option value="Accelerator">Accelerators</option>
+              <option value="Investor">Investors</option>
+              <option value="Public Funder">Public Funders</option>
+              <option value="Freelancer">Freelancers</option>
+              <option value="Research Center">Research Centers</option>
+              <option value="Mentor & Advisor">Mentors & Advisors</option>
+              <option value="Service Provider">Service Providers</option>
+              <option value="Coworking Space">Coworking Spaces</option>
+              <option value="Community & Network">
+                Communities & Networks
+              </option>
+            </select>
+            <input
+              type="text"
+              class="search-input"
+              id="searchInput"
+              placeholder="Search entities..."
+            />
+          </div>
+          <button class="btn-primary" onclick="showSection('add-entity')">
+            <i class="fas fa-plus"></i> Add Entity
+          </button>
+        </div>
+
+        <div class="entities-table-wrapper">
+          <table class="entities-table">
+            <thead>
+              <tr>
+                <th>Entity</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="entitiesTableBody">
+              <tr>
+                <td colspan="6" class="empty-message">Loading entities...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Add/Edit Entity Section -->
+      <section class="content-section" id="section-add-entity">
+        <div class="form-card">
+          <h2 class="form-title" id="formTitle">Add New Entity</h2>
+
+          <form id="entityForm">
+            <input type="hidden" id="entityId" />
+
+            <!-- Basic Information -->
+            <div class="form-section">
+              <h3 class="form-section-title">
+                <i class="fas fa-info-circle"></i> Basic Information
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityName">Name *</label>
+                  <input
+                    type="text"
+                    id="entityName"
+                    class="form-input"
+                    placeholder="Entity name"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityType">Type *</label>
+                  <select
+                    id="entityType"
+                    class="form-input"
+                    required
+                    onchange="toggleTypeSpecificFields()"
+                  >
+                    <option value="">Select type</option>
+                    <option value="Project Holder">Project Holder</option>
+                    <option value="Startup">Startup</option>
+                    <option value="Incubator">Incubator</option>
+                    <option value="Accelerator">Accelerator</option>
+                    <option value="Investor">Investor</option>
+                    <option value="Public Funder">Public Funder</option>
+                    <option value="Freelancer">Freelancer</option>
+                    <option value="Research Center">Research Center</option>
+                    <option value="Mentor & Advisor">Mentor & Advisor</option>
+                    <option value="Service Provider">Service Provider</option>
+                    <option value="Coworking Space">Coworking Space</option>
+                    <option value="Community & Network">
+                      Community & Network
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityShortDescription"
+                    >Short Description</label
+                  >
+                  <input
+                    type="text"
+                    id="entityShortDescription"
+                    class="form-input"
+                    placeholder="Brief tagline (max 200 chars)"
+                    maxlength="200"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityDescription"
+                  >Full Description</label
+                >
+                <textarea
+                  id="entityDescription"
+                  class="form-input form-textarea"
+                  placeholder="Detailed description of the entity..."
+                  rows="4"
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Logo & Branding -->
+            <div class="form-section">
+              <h3 class="form-section-title">
+                <i class="fas fa-image"></i> Logo & Branding
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group form-group-logo">
+                  <label class="form-label">Logo / Picture</label>
+                  <div class="logo-upload-container">
+                    <div class="logo-preview" id="logoPreview">
+                      <i class="fas fa-image"></i>
+                      <span>No logo</span>
+                    </div>
+                    <div class="logo-input-group">
+                      <input
+                        type="url"
+                        id="entityLogo"
+                        class="form-input"
+                        placeholder="Paste image URL (e.g., from Imgur, Cloudinary)"
+                      />
+                      <p class="form-hint">
+                        Enter a direct URL to an image. You can use services
+                        like
+                        <a href="https://imgur.com" target="_blank">Imgur</a>,
+                        <a href="https://imgbb.com" target="_blank">ImgBB</a>,
+                        or
+                        <a href="https://cloudinary.com" target="_blank"
+                          >Cloudinary</a
+                        >
+                        to host images.
+                      </p>
+                      <button
+                        type="button"
+                        class="btn-secondary btn-small"
+                        onclick="previewLogo()"
+                      >
+                        <i class="fas fa-eye"></i> Preview Logo
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityIcon"
+                    >Fallback Icon (Emoji)</label
+                  >
+                  <input
+                    type="text"
+                    id="entityIcon"
+                    class="form-input"
+                    placeholder="🚀"
+                  />
+                  <p class="form-hint">Used if no logo is provided</p>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityColor"
+                    >Brand Color</label
+                  >
+                  <input
+                    type="color"
+                    id="entityColor"
+                    class="form-input form-color"
+                    value="#F4B000"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Location & Contact -->
+            <div class="form-section">
+              <h3 class="form-section-title">
+                <i class="fas fa-map-marker-alt"></i> Location & Contact
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityWilaya">Wilaya</label>
+                  <select id="entityWilaya" class="form-input">
+                    <option value="">Select Wilaya</option>
+                    <option value="Adrar">Adrar</option>
+                    <option value="Chlef">Chlef</option>
+                    <option value="Laghouat">Laghouat</option>
+                    <option value="Oum El Bouaghi">Oum El Bouaghi</option>
+                    <option value="Batna">Batna</option>
+                    <option value="Béjaïa">Béjaïa</option>
+                    <option value="Biskra">Biskra</option>
+                    <option value="Béchar">Béchar</option>
+                    <option value="Blida">Blida</option>
+                    <option value="Bouira">Bouira</option>
+                    <option value="Tamanrasset">Tamanrasset</option>
+                    <option value="Tébessa">Tébessa</option>
+                    <option value="Tlemcen">Tlemcen</option>
+                    <option value="Tiaret">Tiaret</option>
+                    <option value="Tizi Ouzou">Tizi Ouzou</option>
+                    <option value="Alger">Alger</option>
+                    <option value="Djelfa">Djelfa</option>
+                    <option value="Jijel">Jijel</option>
+                    <option value="Sétif">Sétif</option>
+                    <option value="Saïda">Saïda</option>
+                    <option value="Skikda">Skikda</option>
+                    <option value="Sidi Bel Abbès">Sidi Bel Abbès</option>
+                    <option value="Annaba">Annaba</option>
+                    <option value="Guelma">Guelma</option>
+                    <option value="Constantine">Constantine</option>
+                    <option value="Médéa">Médéa</option>
+                    <option value="Mostaganem">Mostaganem</option>
+                    <option value="M'Sila">M'Sila</option>
+                    <option value="Mascara">Mascara</option>
+                    <option value="Ouargla">Ouargla</option>
+                    <option value="Oran">Oran</option>
+                    <option value="El Bayadh">El Bayadh</option>
+                    <option value="Illizi">Illizi</option>
+                    <option value="Bordj Bou Arréridj">
+                      Bordj Bou Arréridj
+                    </option>
+                    <option value="Boumerdès">Boumerdès</option>
+                    <option value="El Tarf">El Tarf</option>
+                    <option value="Tindouf">Tindouf</option>
+                    <option value="Tissemsilt">Tissemsilt</option>
+                    <option value="El Oued">El Oued</option>
+                    <option value="Khenchela">Khenchela</option>
+                    <option value="Souk Ahras">Souk Ahras</option>
+                    <option value="Tipaza">Tipaza</option>
+                    <option value="Mila">Mila</option>
+                    <option value="Aïn Defla">Aïn Defla</option>
+                    <option value="Naâma">Naâma</option>
+                    <option value="Aïn Témouchent">Aïn Témouchent</option>
+                    <option value="Ghardaïa">Ghardaïa</option>
+                    <option value="Relizane">Relizane</option>
+                    <option value="Timimoun">Timimoun</option>
+                    <option value="Bordj Badji Mokhtar">
+                      Bordj Badji Mokhtar
+                    </option>
+                    <option value="Ouled Djellal">Ouled Djellal</option>
+                    <option value="Béni Abbès">Béni Abbès</option>
+                    <option value="In Salah">In Salah</option>
+                    <option value="In Guezzam">In Guezzam</option>
+                    <option value="Touggourt">Touggourt</option>
+                    <option value="Djanet">Djanet</option>
+                    <option value="El M'Ghair">El M'Ghair</option>
+                    <option value="El Meniaa">El Meniaa</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityLocation"
+                    >City/Location</label
+                  >
+                  <input
+                    type="text"
+                    id="entityLocation"
+                    class="form-input"
+                    placeholder="Algiers"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityAddress"
+                  >Full Address</label
+                >
+                <input
+                  type="text"
+                  id="entityAddress"
+                  class="form-input"
+                  placeholder="123 Street Name, City"
+                />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityEmail">Email</label>
+                  <input
+                    type="email"
+                    id="entityEmail"
+                    class="form-input"
+                    placeholder="contact@example.com"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityPhone">Phone</label>
+                  <input
+                    type="tel"
+                    id="entityPhone"
+                    class="form-input"
+                    placeholder="+213 XXX XXX XXX"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityWebsite">Website</label>
+                <input
+                  type="url"
+                  id="entityWebsite"
+                  class="form-input"
+                  placeholder="https://example.com"
+                />
+              </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="form-section">
+              <h3 class="form-section-title">
+                <i class="fas fa-share-alt"></i> Social Media
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityLinkedin"
+                    ><i class="fab fa-linkedin"></i> LinkedIn</label
+                  >
+                  <input
+                    type="url"
+                    id="entityLinkedin"
+                    class="form-input"
+                    placeholder="https://linkedin.com/company/..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityTwitter"
+                    ><i class="fab fa-twitter"></i> Twitter/X</label
+                  >
+                  <input
+                    type="url"
+                    id="entityTwitter"
+                    class="form-input"
+                    placeholder="https://twitter.com/..."
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityFacebook"
+                    ><i class="fab fa-facebook"></i> Facebook</label
+                  >
+                  <input
+                    type="url"
+                    id="entityFacebook"
+                    class="form-input"
+                    placeholder="https://facebook.com/..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityInstagram"
+                    ><i class="fab fa-instagram"></i> Instagram</label
+                  >
+                  <input
+                    type="url"
+                    id="entityInstagram"
+                    class="form-input"
+                    placeholder="https://instagram.com/..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Details -->
+            <div class="form-section">
+              <h3 class="form-section-title">
+                <i class="fas fa-cog"></i> Additional Details
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityFoundedYear"
+                    >Founded Year</label
+                  >
+                  <input
+                    type="number"
+                    id="entityFoundedYear"
+                    class="form-input"
+                    placeholder="2020"
+                    min="1900"
+                    max="2030"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityTeamSize"
+                    >Team Size</label
+                  >
+                  <select id="entityTeamSize" class="form-input">
+                    <option value="">Select size</option>
+                    <option value="1">Solo (1)</option>
+                    <option value="2-5">2-5</option>
+                    <option value="6-10">6-10</option>
+                    <option value="11-50">11-50</option>
+                    <option value="51-200">51-200</option>
+                    <option value="201-500">201-500</option>
+                    <option value="500+">500+</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entitySector"
+                    >Sector / Industry</label
+                  >
+                  <select id="entitySector" class="form-input">
+                    <option value="">Select sector</option>
+                    <option value="Technology & Software">
+                      Technology & Software
+                    </option>
+                    <option value="E-commerce & Retail">
+                      E-commerce & Retail
+                    </option>
+                    <option value="FinTech & Finance">FinTech & Finance</option>
+                    <option value="HealthTech & Medical">
+                      HealthTech & Medical
+                    </option>
+                    <option value="EdTech & Education">
+                      EdTech & Education
+                    </option>
+                    <option value="AgriTech & Agriculture">
+                      AgriTech & Agriculture
+                    </option>
+                    <option value="CleanTech & Energy">
+                      CleanTech & Energy
+                    </option>
+                    <option value="PropTech & Real Estate">
+                      PropTech & Real Estate
+                    </option>
+                    <option value="FoodTech & Hospitality">
+                      FoodTech & Hospitality
+                    </option>
+                    <option value="Logistics & Transportation">
+                      Logistics & Transportation
+                    </option>
+                    <option value="Manufacturing & Industry">
+                      Manufacturing & Industry
+                    </option>
+                    <option value="Media & Entertainment">
+                      Media & Entertainment
+                    </option>
+                    <option value="Telecommunications">
+                      Telecommunications
+                    </option>
+                    <option value="Cybersecurity">Cybersecurity</option>
+                    <option value="AI & Machine Learning">
+                      AI & Machine Learning
+                    </option>
+                    <option value="IoT & Hardware">IoT & Hardware</option>
+                    <option value="SaaS & Cloud Services">
+                      SaaS & Cloud Services
+                    </option>
+                    <option value="Gaming & Esports">Gaming & Esports</option>
+                    <option value="Tourism & Travel">Tourism & Travel</option>
+                    <option value="Legal & Consulting">
+                      Legal & Consulting
+                    </option>
+                    <option value="HR & Recruitment">HR & Recruitment</option>
+                    <option value="Marketing & Advertising">
+                      Marketing & Advertising
+                    </option>
+                    <option value="Social Impact & NGO">
+                      Social Impact & NGO
+                    </option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityStage">Stage</label>
+                  <select id="entityStage" class="form-input">
+                    <option value="">Select stage</option>
+                    <option value="Idea">Idea</option>
+                    <option value="Prototype">Prototype</option>
+                    <option value="MVP">MVP</option>
+                    <option value="Early Stage">Early Stage</option>
+                    <option value="Growth">Growth</option>
+                    <option value="Scale-up">Scale-up</option>
+                    <option value="Established">Established</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityTags">Tags</label>
+                <input
+                  type="text"
+                  id="entityTags"
+                  class="form-input"
+                  placeholder="tech, fintech, ai, healthtech (comma separated)"
+                />
+              </div>
+            </div>
+
+            <!-- Type-Specific Fields: Investors/Funders -->
+            <div
+              class="form-section type-specific"
+              id="investorFields"
+              style="display: none"
+            >
+              <h3 class="form-section-title">
+                <i class="fas fa-coins"></i> Investment Details
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityInvestmentRange"
+                    >Investment Range</label
+                  >
+                  <input
+                    type="text"
+                    id="entityInvestmentRange"
+                    class="form-input"
+                    placeholder="$10K - $500K"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityPortfolioCount"
+                    >Portfolio Companies</label
+                  >
+                  <input
+                    type="number"
+                    id="entityPortfolioCount"
+                    class="form-input"
+                    placeholder="25"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityInvestmentStages"
+                  >Investment Stages</label
+                >
+                <input
+                  type="text"
+                  id="entityInvestmentStages"
+                  class="form-input"
+                  placeholder="Pre-seed, Seed, Series A (comma separated)"
+                />
+              </div>
+            </div>
+
+            <!-- Type-Specific Fields: Incubators/Accelerators -->
+            <div
+              class="form-section type-specific"
+              id="incubatorFields"
+              style="display: none"
+            >
+              <h3 class="form-section-title">
+                <i class="fas fa-seedling"></i> Program Details
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityProgramDuration"
+                    >Program Duration</label
+                  >
+                  <input
+                    type="text"
+                    id="entityProgramDuration"
+                    class="form-input"
+                    placeholder="3 months, 6 months"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityBatchSize"
+                    >Batch Size</label
+                  >
+                  <input
+                    type="number"
+                    id="entityBatchSize"
+                    class="form-input"
+                    placeholder="15"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entitySuccessStories"
+                  >Success Stories Count</label
+                >
+                <input
+                  type="number"
+                  id="entitySuccessStories"
+                  class="form-input"
+                  placeholder="50"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <!-- Type-Specific Fields: Freelancers/Service Providers -->
+            <div
+              class="form-section type-specific"
+              id="freelancerFields"
+              style="display: none"
+            >
+              <h3 class="form-section-title">
+                <i class="fas fa-tools"></i> Services & Expertise
+              </h3>
+
+              <div class="form-group">
+                <label class="form-label" for="entityServices"
+                  >Services Offered</label
+                >
+                <input
+                  type="text"
+                  id="entityServices"
+                  class="form-input"
+                  placeholder="Web Development, Mobile Apps, Design (comma separated)"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityExpertise"
+                  >Areas of Expertise</label
+                >
+                <input
+                  type="text"
+                  id="entityExpertise"
+                  class="form-input"
+                  placeholder="React, Node.js, Python (comma separated)"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityHourlyRate"
+                  >Hourly Rate / Pricing</label
+                >
+                <input
+                  type="text"
+                  id="entityHourlyRate"
+                  class="form-input"
+                  placeholder="$50-100/hr or Project-based"
+                />
+              </div>
+            </div>
+
+            <!-- Type-Specific Fields: Research Centers -->
+            <div
+              class="form-section type-specific"
+              id="researchFields"
+              style="display: none"
+            >
+              <h3 class="form-section-title">
+                <i class="fas fa-microscope"></i> Research Details
+              </h3>
+
+              <div class="form-group">
+                <label class="form-label" for="entityResearchAreas"
+                  >Research Areas</label
+                >
+                <input
+                  type="text"
+                  id="entityResearchAreas"
+                  class="form-input"
+                  placeholder="AI, Biotechnology, Renewable Energy (comma separated)"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityPublications"
+                  >Number of Publications</label
+                >
+                <input
+                  type="number"
+                  id="entityPublications"
+                  class="form-input"
+                  placeholder="150"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <!-- Type-Specific Fields: Coworking Spaces -->
+            <div
+              class="form-section type-specific"
+              id="coworkingFields"
+              style="display: none"
+            >
+              <h3 class="form-section-title">
+                <i class="fas fa-building"></i> Space Details
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="entityCapacity"
+                    >Capacity (seats)</label
+                  >
+                  <input
+                    type="number"
+                    id="entityCapacity"
+                    class="form-input"
+                    placeholder="100"
+                    min="0"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="entityPricing">Pricing</label>
+                  <input
+                    type="text"
+                    id="entityPricing"
+                    class="form-input"
+                    placeholder="From $50/month"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityAmenities"
+                  >Amenities</label
+                >
+                <input
+                  type="text"
+                  id="entityAmenities"
+                  class="form-input"
+                  placeholder="WiFi, Meeting Rooms, Coffee, Parking (comma separated)"
+                />
+              </div>
+            </div>
+
+            <!-- Status & Options -->
+            <div class="form-section">
+              <h3 class="form-section-title">
+                <i class="fas fa-toggle-on"></i> Status & Options
+              </h3>
+
+              <div class="form-checkboxes">
+                <div class="form-group form-checkbox">
+                  <input type="checkbox" id="entityActive" checked />
+                  <label for="entityActive"
+                    >Active (visible in ecosystem)</label
+                  >
+                </div>
+                <div class="form-group form-checkbox">
+                  <input type="checkbox" id="entityFeatured" />
+                  <label for="entityFeatured"
+                    >Featured (highlight on homepage)</label
+                  >
+                </div>
+                <div class="form-group form-checkbox">
+                  <input type="checkbox" id="entityVerified" />
+                  <label for="entityVerified"
+                    >Verified (confirmed entity)</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" onclick="resetForm()">
+                <i class="fas fa-times"></i> Cancel
+              </button>
+              <button type="submit" class="btn-primary" id="submitBtn">
+                <i class="fas fa-save"></i> Save Entity
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Emoji Picker Reference -->
+        <div class="emoji-reference">
+          <h3>Common Icons</h3>
+          <div class="emoji-grid">
+            <span class="emoji-item" onclick="selectEmoji('💡')">💡</span>
+            <span class="emoji-item" onclick="selectEmoji('🚀')">🚀</span>
+            <span class="emoji-item" onclick="selectEmoji('🏢')">🏢</span>
+            <span class="emoji-item" onclick="selectEmoji('⚡')">⚡</span>
+            <span class="emoji-item" onclick="selectEmoji('💰')">💰</span>
+            <span class="emoji-item" onclick="selectEmoji('🏛️')">🏛️</span>
+            <span class="emoji-item" onclick="selectEmoji('👨‍💻')">👨‍💻</span>
+            <span class="emoji-item" onclick="selectEmoji('🔬')">🔬</span>
+            <span class="emoji-item" onclick="selectEmoji('🎓')">🎓</span>
+            <span class="emoji-item" onclick="selectEmoji('🛠️')">🛠️</span>
+            <span class="emoji-item" onclick="selectEmoji('🪑')">🪑</span>
+            <span class="emoji-item" onclick="selectEmoji('👥')">👥</span>
+            <span class="emoji-item" onclick="selectEmoji('📊')">📊</span>
+            <span class="emoji-item" onclick="selectEmoji('☁️')">☁️</span>
+            <span class="emoji-item" onclick="selectEmoji('🌱')">🌱</span>
+            <span class="emoji-item" onclick="selectEmoji('🏥')">🏥</span>
+            <span class="emoji-item" onclick="selectEmoji('📚')">📚</span>
+            <span class="emoji-item" onclick="selectEmoji('🛡️')">🛡️</span>
+            <span class="emoji-item" onclick="selectEmoji('🎨')">🎨</span>
+            <span class="emoji-item" onclick="selectEmoji('🎬')">🎬</span>
+            <span class="emoji-item" onclick="selectEmoji('✈️')">✈️</span>
+            <span class="emoji-item" onclick="selectEmoji('🍽️')">🍽️</span>
+            <span class="emoji-item" onclick="selectEmoji('🏗️')">🏗️</span>
+            <span class="emoji-item" onclick="selectEmoji('🌐')">🌐</span>
+            <span class="emoji-item" onclick="selectEmoji('💳')">💳</span>
+            <span class="emoji-item" onclick="selectEmoji('📦')">📦</span>
+            <span class="emoji-item" onclick="selectEmoji('🧬')">🧬</span>
+            <span class="emoji-item" onclick="selectEmoji('🤝')">🤝</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Announcements Section -->
+      <section class="content-section" id="section-announcements">
+        <div class="section-header">
+          <div class="filter-group">
+            <select class="filter-select" id="filterAnnouncementCategory">
+              <option value="">All Categories</option>
+              <option value="Funding">Funding</option>
+              <option value="Job">Jobs</option>
+              <option value="Event">Events</option>
+              <option value="Program">Programs</option>
+              <option value="News">News</option>
+              <option value="Other">Other</option>
+            </select>
+            <input
+              type="text"
+              class="search-input"
+              id="searchAnnouncementInput"
+              placeholder="Search announcements..."
+            />
+          </div>
+          <button class="btn-primary" onclick="showSection('add-announcement')">
+            <i class="fas fa-plus"></i> Add Announcement
+          </button>
+        </div>
+
+        <div class="entities-table-wrapper">
+          <table class="entities-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="announcementsTableBody">
+              <tr>
+                <td colspan="6" class="empty-message">
+                  Loading announcements...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Add/Edit Announcement Section -->
+      <section class="content-section" id="section-add-announcement">
+        <div class="form-card">
+          <h2 class="form-title" id="announcementFormTitle">
+            Add New Announcement
+          </h2>
+
+          <form id="announcementForm">
+            <input type="hidden" id="announcementId" />
+
+            <!-- Basic Information -->
+            <div class="form-section">
+              <h3 class="form-section-title">
+                <i class="fas fa-info-circle"></i> Basic Information
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="announcementTitle"
+                    >Title *</label
+                  >
+                  <input
+                    type="text"
+                    id="announcementTitle"
+                    class="form-input"
+                    placeholder="Announcement title"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="announcementCategory"
+                    >Category *</label
+                  >
+                  <select
+                    id="announcementCategory"
+                    class="form-input"
+                    required
+                    onchange="toggleAnnouncementFields()"
+                  >
+                    <option value="">Select category</option>
+                    <option value="Funding">💰 Funding Opportunity</option>
+                    <option value="Job">💼 Job Posting</option>
+                    <option value="Event">📅 Event</option>
+                    <option value="Program">🎓 Program / Incubation</option>
+                    <option value="News">📰 News</option>
+                    <option value="Other">📢 Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="announcementAuthor"
+                    >Author</label
+                  >
+                  <input
+                    type="text"
+                    id="announcementAuthor"
+                    class="form-input"
+                    placeholder="Author name (default: UP-NEXUS Team)"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="announcementImage"
+                    >Image URL</label
+                  >
+                  <input
+                    type="url"
+                    id="announcementImage"
+                    class="form-input"
+                    placeholder="Optional cover image URL"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="announcementExcerpt"
+                  >Excerpt / Short Description</label
+                >
+                <input
+                  type="text"
+                  id="announcementExcerpt"
+                  class="form-input"
+                  placeholder="Brief summary (max 300 chars)"
+                  maxlength="300"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="announcementContent"
+                  >Full Content *</label
+                >
+                <textarea
+                  id="announcementContent"
+                  class="form-input form-textarea"
+                  placeholder="Detailed announcement content..."
+                  rows="6"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="announcementTags">Tags</label>
+                <input
+                  type="text"
+                  id="announcementTags"
+                  class="form-input"
+                  placeholder="Comma-separated tags (e.g., funding, startups, tech)"
+                />
+              </div>
+            </div>
+
+            <!-- Event Fields -->
+            <div class="form-section" id="eventFields" style="display: none">
+              <h3 class="form-section-title">
+                <i class="fas fa-calendar-alt"></i> Event Details
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="announcementEventDate"
+                    >Event Date</label
+                  >
+                  <input
+                    type="datetime-local"
+                    id="announcementEventDate"
+                    class="form-input"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="announcementEventLocation"
+                    >Event Location</label
+                  >
+                  <input
+                    type="text"
+                    id="announcementEventLocation"
+                    class="form-input"
+                    placeholder="Venue or Online"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="announcementEventLink"
+                  >Event Registration Link</label
+                >
+                <input
+                  type="url"
+                  id="announcementEventLink"
+                  class="form-input"
+                  placeholder="https://..."
+                />
+              </div>
+            </div>
+
+            <!-- Job Fields -->
+            <div class="form-section" id="jobFields" style="display: none">
+              <h3 class="form-section-title">
+                <i class="fas fa-briefcase"></i> Job Details
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="announcementCompany"
+                    >Company</label
+                  >
+                  <input
+                    type="text"
+                    id="announcementCompany"
+                    class="form-input"
+                    placeholder="Hiring company name"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="announcementJobType"
+                    >Job Type</label
+                  >
+                  <select id="announcementJobType" class="form-input">
+                    <option value="">Select type</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Freelance">Freelance</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="announcementSalary"
+                    >Salary Range</label
+                  >
+                  <input
+                    type="text"
+                    id="announcementSalary"
+                    class="form-input"
+                    placeholder="e.g., 80,000 - 120,000 DZD"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="announcementDeadline"
+                    >Application Deadline</label
+                  >
+                  <input
+                    type="date"
+                    id="announcementDeadline"
+                    class="form-input"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Funding Fields -->
+            <div class="form-section" id="fundingFields" style="display: none">
+              <h3 class="form-section-title">
+                <i class="fas fa-hand-holding-usd"></i> Funding Details
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="announcementFundingAmount"
+                    >Funding Amount</label
+                  >
+                  <input
+                    type="text"
+                    id="announcementFundingAmount"
+                    class="form-input"
+                    placeholder="e.g., Up to 10M DZD"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="announcementFundingDeadline"
+                    >Deadline</label
+                  >
+                  <input
+                    type="date"
+                    id="announcementFundingDeadline"
+                    class="form-input"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="announcementEligibility"
+                  >Eligibility Criteria</label
+                >
+                <textarea
+                  id="announcementEligibility"
+                  class="form-input form-textarea"
+                  placeholder="Who can apply?"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Links -->
+            <div class="form-section">
+              <h3 class="form-section-title">
+                <i class="fas fa-link"></i> Links
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="announcementExternalLink"
+                    >External Link</label
+                  >
+                  <input
+                    type="url"
+                    id="announcementExternalLink"
+                    class="form-input"
+                    placeholder="Link to external article or source"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="announcementApplyLink"
+                    >Apply / Register Link</label
+                  >
+                  <input
+                    type="url"
+                    id="announcementApplyLink"
+                    class="form-input"
+                    placeholder="Application or registration link"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Status -->
+            <div class="form-section">
+              <h3 class="form-section-title">
+                <i class="fas fa-cog"></i> Status & Settings
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group form-group-checkbox">
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      id="announcementIsPublished"
+                      checked
+                    />
+                    <span>Published</span>
+                  </label>
+                  <p class="form-hint">
+                    Unpublished announcements won't appear on the public page
+                  </p>
+                </div>
+                <div class="form-group form-group-checkbox">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="announcementIsPinned" />
+                    <span>Pin to Top</span>
+                  </label>
+                  <p class="form-hint">Pinned announcements appear first</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+              <button
+                type="button"
+                class="btn-secondary"
+                onclick="resetAnnouncementForm()"
+              >
+                <i class="fas fa-times"></i> Cancel
+              </button>
+              <button type="submit" class="btn-primary">
+                <i class="fas fa-save"></i>
+                <span id="announcementSubmitBtnText">Create Announcement</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Edit Entity</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Form will be injected here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+      <div class="modal-content modal-small">
+        <div class="modal-header">
+          <h3>Confirm Delete</h3>
+          <button class="modal-close" onclick="closeDeleteModal()">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete this entity? This action cannot be
+            undone.
+          </p>
+          <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeDeleteModal()">
+              Cancel
+            </button>
+            <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+      <i class="toast-icon fas fa-check-circle"></i>
+      <span class="toast-message" id="toastMessage"></span>
+    </div>
+
+    <script src="../../js/config.js"></script>
+    <script src="../../js/admin.js"></script>
+  </body>
+</html>

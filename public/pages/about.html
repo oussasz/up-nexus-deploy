@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us | UP-NEXUS - Algeria's Entrepreneurial Ecosystem Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="icon" type="image/png" href="../icon.png" />
+    <link rel="apple-touch-icon" href="../icon.png" />
+    <style>
+      /* Page Header */
+      .page-header {
+        background: var(--gradient-hero);
+        padding: calc(var(--header-height) + var(--space-16)) 0 var(--space-16);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+            circle at 20% 50%,
+            rgba(255, 255, 255, 0.05) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 50%,
+            rgba(255, 255, 255, 0.05) 0%,
+            transparent 40%
+          );
+      }
+
+      .page-header-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .page-header h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-4);
+      }
+
+      .page-header p {
+        font-size: var(--font-size-lg);
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Story Section */
+      .story-section {
+        padding: var(--space-20) 0;
+      }
+
+      .story-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-16);
+        align-items: center;
+      }
+
+      .story-content h2 {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--space-6);
+      }
+
+      .story-content p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-lg);
+        line-height: 1.8;
+        margin-bottom: var(--space-4);
+      }
+
+      .story-image {
+        position: relative;
+      }
+
+      .story-image-main {
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-2xl);
+        aspect-ratio: 4/3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .story-image-main::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--gradient-primary);
+        opacity: 0.1;
+      }
+
+      .story-image-main i {
+        font-size: 5rem;
+        color: var(--color-primary);
+      }
+
+      .story-floating-card {
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-5);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .floating-stat {
+        text-align: center;
+      }
+
+      .floating-stat-value {
+        font-size: var(--font-size-3xl);
+        font-weight: var(--font-weight-bold);
+        background: var(--gradient-text);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .floating-stat-label {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      /* Values Section */
+      .values-section {
+        padding: var(--space-20) 0;
+        background: var(--color-bg-secondary);
+      }
+
+      .values-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-8);
+        margin-top: var(--space-12);
+      }
+
+      .value-card {
+        background: var(--color-bg-primary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-8);
+        text-align: center;
+        transition: all var(--transition-base);
+      }
+
+      .value-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--color-primary-20);
+      }
+
+      .value-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto var(--space-5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient-primary);
+        border-radius: var(--radius-xl);
+        font-size: 1.5rem;
+      }
+
+      .value-card h3 {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--space-3);
+      }
+
+      .value-card p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        line-height: 1.7;
+      }
+
+      /* Team Section */
+      .team-section {
+        padding: var(--space-20) 0;
+      }
+
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-6);
+        margin-top: var(--space-12);
+      }
+
+      .team-card {
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-6);
+        text-align: center;
+        transition: all var(--transition-base);
+      }
+
+      .team-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--color-primary-20);
+      }
+
+      .team-avatar {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto var(--space-4);
+        background: var(--gradient-primary);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: var(--font-weight-bold);
+      }
+
+      .team-name {
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--space-1);
+      }
+
+      .team-role {
+        font-size: var(--font-size-sm);
+        color: var(--color-primary);
+        margin-bottom: var(--space-4);
+      }
+
+      .team-social {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-2);
+      }
+
+      .team-social a {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-secondary);
+        transition: all var(--transition-fast);
+      }
+
+      .team-social a:hover {
+        background: var(--color-primary);
+        color: white;
+      }
+
+      /* Timeline */
+      .timeline-section {
+        padding: var(--space-20) 0;
+        background: var(--color-bg-secondary);
+      }
+
+      .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: var(--space-12) auto 0;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 100%;
+        background: var(--color-border);
+      }
+
+      .timeline-item {
+        display: flex;
+        margin-bottom: var(--space-8);
+        position: relative;
+      }
+
+      .timeline-item:nth-child(odd) {
+        flex-direction: row-reverse;
+      }
+
+      .timeline-content {
+        width: calc(50% - 30px);
+        background: var(--color-bg-primary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-6);
+      }
+
+      .timeline-dot {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 20px;
+        background: var(--color-primary);
+        border: 4px solid var(--color-bg-secondary);
+        border-radius: var(--radius-full);
+        top: var(--space-6);
+      }
+
+      .timeline-year {
+        display: inline-block;
+        padding: var(--space-1) var(--space-3);
+        background: var(--color-primary-10);
+        color: var(--color-primary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        border-radius: var(--radius-full);
+        margin-bottom: var(--space-3);
+      }
+
+      .timeline-title {
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--space-2);
+      }
+
+      .timeline-text {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        line-height: 1.6;
+      }
+
+      /* Stats Banner */
+      .stats-banner {
+        padding: var(--space-16) 0;
+        background: var(--gradient-primary);
+      }
+
+      .stats-banner-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-8);
+        text-align: center;
+      }
+
+      .banner-stat-value {
+        font-size: var(--font-size-4xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-2);
+      }
+
+      .banner-stat-label {
+        font-size: var(--font-size-base);
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .story-grid {
+          grid-template-columns: 1fr;
+          gap: var(--space-10);
+        }
+
+        .values-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .team-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .timeline::before {
+          left: 20px;
+        }
+
+        .timeline-item,
+        .timeline-item:nth-child(odd) {
+          flex-direction: row;
+        }
+
+        .timeline-content {
+          width: calc(100% - 50px);
+          margin-left: 50px;
+        }
+
+        .timeline-dot {
+          left: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .values-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .team-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-banner-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: var(--space-6);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+      <div class="container">
+        <div class="nav-content">
+          <a href="../index.html" class="logo">
+            <span class="logo-text">
+              <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+              ><span class="logo-x"><img src="../icon.png" alt="X" /></span
+              ><span class="logo-us">US</span>
+            </span>
+          </a>
+
+          <div class="nav-links" id="navLinks">
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="ecosystem.html" class="nav-link">Ecosystem</a>
+            <a href="announcements.html" class="nav-link">Announcements</a>
+            <a href="about.html" class="nav-link active">About</a>
+          </div>
+
+          <div class="nav-actions">
+            <a href="auth/login.html" class="btn btn-ghost">Log in</a>
+            <a href="auth/register.html" class="btn btn-primary">Get Started</a>
+          </div>
+
+          <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="container">
+        <div class="page-header-content">
+          <h1>About UP-NEXUS</h1>
+          <p>
+            Building the bridge between Algeria's entrepreneurial dreams and
+            their realization
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Our Story -->
+      <section class="story-section">
+        <div class="container">
+          <div class="story-grid">
+            <div class="story-content">
+              <h2>Our Story</h2>
+              <p>
+                UP-NEXUS was born from a simple observation: Algeria's
+                entrepreneurial ecosystem is rich with talent, innovation, and
+                ambition, but fragmented across countless platforms, groups, and
+                networks.
+              </p>
+              <p>
+                We envisioned a unified digital hub where startups could find
+                investors, where mentors could discover emerging talent, and
+                where the entire ecosystem could collaborate seamlessly. A place
+                where every entrepreneur, regardless of their stage, could find
+                the resources and connections they need to succeed.
+              </p>
+              <p>
+                Today, UP-NEXUS serves as that bridge - connecting the dots in
+                Algeria's startup landscape and accelerating the growth of our
+                nation's innovation economy.
+              </p>
+            </div>
+            <div class="story-image">
+              <div class="story-image-main">
+                <i class="fas fa-network-wired"></i>
+              </div>
+              <div class="story-floating-card">
+                <div class="floating-stat">
+                  <div class="floating-stat-value">2024</div>
+                  <div class="floating-stat-label">Founded in Algeria</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Our Values -->
+      <section class="values-section">
+        <div class="container">
+          <div class="section-header-center">
+            <span class="section-badge">Our Values</span>
+            <h2 class="section-title">What Drives Us</h2>
+            <p class="section-subtitle">
+              The principles that guide everything we do at UP-NEXUS
+            </p>
+          </div>
+
+          <div class="values-grid">
+            <div class="value-card">
+              <div class="value-icon"><i class="fas fa-handshake"></i></div>
+              <h3>Connection</h3>
+              <p>
+                We believe that the right connection at the right time can
+                transform ideas into impactful businesses. We're obsessed with
+                making those connections happen.
+              </p>
+            </div>
+
+            <div class="value-card">
+              <div class="value-icon"><i class="fas fa-unlock"></i></div>
+              <h3>Accessibility</h3>
+              <p>
+                Entrepreneurship should be accessible to everyone. We're
+                committed to removing barriers and democratizing access to
+                resources and opportunities.
+              </p>
+            </div>
+
+            <div class="value-card">
+              <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+              <h3>Trust</h3>
+              <p>
+                We build trust through verification, transparency, and
+                accountability. Every actor on our platform is vetted to ensure
+                a high-quality ecosystem.
+              </p>
+            </div>
+
+            <div class="value-card">
+              <div class="value-icon"><i class="fas fa-rocket"></i></div>
+              <h3>Innovation</h3>
+              <p>
+                We practice what we preach. We continuously innovate our
+                platform to better serve the evolving needs of Algeria's
+                entrepreneurial community.
+              </p>
+            </div>
+
+            <div class="value-card">
+              <div class="value-icon"><i class="fas fa-users"></i></div>
+              <h3>Community</h3>
+              <p>
+                We're building more than a platform - we're nurturing a
+                community where entrepreneurs support each other and celebrate
+                collective wins.
+              </p>
+            </div>
+
+            <div class="value-card">
+              <div class="value-icon"><i class="fas fa-flag"></i></div>
+              <h3>Local Pride</h3>
+              <p>
+                We're proudly Algerian, building for Algeria. We understand
+                local challenges and opportunities like no one else can.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Team -->
+      <section class="team-section">
+        <div class="container">
+          <div class="section-header-center">
+            <span class="section-badge">Our Team</span>
+            <h2 class="section-title">Meet the People Behind UP-NEXUS</h2>
+            <p class="section-subtitle">
+              A passionate team dedicated to empowering Algerian entrepreneurs
+            </p>
+          </div>
+
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-avatar">YB</div>
+              <h3 class="team-name">Yacine Boudiaf</h3>
+              <p class="team-role">Founder & CEO</p>
+              <div class="team-social">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+              </div>
+            </div>
+
+            <div class="team-card">
+              <div class="team-avatar">SA</div>
+              <h3 class="team-name">Sara Amrani</h3>
+              <p class="team-role">Head of Product</p>
+              <div class="team-social">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+              </div>
+            </div>
+
+            <div class="team-card">
+              <div class="team-avatar">KM</div>
+              <h3 class="team-name">Karim Mansour</h3>
+              <p class="team-role">Lead Developer</p>
+              <div class="team-social">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+              </div>
+            </div>
+
+            <div class="team-card">
+              <div class="team-avatar">LH</div>
+              <h3 class="team-name">Lina Hadj</h3>
+              <p class="team-role">Community Manager</p>
+              <div class="team-social">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Banner -->
+      <section class="stats-banner">
+        <div class="container">
+          <div class="stats-banner-grid">
+            <div>
+              <div class="banner-stat-value">500+</div>
+              <div class="banner-stat-label">Startups Registered</div>
+            </div>
+            <div>
+              <div class="banner-stat-value">50+</div>
+              <div class="banner-stat-label">Active Investors</div>
+            </div>
+            <div>
+              <div class="banner-stat-value">1000+</div>
+              <div class="banner-stat-label">Connections Made</div>
+            </div>
+            <div>
+              <div class="banner-stat-value">48</div>
+              <div class="banner-stat-label">Wilayas Covered</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Timeline -->
+      <section class="timeline-section">
+        <div class="container">
+          <div class="section-header-center">
+            <span class="section-badge">Our Journey</span>
+            <h2 class="section-title">Milestones Along the Way</h2>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-content">
+                <span class="timeline-year">Q1 2024</span>
+                <h3 class="timeline-title">The Idea is Born</h3>
+                <p class="timeline-text">
+                  UP-NEXUS concept developed after extensive research into
+                  Algeria's startup ecosystem challenges.
+                </p>
+              </div>
+              <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-content">
+                <span class="timeline-year">Q2 2024</span>
+                <h3 class="timeline-title">Platform Development</h3>
+                <p class="timeline-text">
+                  Team assembled and development begins on the MVP with core
+                  features.
+                </p>
+              </div>
+              <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-content">
+                <span class="timeline-year">Q3 2024</span>
+                <h3 class="timeline-title">Beta Launch</h3>
+                <p class="timeline-text">
+                  First 100 users onboarded for beta testing. Initial feedback
+                  shapes product refinements.
+                </p>
+              </div>
+              <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-content">
+                <span class="timeline-year">Q4 2024</span>
+                <h3 class="timeline-title">Public Launch</h3>
+                <p class="timeline-text">
+                  UP-NEXUS officially launches to the public, opening doors for
+                  all ecosystem actors.
+                </p>
+              </div>
+              <div class="timeline-dot"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="container">
+          <div class="cta-content">
+            <h2>Ready to Join the Ecosystem?</h2>
+            <p>Be part of Algeria's growing entrepreneurial community</p>
+            <div class="cta-buttons">
+              <a href="auth/register.html" class="btn btn-primary btn-lg">
+                Get Started Free
+                <i class="fas fa-arrow-right"></i>
+              </a>
+              <a href="contact.html" class="btn btn-glass btn-lg">Contact Us</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="../index.html" class="logo">
+              <span class="logo-text">
+                <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+                ><span class="logo-x"><img src="../icon.png" alt="X" /></span
+                ><span class="logo-us">US</span>
+              </span>
+            </a>
+            <p>
+              The digital hub connecting Algeria's entrepreneurial ecosystem.
+            </p>
+            <div class="footer-social">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-links-group">
+            <h4>Platform</h4>
+            <ul class="footer-links">
+              <li><a href="ecosystem.html">Explore Ecosystem</a></li>
+              <li><a href="announcements.html">Announcements</a></li>
+              <li><a href="#">Events</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links-group">
+            <h4>Company</h4>
+            <ul class="footer-links">
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="#">Press</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links-group">
+            <h4>Legal</h4>
+            <ul class="footer-links">
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2024 UP-NEXUS. All rights reserved.</p>
+          <p>Made with ❤️ in Algeria</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/main.js"></script>
+  </body>
+</html>

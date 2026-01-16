@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing & Plans | UP-NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="icon" type="image/png" href="../icon.png" />
+    <link rel="apple-touch-icon" href="../icon.png" />
+    <style>
+      /* Page Header */
+      .page-header {
+        padding: 160px 0 80px;
+        background: var(--color-bg-tertiary);
+        text-align: center;
+      }
+
+      .page-title {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: var(--font-weight-black);
+        margin-bottom: var(--space-4);
+      }
+
+      .page-subtitle {
+        font-size: var(--font-size-lg);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Pricing Section */
+      .pricing-section {
+        padding: var(--space-16) 0;
+      }
+
+      /* Toggle */
+      .pricing-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-4);
+        margin-bottom: var(--space-12);
+      }
+
+      .toggle-label {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      .toggle-label.active {
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .toggle-switch {
+        width: 56px;
+        height: 28px;
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        position: relative;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        background: var(--color-primary);
+        border-radius: var(--radius-full);
+        top: 2px;
+        left: 2px;
+        transition: transform var(--transition-fast);
+      }
+
+      .toggle-switch.active::after {
+        transform: translateX(28px);
+      }
+
+      .save-badge {
+        background: var(--color-accent-green);
+        color: white;
+        padding: var(--space-1) var(--space-3);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      /* Pricing Grid */
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-6);
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .pricing-card {
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-8);
+        position: relative;
+        transition: all var(--transition-base);
+      }
+
+      .pricing-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .pricing-card.featured {
+        background: var(--gradient-hero);
+        border-color: var(--color-primary-20);
+        transform: scale(1.05);
+      }
+
+      .pricing-card.featured:hover {
+        transform: scale(1.05) translateY(-8px);
+      }
+
+      .pricing-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--color-primary);
+        color: white;
+        padding: var(--space-1) var(--space-4);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .pricing-icon {
+        width: 56px;
+        height: 56px;
+        margin-bottom: var(--space-4);
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-xl);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--color-primary);
+      }
+
+      .pricing-card.featured .pricing-icon {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .pricing-title {
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-2);
+      }
+
+      .pricing-subtitle {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-6);
+      }
+
+      .pricing-card.featured .pricing-subtitle {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .pricing-price {
+        margin-bottom: var(--space-6);
+      }
+
+      .price-amount {
+        font-size: var(--font-size-4xl);
+        font-weight: var(--font-weight-bold);
+      }
+
+      .price-currency {
+        font-size: var(--font-size-lg);
+        color: var(--color-text-secondary);
+      }
+
+      .pricing-card.featured .price-currency {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .price-period {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-tertiary);
+      }
+
+      .pricing-card.featured .price-period {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .pricing-features {
+        list-style: none;
+        margin-bottom: var(--space-8);
+      }
+
+      .pricing-feature {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-3);
+        margin-bottom: var(--space-3);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      .pricing-card.featured .pricing-feature {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .pricing-feature i {
+        color: var(--color-accent-green);
+        margin-top: 2px;
+      }
+
+      .pricing-feature.disabled {
+        color: var(--color-text-tertiary);
+      }
+
+      .pricing-feature.disabled i {
+        color: var(--color-text-tertiary);
+      }
+
+      .pricing-action .btn {
+        width: 100%;
+      }
+
+      /* FAQ Section */
+      .faq-section {
+        padding: var(--space-20) 0;
+        background: var(--color-bg-secondary);
+      }
+
+      .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6);
+        max-width: 900px;
+        margin: var(--space-12) auto 0;
+      }
+
+      .faq-item {
+        background: var(--color-bg-primary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+      }
+
+      .faq-question {
+        padding: var(--space-5);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: background var(--transition-fast);
+      }
+
+      .faq-question:hover {
+        background: var(--color-bg-tertiary);
+      }
+
+      .faq-question h4 {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        padding-right: var(--space-4);
+      }
+
+      .faq-toggle {
+        width: 28px;
+        height: 28px;
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-text-secondary);
+        flex-shrink: 0;
+        transition: all var(--transition-fast);
+      }
+
+      .faq-item.active .faq-toggle {
+        background: var(--color-primary);
+        color: white;
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--transition-base);
+      }
+
+      .faq-item.active .faq-answer {
+        max-height: 200px;
+      }
+
+      .faq-answer p {
+        padding: 0 var(--space-5) var(--space-5);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        line-height: 1.7;
+      }
+
+      /* CTA Section */
+      .pricing-cta {
+        padding: var(--space-16) 0;
+        text-align: center;
+      }
+
+      .cta-box {
+        background: var(--gradient-primary);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-12);
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .cta-box h2 {
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--space-4);
+      }
+
+      .cta-box p {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: var(--space-6);
+      }
+
+      .cta-box .btn {
+        background: white;
+        color: var(--color-primary);
+      }
+
+      .cta-box .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .pricing-grid {
+          grid-template-columns: 1fr;
+          max-width: 400px;
+        }
+
+        .pricing-card.featured {
+          transform: none;
+        }
+
+        .pricing-card.featured:hover {
+          transform: translateY(-8px);
+        }
+
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled" id="navbar">
+      <div class="container nav-container">
+        <a href="../index.html" class="logo">
+          <span class="logo-text">
+            <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+            ><span class="logo-x"><img src="../icon.png" alt="X" /></span
+            ><span class="logo-us">US</span>
+          </span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="ecosystem.html">Ecosystem</a></li>
+          <li><a href="announcements.html">Announcements</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="auth/login.html" class="btn btn-ghost">Log In</a>
+          <a href="auth/register.html" class="btn btn-primary">
+            <i class="fas fa-rocket"></i>
+            Join Free
+          </a>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="container">
+        <span class="section-badge">
+          <i class="fas fa-tags"></i>
+          Pricing
+        </span>
+        <h1 class="page-title">Simple, Transparent Pricing</h1>
+        <p class="page-subtitle">
+          Start free and upgrade as you grow. No hidden fees, cancel anytime.
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <!-- Pricing Section -->
+      <section class="pricing-section">
+        <div class="container">
+          <div class="pricing-grid">
+            <!-- Freemium Plan -->
+            <div class="pricing-card">
+              <div class="pricing-icon">
+                <i class="fas fa-seedling"></i>
+              </div>
+              <h3 class="pricing-title">Starter</h3>
+              <p class="pricing-subtitle">
+                Perfect for exploring the ecosystem
+              </p>
+              <div class="pricing-price">
+                <span class="price-amount">Free</span>
+                <span class="price-period">forever</span>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Create your profile
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Browse entire ecosystem
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Follow up to 10 profiles
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Access news & events
+                </li>
+                <li class="pricing-feature disabled">
+                  <i class="fas fa-times"></i>
+                  Priority visibility
+                </li>
+                <li class="pricing-feature disabled">
+                  <i class="fas fa-times"></i>
+                  Verified badge
+                </li>
+              </ul>
+              <div class="pricing-action">
+                <a href="auth/register.html" class="btn btn-outline"
+                  >Get Started Free</a
+                >
+              </div>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="pricing-card featured">
+              <div class="pricing-badge">Most Popular</div>
+              <div class="pricing-icon">
+                <i class="fas fa-crown"></i>
+              </div>
+              <h3 class="pricing-title">Premium</h3>
+              <p class="pricing-subtitle">For serious ecosystem players</p>
+              <div class="pricing-price">
+                <span class="price-amount">1,200</span>
+                <span class="price-currency">DA</span>
+                <span class="price-period">/ year</span>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Everything in Starter
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Unlimited profile follows
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  <strong>Verified badge</strong>
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Priority in search results
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Advanced analytics
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Priority support
+                </li>
+              </ul>
+              <div class="pricing-action">
+                <a href="auth/register.html" class="btn btn-primary"
+                  >Upgrade to Premium</a
+                >
+              </div>
+            </div>
+
+            <!-- Announcement Plan -->
+            <div class="pricing-card">
+              <div class="pricing-icon">
+                <i class="fas fa-bullhorn"></i>
+              </div>
+              <h3 class="pricing-title">Announcement</h3>
+              <p class="pricing-subtitle">
+                Promote opportunities to the ecosystem
+              </p>
+              <div class="pricing-price">
+                <span class="price-amount">1,000</span>
+                <span class="price-currency">DA</span>
+                <span class="price-period">/ post</span>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Post job opportunities
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Funding announcements
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Event promotions
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  30 days visibility
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Reach entire ecosystem
+                </li>
+                <li class="pricing-feature">
+                  <i class="fas fa-check"></i>
+                  Basic analytics
+                </li>
+              </ul>
+              <div class="pricing-action">
+                <a href="auth/register.html" class="btn btn-outline"
+                  >Post Announcement</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="faq-section">
+        <div class="container">
+          <div class="section-header" style="text-align: center">
+            <span class="section-badge">
+              <i class="fas fa-question-circle"></i>
+              FAQ
+            </span>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+          </div>
+
+          <div class="faq-grid">
+            <div class="faq-item active">
+              <div class="faq-question">
+                <h4>Can I use UP-NEXUS for free?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  Yes! Our Starter plan is completely free forever. You can
+                  browse the ecosystem, follow profiles, and access all news and
+                  events without paying anything.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <h4>What payment methods do you accept?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  We accept CIB cards, Edahabia, and bank transfers. Premium
+                  plans can also be paid via cash at our partner locations.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <h4>Can I cancel my Premium subscription?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  Yes, you can cancel anytime. Your Premium features will remain
+                  active until the end of your billing period. No refunds for
+                  partial periods.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <h4>How do I get the verified badge?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  The verified badge is included with Premium. After upgrading,
+                  our team reviews your profile and documents within 48 hours to
+                  grant verification.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="pricing-cta">
+        <div class="container">
+          <div class="cta-box">
+            <h2>Ready to Join Algeria's Ecosystem?</h2>
+            <p>Start free today. No credit card required.</p>
+            <a href="auth/register.html" class="btn btn-lg">
+              Get Started Free
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div
+          class="footer-bottom"
+          style="border-top: none; padding: var(--space-8) 0"
+        >
+          <p>&copy; 2026 UP-NEXUS. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+      // FAQ Toggle
+      document.querySelectorAll(".faq-question").forEach((question) => {
+        question.addEventListener("click", () => {
+          const item = question.parentElement;
+          const wasActive = item.classList.contains("active");
+
+          document.querySelectorAll(".faq-item").forEach((faq) => {
+            faq.classList.remove("active");
+          });
+
+          if (!wasActive) {
+            item.classList.add("active");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us | UP-NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="icon" type="image/png" href="../icon.png" />
+    <link rel="apple-touch-icon" href="../icon.png" />
+    <style>
+      /* Page Header */
+      .page-header {
+        background: var(--gradient-hero);
+        padding: calc(var(--header-height) + var(--space-16)) 0 var(--space-16);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+            circle at 20% 50%,
+            rgba(255, 255, 255, 0.05) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 50%,
+            rgba(255, 255, 255, 0.05) 0%,
+            transparent 40%
+          );
+      }
+
+      .page-header-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .page-header h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-4);
+      }
+
+      .page-header p {
+        font-size: var(--font-size-lg);
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Contact Section */
+      .contact-section {
+        padding: var(--space-20) 0;
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: var(--space-12);
+      }
+
+      /* Contact Info */
+      .contact-info h2 {
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--space-4);
+      }
+
+      .contact-info > p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-base);
+        line-height: 1.7;
+        margin-bottom: var(--space-8);
+      }
+
+      .contact-methods {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-5);
+        margin-bottom: var(--space-10);
+      }
+
+      .contact-method {
+        display: flex;
+        gap: var(--space-4);
+        padding: var(--space-5);
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        transition: all var(--transition-base);
+      }
+
+      .contact-method:hover {
+        border-color: var(--color-primary-20);
+        transform: translateX(8px);
+      }
+
+      .contact-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--gradient-primary);
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+
+      .contact-details h4 {
+        font-size: var(--font-size-base);
+        margin-bottom: var(--space-1);
+      }
+
+      .contact-details p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+      }
+
+      .contact-details a {
+        color: var(--color-primary);
+      }
+
+      /* Social Links */
+      .social-section h3 {
+        font-size: var(--font-size-base);
+        margin-bottom: var(--space-4);
+      }
+
+      .social-links {
+        display: flex;
+        gap: var(--space-3);
+      }
+
+      .social-link {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-secondary);
+        font-size: 1.1rem;
+        transition: all var(--transition-fast);
+      }
+
+      .social-link:hover {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+        color: white;
+        transform: translateY(-4px);
+      }
+
+      /* Contact Form */
+      .contact-form-card {
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-8);
+      }
+
+      .form-header {
+        margin-bottom: var(--space-6);
+      }
+
+      .form-header h2 {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--space-2);
+      }
+
+      .form-header p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+      }
+
+      .form-group {
+        margin-bottom: var(--space-5);
+      }
+
+      .form-label {
+        display: block;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-2);
+      }
+
+      .form-input,
+      .form-select,
+      .form-textarea {
+        width: 100%;
+        padding: var(--space-4);
+        background: var(--color-bg-tertiary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-base);
+        font-family: inherit;
+        transition: all var(--transition-fast);
+      }
+
+      .form-input:focus,
+      .form-select:focus,
+      .form-textarea:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-20);
+      }
+
+      .form-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        padding-right: 48px;
+      }
+
+      .form-textarea {
+        resize: vertical;
+        min-height: 150px;
+      }
+
+      .form-submit {
+        width: 100%;
+        padding: var(--space-4);
+      }
+
+      /* FAQ Section */
+      .faq-section {
+        padding: var(--space-20) 0;
+        background: var(--color-bg-secondary);
+      }
+
+      .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6);
+        margin-top: var(--space-12);
+      }
+
+      .faq-item {
+        background: var(--color-bg-primary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+      }
+
+      .faq-question {
+        padding: var(--space-5);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: background var(--transition-fast);
+      }
+
+      .faq-question:hover {
+        background: var(--color-bg-tertiary);
+      }
+
+      .faq-question h4 {
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-medium);
+        padding-right: var(--space-4);
+      }
+
+      .faq-toggle {
+        width: 32px;
+        height: 32px;
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-text-secondary);
+        flex-shrink: 0;
+        transition: all var(--transition-fast);
+      }
+
+      .faq-item.active .faq-toggle {
+        background: var(--color-primary);
+        color: white;
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--transition-base);
+      }
+
+      .faq-item.active .faq-answer {
+        max-height: 200px;
+      }
+
+      .faq-answer p {
+        padding: 0 var(--space-5) var(--space-5);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        line-height: 1.7;
+      }
+
+      /* Map Section */
+      .map-section {
+        padding: var(--space-16) 0;
+      }
+
+      .map-container {
+        background: var(--color-bg-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-2xl);
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .map-container::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            rgba(244, 176, 0, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(244, 176, 0, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+
+      .map-placeholder {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .map-placeholder i {
+        font-size: 4rem;
+        color: var(--color-primary);
+        margin-bottom: var(--space-4);
+      }
+
+      .map-placeholder h3 {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--space-2);
+      }
+
+      .map-placeholder p {
+        color: var(--color-text-secondary);
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .contact-grid {
+          grid-template-columns: 1fr;
+          gap: var(--space-10);
+        }
+
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+      <div class="container">
+        <div class="nav-content">
+          <a href="../index.html" class="logo">
+            <span class="logo-text">
+              <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+              ><span class="logo-x"><img src="../icon.png" alt="X" /></span
+              ><span class="logo-us">US</span>
+            </span>
+          </a>
+
+          <div class="nav-links" id="navLinks">
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="ecosystem.html" class="nav-link">Ecosystem</a>
+            <a href="announcements.html" class="nav-link">Announcements</a>
+            <a href="about.html" class="nav-link">About</a>
+          </div>
+
+          <div class="nav-actions">
+            <a href="auth/login.html" class="btn btn-ghost">Log in</a>
+            <a href="auth/register.html" class="btn btn-primary">Get Started</a>
+          </div>
+
+          <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="container">
+        <div class="page-header-content">
+          <h1>Contact Us</h1>
+          <p>
+            Have questions? We'd love to hear from you. Send us a message and
+            we'll respond as soon as possible.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Contact Section -->
+      <section class="contact-section">
+        <div class="container">
+          <div class="contact-grid">
+            <!-- Contact Info -->
+            <div class="contact-info">
+              <h2>Get in Touch</h2>
+              <p>
+                Whether you have a question about features, pricing,
+                partnerships, or anything else, our team is ready to answer all
+                your questions.
+              </p>
+
+              <div class="contact-methods">
+                <div class="contact-method">
+                  <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div class="contact-details">
+                    <h4>Email Us</h4>
+                    <p>
+                      <a href="mailto:hello@up-nexus.dz">hello@up-nexus.dz</a>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="contact-method">
+                  <div class="contact-icon">
+                    <i class="fas fa-phone"></i>
+                  </div>
+                  <div class="contact-details">
+                    <h4>Call Us</h4>
+                    <p>+213 XXX XXX XXX</p>
+                  </div>
+                </div>
+
+                <div class="contact-method">
+                  <div class="contact-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                  <div class="contact-details">
+                    <h4>Visit Us</h4>
+                    <p>Algiers, Algeria</p>
+                  </div>
+                </div>
+
+                <div class="contact-method">
+                  <div class="contact-icon">
+                    <i class="fas fa-clock"></i>
+                  </div>
+                  <div class="contact-details">
+                    <h4>Working Hours</h4>
+                    <p>Sun - Thu: 9:00 AM - 6:00 PM</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="social-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                  <a href="#" class="social-link"
+                    ><i class="fab fa-facebook-f"></i
+                  ></a>
+                  <a href="#" class="social-link"
+                    ><i class="fab fa-twitter"></i
+                  ></a>
+                  <a href="#" class="social-link"
+                    ><i class="fab fa-instagram"></i
+                  ></a>
+                  <a href="#" class="social-link"
+                    ><i class="fab fa-linkedin-in"></i
+                  ></a>
+                  <a href="#" class="social-link"
+                    ><i class="fab fa-youtube"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form-card">
+              <div class="form-header">
+                <h2>Send a Message</h2>
+                <p>
+                  Fill out the form below and we'll get back to you within 24
+                  hours
+                </p>
+              </div>
+
+              <form id="contactForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">First Name *</label>
+                    <input
+                      type="text"
+                      class="form-input"
+                      placeholder="Enter your first name"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Last Name *</label>
+                    <input
+                      type="text"
+                      class="form-input"
+                      placeholder="Enter your last name"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Email Address *</label>
+                  <input
+                    type="email"
+                    class="form-input"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Subject *</label>
+                  <select class="form-select" required>
+                    <option value="">Select a topic</option>
+                    <option value="general">General Inquiry</option>
+                    <option value="support">Technical Support</option>
+                    <option value="partnership">Partnership Opportunity</option>
+                    <option value="press">Press & Media</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Message *</label>
+                  <textarea
+                    class="form-textarea"
+                    placeholder="Write your message here..."
+                    required
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary form-submit">
+                  <i class="fas fa-paper-plane"></i>
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="faq-section">
+        <div class="container">
+          <div class="section-header-center">
+            <span class="section-badge">FAQ</span>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">
+              Find quick answers to common questions
+            </p>
+          </div>
+
+          <div class="faq-grid">
+            <div class="faq-item active">
+              <div class="faq-question">
+                <h4>How do I create an account on UP-NEXUS?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  Creating an account is simple! Click the "Get Started" button,
+                  choose your role (Startup, Investor, Mentor, etc.), fill in
+                  your details, and you're ready to go. The basic account is
+                  completely free.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <h4>Is UP-NEXUS free to use?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  Yes! We offer a free Freemium plan that gives you access to
+                  core features. For advanced features like priority visibility
+                  and verified badges, check our Premium plans starting at 1200
+                  DA/year.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <h4>How can I get my profile verified?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  Verification is available for Premium users. Once you upgrade,
+                  our team will review your profile and documents within 48
+                  hours. Verified profiles get a badge and higher visibility in
+                  search results.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <h4>Can I post job opportunities?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  Absolutely! You can post announcements including job openings,
+                  funding opportunities, events, and more. Single announcements
+                  cost 1000 DA, or you can get unlimited posts with a Premium
+                  subscription.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <h4>How do I connect with investors?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  Browse our Ecosystem directory, filter by "Investors", and
+                  view their profiles. You can send connection requests to start
+                  a conversation. Premium members get priority in investor
+                  matches.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <h4>What support do you offer?</h4>
+                <span class="faq-toggle"
+                  ><i class="fas fa-chevron-down"></i
+                ></span>
+              </div>
+              <div class="faq-answer">
+                <p>
+                  We offer email support for all users, with priority support
+                  for Premium members. Our Help Center has guides and tutorials.
+                  You can also reach us on social media for quick questions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Map Section -->
+      <section class="map-section">
+        <div class="container">
+          <div class="map-container">
+            <div class="map-placeholder">
+              <i class="fas fa-map-marked-alt"></i>
+              <h3>Our Location</h3>
+              <p>Algiers, Algeria</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="../index.html" class="logo">
+              <span class="logo-text">
+                <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+                ><span class="logo-x"><img src="../icon.png" alt="X" /></span
+                ><span class="logo-us">US</span>
+              </span>
+            </a>
+            <p>
+              The digital hub connecting Algeria's entrepreneurial ecosystem.
+            </p>
+            <div class="footer-social">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-links-group">
+            <h4>Platform</h4>
+            <ul class="footer-links">
+              <li><a href="ecosystem.html">Explore Ecosystem</a></li>
+              <li><a href="announcements.html">Announcements</a></li>
+              <li><a href="#">Events</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links-group">
+            <h4>Company</h4>
+            <ul class="footer-links">
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="#">Press</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links-group">
+            <h4>Legal</h4>
+            <ul class="footer-links">
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2024 UP-NEXUS. All rights reserved.</p>
+          <p>Made with ❤️ in Algeria</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+      // FAQ Toggle
+      document.querySelectorAll(".faq-question").forEach((question) => {
+        question.addEventListener("click", () => {
+          const item = question.parentElement;
+          const wasActive = item.classList.contains("active");
+
+          // Close all
+          document.querySelectorAll(".faq-item").forEach((faq) => {
+            faq.classList.remove("active");
+          });
+
+          // Open clicked if it wasn't active
+          if (!wasActive) {
+            item.classList.add("active");
+          }
+        });
+      });
+
+      // Form Submit
+      document.getElementById("contactForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Thank you for your message! We will get back to you soon.");
+        e.target.reset();
+      });
+    </script>
+  </body>
+</html>
