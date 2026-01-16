@@ -68,15 +68,16 @@ body {
 }
 
 .logo-text {
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
   font-weight: 800;
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 .logo-text .logo-up {
   color: var(--admin-text-muted);
-  text-transform: lowercase;
+  text-transform: uppercase;
 }
 
 .logo-text .logo-ne,
@@ -95,8 +96,8 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: clamp(18px, 4vw, 22px);
+  height: clamp(18px, 4vw, 22px);
   margin: 0 -2px;
   animation: admin-pulse 3s ease-in-out infinite;
 }

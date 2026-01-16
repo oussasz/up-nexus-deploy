@@ -174,15 +174,16 @@
 }
 
 .logo-text {
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 4vw, 1.25rem);
   font-weight: var(--font-weight-black);
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 .logo-text .logo-up {
   color: var(--color-text-secondary);
-  text-transform: lowercase;
+  text-transform: uppercase;
 }
 
 .logo-text .logo-ne,
@@ -195,8 +196,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: clamp(16px, 4vw, 20px);
+  height: clamp(16px, 4vw, 20px);
   margin: 0 -2px;
   animation: pulse-glow 3s ease-in-out infinite;
 }
