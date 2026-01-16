@@ -58,7 +58,7 @@
 }
 
 .logo-text .logo-up {
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   text-transform: uppercase;
 }
 
@@ -1524,6 +1524,15 @@
 
   .container {
     padding: 0 var(--space-4);
+  }
+
+  .logo-text {
+    font-size: 1.2rem;
+  }
+
+  .logo-x {
+    width: 24px;
+    height: 24px;
   }
 
   .nav-actions .btn-outline {
