@@ -793,23 +793,24 @@ class EcosystemBackground {
     this.isVisible = true;
     this.opacity = 0; // Start invisible for smooth fade-in
     this.isLoaded = false;
+    this.logoImages = {}; // Cache for preloaded logo images
 
     // API URL for entities - use config or fallback
-    this.apiUrl = window.UP_NEXUS_CONFIG?.API_URL || (
-      window.location.hostname === "localhost"
+    this.apiUrl =
+      window.UP_NEXUS_CONFIG?.API_URL ||
+      (window.location.hostname === "localhost"
         ? "http://localhost:3000/api"
-        : window.location.origin + "/api"
-    );
+        : window.location.origin + "/api");
 
     // Type colors matching the admin dashboard
     this.typeColors = {
       "Project Holder": "#ff6b00",
-      "Startup": "#ff8c00",
-      "Incubator": "#f4b000",
-      "Accelerator": "#9c27b0",
-      "Investor": "#4caf50",
+      Startup: "#ff8c00",
+      Incubator: "#f4b000",
+      Accelerator: "#9c27b0",
+      Investor: "#4caf50",
       "Public Funder": "#2196f3",
-      "Freelancer": "#00bcd4",
+      Freelancer: "#00bcd4",
       "Research Center": "#673ab7",
       "Mentor & Advisor": "#ffc107",
       "Service Provider": "#e91e63",
@@ -820,12 +821,12 @@ class EcosystemBackground {
     // Type icons
     this.typeIcons = {
       "Project Holder": "💡",
-      "Startup": "🚀",
-      "Incubator": "🏢",
-      "Accelerator": "⚡",
-      "Investor": "💰",
+      Startup: "🚀",
+      Incubator: "🏢",
+      Accelerator: "⚡",
+      Investor: "💰",
       "Public Funder": "🏛️",
-      "Freelancer": "👨‍💻",
+      Freelancer: "👨‍💻",
       "Research Center": "🔬",
       "Mentor & Advisor": "🎓",
       "Service Provider": "🛠️",
@@ -856,20 +857,20 @@ class EcosystemBackground {
 
   async init() {
     this.resize();
-    
+
     // Start animation immediately with empty/placeholder nodes for smooth experience
     this.createPlaceholderNodes();
     this.bindEvents();
     this.animate();
-    
+
     // Fetch real entities in background
     await this.fetchEntities();
-    
+
     // Smoothly update nodes with real data
     if (this.entities.length > 0) {
       this.updateNodesWithRealData();
     }
-    
+
     // Fade in the canvas smoothly
     this.fadeIn();
   }
@@ -901,26 +902,52 @@ class EcosystemBackground {
           color: e.color || this.typeColors[e.type] || "#F4B000",
           sector: e.sector || "",
           wilaya: e.wilaya || "",
+          logo: e.logo || null,
         }));
-        console.log(`✅ Loaded ${this.entities.length} real entities from database`);
-        
+
+        // Preload logo images for entities that have them
+        this.preloadLogos();
+
+        console.log(
+          `✅ Loaded ${this.entities.length} real entities from database`
+        );
+
         // Update hero stats with real counts
         this.updateHeroStats(data.entities);
       } else {
-        console.log("ℹ️ No entities in database, showing placeholder animation");
+        console.log(
+          "ℹ️ No entities in database, showing placeholder animation"
+        );
       }
     } catch (error) {
       console.log("ℹ️ API unavailable, showing placeholder animation");
     }
   }
 
+  preloadLogos() {
+    this.entities.forEach((entity) => {
+      if (entity.logo && !this.logoImages[entity.logo]) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+          this.logoImages[entity.logo] = img;
+        };
+        img.onerror = () => {
+          // Mark as failed so we don't retry
+          this.logoImages[entity.logo] = null;
+        };
+        img.src = entity.logo;
+      }
+    });
+  }
+
   updateHeroStats(entities) {
     // Count by type
     const counts = {
       total: entities.length,
-      startups: entities.filter(e => e.type === "Startup").length,
-      incubators: entities.filter(e => e.type === "Incubator").length,
-      coworking: entities.filter(e => e.type === "Coworking Space").length,
+      startups: entities.filter((e) => e.type === "Startup").length,
+      incubators: entities.filter((e) => e.type === "Incubator").length,
+      coworking: entities.filter((e) => e.type === "Coworking Space").length,
     };
 
     // Animate the stat counters
@@ -928,7 +955,7 @@ class EcosystemBackground {
     this.animateCounter("stat-startups", counts.startups);
     this.animateCounter("stat-incubators", counts.incubators);
     this.animateCounter("stat-coworking", counts.coworking);
-    
+
     // Also update mission section stats if they exist
     this.animateCounter("mission-startups", counts.startups);
     this.animateCounter("mission-incubators", counts.incubators);
@@ -937,27 +964,27 @@ class EcosystemBackground {
   animateCounter(elementId, target) {
     const element = document.getElementById(elementId);
     if (!element) return;
-    
+
     const duration = 1500;
     const start = parseInt(element.textContent) || 0;
     const startTime = performance.now();
-    
+
     const animate = (currentTime) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Easing function for smooth animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       const current = Math.floor(start + (target - start) * easeOutQuart);
-      
+
       element.textContent = current;
       element.setAttribute("data-count", target);
-      
+
       if (progress < 1) {
         requestAnimationFrame(animate);
       }
     };
-    
+
     requestAnimationFrame(animate);
   }
 
@@ -980,7 +1007,9 @@ class EcosystemBackground {
 
       const orbitSpeed =
         (0.00015 + Math.random() * 0.0001) *
-        (1 - orbitRadius / (Math.max(this.canvas.width, this.canvas.height) * 0.7));
+        (1 -
+          orbitRadius /
+            (Math.max(this.canvas.width, this.canvas.height) * 0.7));
 
       this.nodes.push({
         x,
@@ -1008,7 +1037,7 @@ class EcosystemBackground {
   updateNodesWithRealData() {
     // Shuffle entities for random distribution
     const shuffledEntities = [...this.entities].sort(() => Math.random() - 0.5);
-    
+
     // Assign real entities to nodes
     this.nodes.forEach((node, i) => {
       if (shuffledEntities.length > 0) {
@@ -1306,16 +1335,44 @@ class EcosystemBackground {
         this.ctx.lineWidth = 2.5;
         this.ctx.stroke();
 
-        // Draw icon/emoji
+        // Draw logo or icon/emoji
         if (progress > 0.3) {
           const iconOpacity = Math.min(1, (progress - 0.3) * 2);
-          const iconSize = Math.floor(node.radius * 0.65);
-
-          this.ctx.font = `${iconSize}px Arial, sans-serif`;
-          this.ctx.textAlign = "center";
-          this.ctx.textBaseline = "middle";
           this.ctx.globalAlpha = iconOpacity;
-          this.ctx.fillText(entity.icon, node.x, node.y - node.radius * 0.12);
+
+          // Check if entity has a logo and it's loaded
+          const logoImg = entity.logo ? this.logoImages[entity.logo] : null;
+
+          if (logoImg) {
+            // Draw the logo image centered in the node
+            const logoSize = node.radius * 1.1;
+            const logoX = node.x - logoSize / 2;
+            const logoY = node.y - logoSize / 2 - node.radius * 0.05;
+
+            // Clip to circle for rounded logo
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.arc(
+              node.x,
+              node.y - node.radius * 0.05,
+              logoSize / 2,
+              0,
+              Math.PI * 2
+            );
+            this.ctx.closePath();
+            this.ctx.clip();
+
+            this.ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+            this.ctx.restore();
+          } else {
+            // Fallback to emoji/icon
+            const iconSize = Math.floor(node.radius * 0.65);
+            this.ctx.font = `${iconSize}px Arial, sans-serif`;
+            this.ctx.textAlign = "center";
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText(entity.icon, node.x, node.y - node.radius * 0.12);
+          }
+
           this.ctx.globalAlpha = 1;
         }
 
@@ -1358,7 +1415,8 @@ class EcosystemBackground {
           this.ctx.fillText(entity.name, node.x, pillY + 5);
 
           // Entity type - use the entity's color or fallback to type colors
-          const typeColor = node.entity?.color || this.typeColors[entity.type] || "#F4B000";
+          const typeColor =
+            node.entity?.color || this.typeColors[entity.type] || "#F4B000";
 
           this.ctx.font = `500 ${Math.max(
             8,
@@ -1475,11 +1533,11 @@ class EcosystemBackground {
 class StatsLoader {
   constructor() {
     // API URL - use config or fallback
-    this.apiUrl = window.UP_NEXUS_CONFIG?.API_URL || (
-      window.location.hostname === "localhost"
+    this.apiUrl =
+      window.UP_NEXUS_CONFIG?.API_URL ||
+      (window.location.hostname === "localhost"
         ? "http://localhost:3000/api"
-        : window.location.origin + "/api"
-    );
+        : window.location.origin + "/api");
   }
 
   async load() {

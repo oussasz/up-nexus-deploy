@@ -252,7 +252,7 @@
     <div class="login-container">
       <div class="login-card">
         <div class="login-header">
-          <a href="../../index.html" class="login-logo">
+          <a href="../../" class="login-logo">
             <span class="logo-text">
               <span class="logo-up">UP</span><span class="logo-ne">-NE</span
               ><span class="logo-x"><img src="../../icon.png" alt="X" /></span
@@ -292,7 +292,7 @@
           </button>
         </form>
 
-        <a href="../../index.html" class="back-link">
+        <a href="../../" class="back-link">
           <i class="fas fa-arrow-left"></i> Back to Website
         </a>
       </div>
@@ -310,7 +310,7 @@
       // Check if already logged in
       const token = localStorage.getItem("adminToken");
       if (token) {
-        window.location.href = "dashboard.html";
+        window.location.href = "dashboard";
       }
 
       document
@@ -342,7 +342,7 @@
             if (data.success) {
               localStorage.setItem("adminToken", data.token);
               localStorage.setItem("adminUser", JSON.stringify(data.admin));
-              window.location.href = "dashboard.html";
+              window.location.href = "dashboard";
             } else {
               errorMessage.textContent = data.message || "Login failed";
               errorMessage.classList.add("show");
