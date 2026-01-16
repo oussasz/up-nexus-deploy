@@ -1,0 +1,30 @@
+# Public-facing .htaccess for cPanel public_html
+# This file rewrites requests to the actual application located in /upnexus/public
+
+RewriteEngine On
+RewriteBase /
+
+# Serve index from /upnexus/public
+DirectoryIndex /upnexus/public/index.html
+
+# Custom 404 to app's 404 (optional)
+ErrorDocument 404 /upnexus/public/404.html
+
+# If request already targets /upnexus/ do nothing
+RewriteCond %{REQUEST_URI} ^/upnexus/ [NC]
+RewriteRule ^ - [L]
+
+# If requested resource exists inside /upnexus/public, internally rewrite to it
+RewriteCond %{DOCUMENT_ROOT}/upnexus/public%{REQUEST_URI} -f
+RewriteRule ^(.*)$ /upnexus/public/$1 [L]
+
+# If requested directory exists inside /upnexus/public, internally rewrite to it
+RewriteCond %{DOCUMENT_ROOT}/upnexus/public%{REQUEST_URI} -d
+RewriteRule ^(.*)$ /upnexus/public/$1/ [L]
+
+# Fallback: rewrite root to app
+RewriteRule ^$ /upnexus/public/ [L]
+
+# Avoid proxying API requests (let Node app handle /api if configured separately)
+RewriteCond %{REQUEST_URI} ^/api [NC]
+RewriteRule ^ - [L]
