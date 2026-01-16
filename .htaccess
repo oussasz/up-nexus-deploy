@@ -8,7 +8,12 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond %{REQUEST_URI} ^/api
 RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
 
-# Frontend routes - serve static files or fallback to index.html
-RewriteCond %{REQUEST_FILENAME} !-f
+# Redirect legacy static URLs under /pages to clean SPA routes
+RewriteCond %{THE_REQUEST} \s/+pages/([^\s?]+)\.html [NC]
+RewriteRule ^pages/(.+)\.html$ /%1 [L,R=301,NE]
+
+# Frontend SPA fallback - serve index.html for non-asset routes
+RewriteCond %{REQUEST_URI} !^/api
+RewriteCond %{REQUEST_URI} !\.(css|js|json|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot|pdf|txt|map)$ [NC]
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /index.html [L]
+RewriteRule ^.*$ /index.html [L]
