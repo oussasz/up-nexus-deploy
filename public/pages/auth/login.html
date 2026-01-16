@@ -701,9 +701,9 @@
             // Redirect based on user status
             setTimeout(() => {
               if (data.user.status === "pending_review") {
-                window.location.href = "/pages/dashboard/pending.html";
+                window.location.href = "/dashboard/pending";
               } else {
-                window.location.href = "/pages/dashboard/";
+                window.location.href = "/dashboard";
               }
             }, 1500);
           } else {
@@ -745,9 +745,9 @@
 
               setTimeout(() => {
                 if (data.user.status === "pending_review") {
-                  window.location.href = "/pages/dashboard/pending.html";
+                  window.location.href = "/dashboard/pending";
                 } else {
-                  window.location.href = "/pages/dashboard/";
+                  window.location.href = "/dashboard";
                 }
               }, 1500);
             } else {
@@ -812,7 +812,7 @@
           .then((res) => res.json())
           .then((data) => {
             if (data.success) {
-              window.location.href = "/pages/dashboard/";
+              window.location.href = "/dashboard";
             }
           })
           .catch(() => {

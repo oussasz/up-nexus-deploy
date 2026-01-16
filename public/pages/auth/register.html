@@ -2004,12 +2004,12 @@
                 "success"
               );
               setTimeout(() => {
-                window.location.href = "/pages/dashboard/pending.html";
+                window.location.href = "/dashboard/pending";
               }, 2000);
             } else {
               showStatus("Account created! Redirecting...", "success");
               setTimeout(() => {
-                window.location.href = "/pages/dashboard/";
+                window.location.href = "/dashboard";
               }, 1500);
             }
           } else {
@@ -2124,12 +2124,12 @@
                   "success"
                 );
                 setTimeout(() => {
-                  window.location.href = "/pages/dashboard/pending.html";
+                  window.location.href = "/dashboard/pending";
                 }, 2000);
               } else {
                 showStatus("Account created! Redirecting...", "success");
                 setTimeout(() => {
-                  window.location.href = "/pages/dashboard/";
+                  window.location.href = "/dashboard";
                 }, 1500);
               }
             } else {
@@ -2159,7 +2159,7 @@
           .then((res) => res.json())
           .then((data) => {
             if (data.success) {
-              window.location.href = "/pages/dashboard/";
+              window.location.href = "/dashboard";
             }
           })
           .catch(() => {

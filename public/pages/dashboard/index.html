@@ -684,7 +684,7 @@
       <!-- Sidebar -->
       <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-          <a href="/pages/../" class="sidebar-logo">
+          <a href="/" class="sidebar-logo">
             <span class="logo-text">
               <span class="logo-up">UP</span><span class="logo-ne">-NE</span
               ><span class="logo-x"><img src="/icon.png" alt="X" /></span
@@ -700,11 +700,11 @@
               <i class="fas fa-home"></i>
               Dashboard
             </a>
-            <a href="/pages/ecosystem.html" class="nav-link">
+            <a href="/ecosystem" class="nav-link">
               <i class="fas fa-users"></i>
               Ecosystem
             </a>
-            <a href="/pages/announcements.html" class="nav-link">
+            <a href="/announcements" class="nav-link">
               <i class="fas fa-bullhorn"></i>
               Announcements
               <span class="nav-badge">3</span>
@@ -1025,7 +1025,7 @@
               <div class="content-section">
                 <div class="section-header">
                   <h3 class="section-title">Suggested Connections</h3>
-                  <a href="/pages/ecosystem.html" class="section-link"
+                  <a href="/ecosystem" class="section-link"
                     >Explore</a
                   >
                 </div>
@@ -1079,7 +1079,7 @@
         const token = localStorage.getItem("userToken");
 
         if (!token) {
-          window.location.href = "/pages/auth/login.html";
+          window.location.href = "/auth/login";
           return null;
         }
 
@@ -1095,7 +1095,7 @@
           if (!data.success) {
             localStorage.removeItem("userToken");
             localStorage.removeItem("userData");
-            window.location.href = "/pages/auth/login.html";
+            window.location.href = "/auth/login";
             return null;
           }
 
@@ -1322,7 +1322,7 @@
       function logout() {
         localStorage.removeItem("userToken");
         localStorage.removeItem("userData");
-        window.location.href = "/pages/auth/login.html";
+        window.location.href = "/auth/login";
       }
 
       // Mobile Menu Toggle

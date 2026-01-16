@@ -660,15 +660,15 @@ class FormHandlers {
 
     // Button click handlers
     $("#loginBtn")?.addEventListener("click", () => {
-      window.location.href = "/pages/auth/login.html";
+      window.location.href = "/auth/login";
     });
 
     $("#joinBtn")?.addEventListener("click", () => {
-      window.location.href = "/pages/auth/register.html";
+      window.location.href = "/auth/register";
     });
 
     $("#heroJoinBtn")?.addEventListener("click", () => {
-      window.location.href = "/pages/auth/register.html";
+      window.location.href = "/auth/register";
     });
 
     $("#notificationBtn")?.addEventListener("click", () => {
