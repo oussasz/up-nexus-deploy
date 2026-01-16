@@ -19,7 +19,7 @@ const allowedOrigins = [
   "https://www.up-nexus.com",
   "http://localhost:3000",
   "http://localhost:5500",
-  "http://127.0.0.1:5500"
+  "http://127.0.0.1:5500",
 ];
 
 app.use(
@@ -34,7 +34,7 @@ app.use(
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
+    credentials: true,
   })
 );
 app.use(express.json({ limit: "10mb" }));
