@@ -166,7 +166,6 @@
   align-items: center;
   text-decoration: none;
   transition: transform var(--transition-fast);
-  flex-shrink: 0;
 }
 
 .logo:hover,
@@ -175,12 +174,11 @@
 }
 
 .logo-text {
-  font-size: clamp(0.9rem, 3.5vw, 1.25rem);
+  font-size: 1.25rem;
   font-weight: var(--font-weight-black);
-  display: inline-flex;
+  display: flex;
   align-items: center;
   white-space: nowrap;
-  flex-wrap: nowrap;
 }
 
 .logo-text .logo-up {
@@ -198,10 +196,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: clamp(14px, 3.5vw, 20px);
-  height: clamp(14px, 3.5vw, 20px);
-  margin: 0 -1px;
-  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0 -2px;
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
