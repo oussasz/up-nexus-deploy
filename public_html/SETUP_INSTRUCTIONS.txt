@@ -1,0 +1,48 @@
+================================================================================
+                    CPANEL SETUP INSTRUCTIONS
+================================================================================
+
+STEP 1: Upload .htaccess to public_html
+----------------------------------------
+Copy the .htaccess file from this folder to:
+/home/bnyqzpdb/public_html/.htaccess
+
+
+STEP 2: Create Symlinks in cPanel Terminal
+------------------------------------------
+Go to cPanel > Terminal and run these commands ONE BY ONE:
+
+cd /home/bnyqzpdb/public_html
+
+ln -s /home/bnyqzpdb/upnexus/public/index.html index.html
+ln -s /home/bnyqzpdb/upnexus/public/404.html 404.html
+ln -s /home/bnyqzpdb/upnexus/public/icon.png icon.png
+ln -s /home/bnyqzpdb/upnexus/public/pages pages
+ln -s /home/bnyqzpdb/upnexus/public/css css
+ln -s /home/bnyqzpdb/upnexus/public/js js
+
+
+STEP 3: Test
+------------
+Visit these URLs:
+- https://www.up-nexus.com/           (should show homepage)
+- https://www.up-nexus.com/ecosystem  (should show ecosystem page)
+- https://www.up-nexus.com/auth/login (should show login page)
+
+
+IF SYMLINKS DON'T WORK (some hosts block them):
+-----------------------------------------------
+Alternative: Copy files instead of symlinking.
+
+Run in cPanel Terminal:
+
+cd /home/bnyqzpdb/public_html
+cp /home/bnyqzpdb/upnexus/public/index.html .
+cp /home/bnyqzpdb/upnexus/public/404.html .
+cp /home/bnyqzpdb/upnexus/public/icon.png .
+cp -r /home/bnyqzpdb/upnexus/public/pages .
+cp -r /home/bnyqzpdb/upnexus/public/css .
+cp -r /home/bnyqzpdb/upnexus/public/js .
+
+
+================================================================================

@@ -1,30 +1,30 @@
-# Public-facing .htaccess for cPanel public_html
-# This file rewrites requests to the actual application located in /upnexus/public
-
+# Enable symlinks and clean URLs
+Options +FollowSymLinks
 RewriteEngine On
-RewriteBase /
 
-# Serve index from /upnexus/public
-DirectoryIndex /upnexus/public/index.html
+# Redirect legacy /pages/*.html URLs to clean routes
+RewriteCond %{THE_REQUEST} \s/+pages/([^\s?]+)\.html [NC]
+RewriteRule ^ /%1 [L,R=301,NE]
 
-# Custom 404 to app's 404 (optional)
-ErrorDocument 404 /upnexus/public/404.html
+# Clean URL rewrites - serve the actual HTML files
+RewriteRule ^ecosystem$ pages/ecosystem.html [L]
+RewriteRule ^contact$ pages/contact.html [L]
+RewriteRule ^about$ pages/about.html [L]
+RewriteRule ^announcements$ pages/announcements.html [L]
+RewriteRule ^pricing$ pages/pricing.html [L]
+RewriteRule ^auth/login$ pages/auth/login.html [L]
+RewriteRule ^auth/register$ pages/auth/register.html [L]
+RewriteRule ^auth/forgot$ pages/auth/forgot.html [L]
+RewriteRule ^admin/login$ pages/admin/login.html [L]
+RewriteRule ^admin/dashboard$ pages/admin/dashboard.html [L]
+RewriteRule ^dashboard$ pages/dashboard/index.html [L]
+RewriteRule ^dashboard/pending$ pages/dashboard/pending.html [L]
 
-# If request already targets /upnexus/ do nothing
-RewriteCond %{REQUEST_URI} ^/upnexus/ [NC]
-RewriteRule ^ - [L]
+# Custom 404 page
+ErrorDocument 404 /404.html
 
-# If requested resource exists inside /upnexus/public, internally rewrite to it
-RewriteCond %{DOCUMENT_ROOT}/upnexus/public%{REQUEST_URI} -f
-RewriteRule ^(.*)$ /upnexus/public/$1 [L]
+# Set default index file
+DirectoryIndex index.html
 
-# If requested directory exists inside /upnexus/public, internally rewrite to it
-RewriteCond %{DOCUMENT_ROOT}/upnexus/public%{REQUEST_URI} -d
-RewriteRule ^(.*)$ /upnexus/public/$1/ [L]
-
-# Fallback: rewrite root to app
-RewriteRule ^$ /upnexus/public/ [L]
-
-# Avoid proxying API requests (let Node app handle /api if configured separately)
-RewriteCond %{REQUEST_URI} ^/api [NC]
-RewriteRule ^ - [L]
+# Prevent directory listing
+Options -Indexes +FollowSymLinks
