@@ -2,6 +2,10 @@
 Options +FollowSymLinks
 RewriteEngine On
 
+# Proxy API requests to Node.js server
+RewriteCond %{REQUEST_URI} ^/api [NC]
+RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
+
 # Redirect legacy /pages/*.html URLs to clean routes
 RewriteCond %{THE_REQUEST} \s/+pages/([^\s?]+)\.html [NC]
 RewriteRule ^ /%1 [L,R=301,NE]
