@@ -1,34 +1,12 @@
-# Enable symlinks and clean URLs
-Options +FollowSymLinks
+# Redirect all requests to Node.js app via Passenger
+PassengerAppRoot "/home/bnyqzpdb/upnexus"
+PassengerBaseURI "/"
+PassengerNodejs "/home/bnyqzpdb/nodevenv/upnexus/16/bin/node"
+PassengerAppType node
+PassengerStartupFile api/index.js
+
 RewriteEngine On
 
-# Proxy API requests to Node.js server
-RewriteCond %{REQUEST_URI} ^/api [NC]
-RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
-
-# Redirect legacy /pages/*.html URLs to clean routes
-RewriteCond %{THE_REQUEST} \s/+pages/([^\s?]+)\.html [NC]
-RewriteRule ^ /%1 [L,R=301,NE]
-
-# Clean URL rewrites - serve the actual HTML files
-RewriteRule ^ecosystem$ pages/ecosystem.html [L]
-RewriteRule ^contact$ pages/contact.html [L]
-RewriteRule ^about$ pages/about.html [L]
-RewriteRule ^announcements$ pages/announcements.html [L]
-RewriteRule ^pricing$ pages/pricing.html [L]
-RewriteRule ^auth/login$ pages/auth/login.html [L]
-RewriteRule ^auth/register$ pages/auth/register.html [L]
-RewriteRule ^auth/forgot$ pages/auth/forgot.html [L]
-RewriteRule ^admin/login$ pages/admin/login.html [L]
-RewriteRule ^admin/dashboard$ pages/admin/dashboard.html [L]
-RewriteRule ^dashboard$ pages/dashboard/index.html [L]
-RewriteRule ^dashboard/pending$ pages/dashboard/pending.html [L]
-
-# Custom 404 page
-ErrorDocument 404 /404.html
-
-# Set default index file
-DirectoryIndex index.html
-
-# Prevent directory listing
-Options -Indexes +FollowSymLinks
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
