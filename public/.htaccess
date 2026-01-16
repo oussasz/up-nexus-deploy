@@ -1,20 +1,20 @@
 # Enable URL Rewriting
 RewriteEngine On
+RewriteBase /
 
-# Remove trailing slash if not a directory
-RewriteCond %{REQUEST_FILENAME} !-d
+# Don't rewrite if the file or directory exists
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Remove trailing slash (except for root)
+RewriteCond %{REQUEST_URI} !^/$
 RewriteCond %{REQUEST_URI} (.+)/$
 RewriteRule ^ %1 [R=301,L]
 
 # Serve .html files without extension
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.*)$ $1.html [L]
-
-# Redirect .html URLs to clean URLs (optional - for SEO)
-RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
-RewriteRule ^ /%1 [R=301,L]
 
 # Custom 404 Error Page
 ErrorDocument 404 /404.html
