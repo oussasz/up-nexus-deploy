@@ -16,6 +16,9 @@ RewriteRule ^(.*)$ $1.html [L]
 RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteRule ^ /%1 [R=301,L]
 
+# Custom 404 Error Page
+ErrorDocument 404 /404.html
+
 # Set default index file
 DirectoryIndex index.html
 
