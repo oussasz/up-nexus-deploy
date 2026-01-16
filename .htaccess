@@ -12,16 +12,25 @@ RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
 RewriteCond %{THE_REQUEST} \s/+pages/([^\s?]+)\.html [NC]
 RewriteRule ^ /%1 [L,R=301,NE]
 
-# Clean URL rewrites - internally serve the actual HTML files
-RewriteRule ^ecosystem$ /pages/ecosystem.html [L]
-RewriteRule ^contact$ /pages/contact.html [L]
-RewriteRule ^about$ /pages/about.html [L]
-RewriteRule ^announcements$ /pages/announcements.html [L]
-RewriteRule ^pricing$ /pages/pricing.html [L]
-RewriteRule ^auth/login$ /pages/auth/login.html [L]
-RewriteRule ^auth/register$ /pages/auth/register.html [L]
-RewriteRule ^auth/forgot$ /pages/auth/forgot.html [L]
-RewriteRule ^admin/login$ /pages/admin/login.html [L]
-RewriteRule ^admin/dashboard$ /pages/admin/dashboard.html [L]
-RewriteRule ^dashboard$ /pages/dashboard/index.html [L]
-RewriteRule ^dashboard/pending$ /pages/dashboard/pending.html [L]
+# Serve root index.html from public folder
+RewriteRule ^$ /public/index.html [L]
+
+# Clean URL rewrites - internally serve the actual HTML files from /public/
+RewriteRule ^ecosystem$ /public/pages/ecosystem.html [L]
+RewriteRule ^contact$ /public/pages/contact.html [L]
+RewriteRule ^about$ /public/pages/about.html [L]
+RewriteRule ^announcements$ /public/pages/announcements.html [L]
+RewriteRule ^pricing$ /public/pages/pricing.html [L]
+RewriteRule ^auth/login$ /public/pages/auth/login.html [L]
+RewriteRule ^auth/register$ /public/pages/auth/register.html [L]
+RewriteRule ^auth/forgot$ /public/pages/auth/forgot.html [L]
+RewriteRule ^admin/login$ /public/pages/admin/login.html [L]
+RewriteRule ^admin/dashboard$ /public/pages/admin/dashboard.html [L]
+RewriteRule ^dashboard$ /public/pages/dashboard/index.html [L]
+RewriteRule ^dashboard/pending$ /public/pages/dashboard/pending.html [L]
+
+# Serve static assets from public folder (CSS, JS, images, etc.)
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_URI} !^/api
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
+RewriteRule ^(.*)$ /public/$1 [L]
