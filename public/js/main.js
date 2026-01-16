@@ -832,13 +832,16 @@ class EcosystemBackground {
 
     this.entities = [];
 
-    // Configuration
+    // Detect mobile for responsive config
+    this.isMobile = window.innerWidth <= 768;
+
+    // Configuration - adjust for mobile
     this.config = {
-      nodeCount: 55,
-      minRadius: 3,
-      maxRadius: 6,
+      nodeCount: this.isMobile ? 70 : 55,
+      minRadius: this.isMobile ? 4 : 3,
+      maxRadius: this.isMobile ? 8 : 6,
       expandedRadius: 38,
-      connectionDistance: 220,
+      connectionDistance: this.isMobile ? 180 : 220,
       nodeColor: "rgba(244, 176, 0, 0.4)",
       nodeGlowColor: "rgba(244, 176, 0, 0.8)",
       connectionColor: "rgba(244, 176, 0, 0.15)",
@@ -991,21 +994,31 @@ class EcosystemBackground {
     const centerX = this.canvas.width / 2;
     const centerY = this.canvas.height / 2;
 
+    // On mobile, spread nodes more aggressively across the entire canvas
+    const spreadFactor = this.isMobile ? 1.2 : 1;
+    const edgePadding = this.isMobile ? 20 : 50;
+
     for (let i = 0; i < nodeCount; i++) {
       const radius = Math.random() * (maxRadius - minRadius) + minRadius;
-      const x = Math.random() * this.canvas.width;
-      const y = Math.random() * this.canvas.height;
+
+      // Distribute nodes across entire canvas with edge padding
+      const x =
+        edgePadding + Math.random() * (this.canvas.width - edgePadding * 2);
+      const y =
+        edgePadding + Math.random() * (this.canvas.height - edgePadding * 2);
 
       const dx = x - centerX;
       const dy = y - centerY;
-      const orbitRadius = Math.sqrt(dx * dx + dy * dy);
+      const orbitRadius = Math.sqrt(dx * dx + dy * dy) * spreadFactor;
       const orbitAngle = Math.atan2(dy, dx);
 
+      // Slower orbit speed on mobile for better visual effect
+      const baseOrbitSpeed = this.isMobile ? 0.0001 : 0.00015;
       const orbitSpeed =
-        (0.00015 + Math.random() * 0.0001) *
+        (baseOrbitSpeed + Math.random() * 0.0001) *
         (1 -
           orbitRadius /
-            (Math.max(this.canvas.width, this.canvas.height) * 0.7));
+            (Math.max(this.canvas.width, this.canvas.height) * 0.9));
 
       this.nodes.push({
         x,
@@ -1047,6 +1060,9 @@ class EcosystemBackground {
     this.canvas.width = hero.offsetWidth;
     this.canvas.height = hero.offsetHeight;
 
+    // Update mobile detection on resize
+    this.isMobile = window.innerWidth <= 768;
+
     if (this.nodes.length > 0) {
       this.redistributeNodes();
     }
@@ -1063,6 +1079,8 @@ class EcosystemBackground {
   redistributeNodes() {
     const centerX = this.canvas.width / 2;
     const centerY = this.canvas.height / 2;
+    const spreadFactor = this.isMobile ? 1.3 : 1;
+    const edgePadding = this.isMobile ? 20 : 50;
 
     this.nodes.forEach((node) => {
       // Recalculate position based on new canvas size
@@ -1073,8 +1091,15 @@ class EcosystemBackground {
       node.orbitCenterX = centerX;
       node.orbitCenterY = centerY;
 
-      // Scale orbit radius proportionally
-      node.orbitRadius *= Math.min(scaleX, scaleY);
+      // Scale orbit radius proportionally - spread more on mobile
+      node.orbitRadius *= Math.min(scaleX, scaleY) * spreadFactor;
+
+      // Ensure nodes stay within bounds
+      const maxOrbitRadius =
+        Math.min(this.canvas.width, this.canvas.height) / 2 - edgePadding;
+      if (node.orbitRadius > maxOrbitRadius) {
+        node.orbitRadius = maxOrbitRadius * (0.5 + Math.random() * 0.5);
+      }
 
       // Recalculate position
       node.baseX = centerX + Math.cos(node.orbitAngle) * node.orbitRadius;
