@@ -14,7 +14,7 @@ const API_BASE_URL =
 
 // Export for use in other scripts
 window.UP_NEXUS_CONFIG = {
-  API_URL: API_BASE_URL
+  API_URL: API_BASE_URL,
 };
 
 console.log("UP-NEXUS Config loaded. API URL:", API_BASE_URL);

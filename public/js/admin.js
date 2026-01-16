@@ -3,11 +3,11 @@
    ============================================= */
 
 // Get API URL from config (loaded from config.js) or fallback
-const API_URL = window.UP_NEXUS_CONFIG?.API_URL || (
-  window.location.hostname === "localhost"
+const API_URL =
+  window.UP_NEXUS_CONFIG?.API_URL ||
+  (window.location.hostname === "localhost"
     ? "http://localhost:3000/api"
-    : window.location.origin + "/api"
-);
+    : window.location.origin + "/api");
 
 // State
 let entities = [];
