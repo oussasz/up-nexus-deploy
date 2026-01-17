@@ -35,7 +35,7 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
-  })
+  }),
 );
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
@@ -499,7 +499,7 @@ app.post("/api/auth/login", async (req, res) => {
     const token = jwt.sign(
       { id: admin._id, username: admin.username, role: admin.role },
       JWT_SECRET,
-      { expiresIn: "24h" }
+      { expiresIn: "24h" },
     );
 
     res.json({
@@ -562,7 +562,7 @@ app.post("/api/users/auth/google", async (req, res) => {
     // Verify Google token
     const { OAuth2Client } = require("google-auth-library");
     const client = new OAuth2Client(
-      "902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com"
+      "902774782146-5ce9n3gsjfm00qoubttgt2bhj9hdk5uf.apps.googleusercontent.com",
     );
 
     const ticket = await client.verifyIdToken({
@@ -642,7 +642,7 @@ app.post("/api/users/auth/google", async (req, res) => {
         status: user.status,
       },
       JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     res.json({
@@ -662,13 +662,11 @@ app.post("/api/users/auth/google", async (req, res) => {
     });
   } catch (error) {
     console.error("Google auth error:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Authentication failed",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Authentication failed",
+      error: error.message,
+    });
   }
 });
 
@@ -748,7 +746,7 @@ app.post("/api/users/register", async (req, res) => {
         status: user.status,
       },
       JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     res.status(201).json({
@@ -769,13 +767,11 @@ app.post("/api/users/register", async (req, res) => {
     });
   } catch (error) {
     console.error("Registration error:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Registration failed",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Registration failed",
+      error: error.message,
+    });
   }
 });
 
@@ -820,7 +816,7 @@ app.post("/api/users/login", async (req, res) => {
         status: user.status,
       },
       JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     res.json({
@@ -849,7 +845,7 @@ app.get("/api/users/me", userAuthMiddleware, async (req, res) => {
 
   try {
     const user = await User.findById(req.user.userId).select(
-      "-password -passwordResetToken -emailVerificationToken"
+      "-password -passwordResetToken -emailVerificationToken",
     );
     if (!user) {
       return res
@@ -860,7 +856,7 @@ app.get("/api/users/me", userAuthMiddleware, async (req, res) => {
     // Get user's entity claims
     const claims = await EntityClaim.find({ userId: user._id }).populate(
       "entityId",
-      "name type logo"
+      "name type logo",
     );
 
     res.json({
@@ -901,7 +897,7 @@ app.put("/api/users/me", userAuthMiddleware, async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.user.userId,
       { ...updates, updatedAt: Date.now() },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("-password -passwordResetToken -emailVerificationToken");
 
     if (!user) {
@@ -1003,7 +999,7 @@ app.get(
       console.error("Get claims error:", error);
       res.status(500).json({ success: false, message: "Server error" });
     }
-  }
+  },
 );
 
 // Get all pending claims (admin)
@@ -1560,7 +1556,7 @@ app.put("/api/announcements/:id", authMiddleware, async (req, res) => {
       {
         new: true,
         runValidators: true,
-      }
+      },
     );
 
     if (!announcement) {
@@ -1622,38 +1618,54 @@ app.get("/pricing", (req, res) => {
 });
 
 app.get("/announcements", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "pages", "announcements.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "public", "pages", "announcements.html"),
+  );
 });
 
 // Auth routes
 app.get("/auth/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "pages", "auth", "login.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "public", "pages", "auth", "login.html"),
+  );
 });
 
 app.get("/auth/register", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "pages", "auth", "register.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "public", "pages", "auth", "register.html"),
+  );
 });
 
 app.get("/auth/forgot", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "pages", "auth", "forgot.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "public", "pages", "auth", "forgot.html"),
+  );
 });
 
 // Admin routes
 app.get("/admin", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "pages", "admin", "dashboard.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "public", "pages", "admin", "dashboard.html"),
+  );
 });
 
 app.get("/admin/dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "pages", "admin", "dashboard.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "public", "pages", "admin", "dashboard.html"),
+  );
 });
 
 app.get("/admin/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "pages", "admin", "login.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "public", "pages", "admin", "login.html"),
+  );
 });
 
 // Dashboard route
 app.get("/dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "pages", "dashboard", "index.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "public", "pages", "dashboard", "index.html"),
+  );
 });
 
 // Homepage and fallback
