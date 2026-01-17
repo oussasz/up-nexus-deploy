@@ -1600,69 +1600,84 @@ app.delete("/api/announcements/:id", authMiddleware, async (req, res) => {
 // FRONTEND ROUTES - Serve HTML pages
 // ============================================
 
+// Normalize trailing slashes for non-API routes
+app.use((req, res, next) => {
+  if (
+    req.path !== "/" &&
+    req.path.endsWith("/") &&
+    !req.path.startsWith("/api/")
+  ) {
+    const query = req.url.includes("?")
+      ? req.url.slice(req.url.indexOf("?"))
+      : "";
+    return res.redirect(301, req.path.slice(0, -1) + query);
+  }
+  return next();
+});
+
 // Root-level pages
-app.get("/about", (req, res) => {
+app.get(/^\/about\/?$/, (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "pages", "about.html"));
 });
 
-app.get("/ecosystem", (req, res) => {
+app.get(/^\/ecosystem\/?$/, (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "pages", "ecosystem.html"));
 });
 
-app.get("/contact", (req, res) => {
+app.get(/^\/contact\/?$/, (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "pages", "contact.html"));
 });
 
-app.get("/pricing", (req, res) => {
+app.get(/^\/pricing\/?$/, (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "pages", "pricing.html"));
 });
 
-app.get("/announcements", (req, res) => {
+app.get(/^\/announcements\/?$/, (req, res) => {
   res.sendFile(
     path.join(__dirname, "..", "public", "pages", "announcements.html"),
   );
 });
 
 // Auth routes
-app.get("/auth/login", (req, res) => {
+app.get(/^\/auth\/login\/?$/, (req, res) => {
   res.sendFile(
     path.join(__dirname, "..", "public", "pages", "auth", "login.html"),
   );
 });
 
-app.get("/auth/register", (req, res) => {
+app.get(/^\/auth\/register\/?$/, (req, res) => {
   res.sendFile(
     path.join(__dirname, "..", "public", "pages", "auth", "register.html"),
   );
 });
 
-app.get("/auth/forgot", (req, res) => {
+app.get(/^\/auth\/forgot\/?$/, (req, res) => {
   res.sendFile(
     path.join(__dirname, "..", "public", "pages", "auth", "forgot.html"),
   );
 });
 
 // Admin routes
-app.get("/admin", (req, res) => {
+app.get(/^\/admin\/?$/, (req, res) => {
   res.sendFile(
     path.join(__dirname, "..", "public", "pages", "admin", "dashboard.html"),
   );
 });
 
-app.get("/admin/dashboard", (req, res) => {
+app.get(/^\/admin\/dashboard\/?$/, (req, res) => {
   res.sendFile(
     path.join(__dirname, "..", "public", "pages", "admin", "dashboard.html"),
   );
 });
 
-app.get("/admin/login", (req, res) => {
+app.get(/^\/admin\/login\/?$/, (req, res) => {
   res.sendFile(
     path.join(__dirname, "..", "public", "pages", "admin", "login.html"),
   );
 });
 
 // Dashboard route
-app.get("/dashboard", (req, res) => {
+app.get(/^\/dashboard\/?$/, (req, res) => {
   res.sendFile(
     path.join(__dirname, "..", "public", "pages", "dashboard", "index.html"),
   );
