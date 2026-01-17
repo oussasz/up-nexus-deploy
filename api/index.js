@@ -1600,7 +1600,63 @@ app.delete("/api/announcements/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// Serve frontend for all non-API routes (SPA fallback)
+// ============================================
+// FRONTEND ROUTES - Serve HTML pages
+// ============================================
+
+// Root-level pages
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "about.html"));
+});
+
+app.get("/ecosystem", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "ecosystem.html"));
+});
+
+app.get("/contact", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "contact.html"));
+});
+
+app.get("/pricing", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "pricing.html"));
+});
+
+app.get("/announcements", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "announcements.html"));
+});
+
+// Auth routes
+app.get("/auth/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "auth", "login.html"));
+});
+
+app.get("/auth/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "auth", "register.html"));
+});
+
+app.get("/auth/forgot", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "auth", "forgot.html"));
+});
+
+// Admin routes
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "admin", "dashboard.html"));
+});
+
+app.get("/admin/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "admin", "dashboard.html"));
+});
+
+app.get("/admin/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "admin", "login.html"));
+});
+
+// Dashboard route
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "pages", "dashboard", "index.html"));
+});
+
+// Homepage and fallback
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
