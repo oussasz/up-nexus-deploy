@@ -1,12 +1,687 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0;url=/upnexus/public/" />
-    <meta name="robots" content="noindex" />
-    <title>Redirecting…</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="UP-NEXUS - The digital hub uniting Algeria's startups, incubators, investors, freelancers, and every player in the entrepreneurial ecosystem."
+    />
+    <meta
+      name="keywords"
+      content="Algeria, startups, entrepreneurs, investors, incubators, ecosystem, innovation"
+    />
+    <meta name="author" content="UP-NEXUS" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="UP-NEXUS - Empowered by Connection" />
+    <meta
+      property="og:description"
+      content="The digital hub uniting Algeria's entrepreneurial ecosystem"
+    />
+    <meta property="og:type" content="website" />
+
+    <title>
+      UP-NEXUS | Empowered by Connection - Algeria's Entrepreneurial Hub
+    </title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/styles.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/icon.png" />
+    <link rel="apple-touch-icon" href="/icon.png" />
   </head>
   <body>
-    <p>Redirecting to application… <a href="/upnexus/public/">Open app</a></p>
+    <!-- ============================================
+         NAVIGATION
+         ============================================ -->
+    <nav class="navbar" id="navbar">
+      <div class="container nav-container">
+        <a href="#" class="logo">
+          <span class="logo-text">
+            <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+            ><span class="logo-x"><img src="/icon.png" alt="X" /></span
+            ><span class="logo-us">US</span>
+          </span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#mission">About</a></li>
+          <li><a href="/ecosystem">Ecosystem</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="btn btn-ghost" id="loginBtn">Log In</button>
+          <button class="btn btn-primary" id="joinBtn">
+            <i class="fas fa-rocket"></i>
+            Join Free
+          </button>
+          <button
+            class="mobile-menu-toggle"
+            id="mobileMenuToggle"
+            aria-label="Toggle menu"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ============================================
+         HERO SECTION
+         ============================================ -->
+    <section class="hero" id="home">
+      <!-- Background Effects -->
+      <div class="hero-background"></div>
+      <div class="hero-grid"></div>
+      <canvas id="ecosystemCanvas" class="ecosystem-canvas"></canvas>
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
+
+      <div class="container hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-sparkles"></i>
+          Algeria's #1 Entrepreneurial Platform
+        </div>
+
+        <h1 class="hero-title">
+          <span>Empowered by</span>
+          <span class="highlight">Connection.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          The digital hub uniting Algeria's
+          <span class="text-highlight">startups</span>,
+          <span class="text-highlight">incubators</span>,
+          <span class="text-highlight">investors</span>,
+          <span class="text-highlight">freelancers</span>, and every player in
+          the entrepreneurial ecosystem — building the future together.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-xl" id="heroJoinBtn">
+            Join for Free
+            <i class="fas fa-arrow-right"></i>
+          </button>
+          <a href="/ecosystem" class="btn btn-glass btn-xl">
+            <i class="fas fa-compass"></i>
+            Explore Ecosystem
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value" id="stat-total" data-count="0">0</div>
+            <div class="hero-stat-label">Ecosystem Players</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value" id="stat-startups" data-count="0">
+              0
+            </div>
+            <div class="hero-stat-label">Startups</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value" id="stat-incubators" data-count="0">
+              0
+            </div>
+            <div class="hero-stat-label">Incubators</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value" id="stat-coworking" data-count="0">
+              0
+            </div>
+            <div class="hero-stat-label">Coworking Spaces</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <div class="scroll-mouse">
+          <div class="scroll-wheel"></div>
+        </div>
+        <p class="scroll-text">Scroll to explore</p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         MISSION SECTION
+         ============================================ -->
+    <section class="section mission" id="mission">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">
+            <i class="fas fa-bullseye"></i>
+            Our Mission
+          </span>
+          <h2 class="section-title">Building Algeria's Future Together</h2>
+          <p class="section-description">
+            UP-NEXUS consolidates Algeria's entrepreneurial ecosystem into one
+            transparent, accessible platform. We facilitate collaboration,
+            amplify opportunities, and empower every actor to contribute to
+            national innovation and growth.
+          </p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card" data-aos="fade-up">
+            <div class="stat-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <div class="stat-number" id="mission-startups" data-target="0">
+              0
+            </div>
+            <div class="stat-label">Startups</div>
+          </div>
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="stat-number" id="mission-incubators" data-target="0">
+              0
+            </div>
+            <div class="stat-label">Incubators & Accelerators</div>
+          </div>
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-icon">
+              <i class="fas fa-laptop-house"></i>
+            </div>
+            <div class="stat-number" id="mission-coworking" data-target="0">
+              0
+            </div>
+            <div class="stat-label">Coworking Spaces</div>
+          </div>
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-number" id="mission-communities" data-target="0">
+              0
+            </div>
+            <div class="stat-label">Communities</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         ECOSYSTEM / BENEFITS SECTION
+         ============================================ -->
+    <section class="section benefits" id="ecosystem">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">
+            <i class="fas fa-network-wired"></i>
+            Ecosystem
+          </span>
+          <h2 class="section-title">Who Benefits?</h2>
+          <p class="section-description">
+            UP-NEXUS serves every role in the entrepreneurial ecosystem
+          </p>
+        </div>
+
+        <div class="benefits-tabs">
+          <button class="benefit-tab active" data-filter="all">All</button>
+          <button class="benefit-tab" data-filter="entrepreneur">
+            Entrepreneurs
+          </button>
+          <button class="benefit-tab" data-filter="investor">Investors</button>
+          <button class="benefit-tab" data-filter="support">Support</button>
+        </div>
+
+        <div class="benefits-grid">
+          <!-- Startup -->
+          <div class="benefit-card" data-category="entrepreneur">
+            <div class="benefit-card-content">
+              <div class="benefit-icon">
+                <i class="fas fa-rocket"></i>
+              </div>
+              <h3 class="benefit-title">Startup</h3>
+              <p class="benefit-description">
+                Access funding opportunities, connect with mentors, and showcase
+                your innovation to the entire ecosystem.
+              </p>
+              <a href="#" class="benefit-link">
+                Get Started <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Incubator -->
+          <div class="benefit-card" data-category="support">
+            <div class="benefit-card-content">
+              <div class="benefit-icon">
+                <i class="fas fa-building"></i>
+              </div>
+              <h3 class="benefit-title">Incubator / Accelerator</h3>
+              <p class="benefit-description">
+                Discover promising startups, share programs, and expand your
+                network within the community.
+              </p>
+              <a href="#" class="benefit-link">
+                Learn More <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Investor -->
+          <div class="benefit-card" data-category="investor">
+            <div class="benefit-card-content">
+              <div class="benefit-icon">
+                <i class="fas fa-chart-pie"></i>
+              </div>
+              <h3 class="benefit-title">Investor</h3>
+              <p class="benefit-description">
+                Find investment opportunities from Business Angels to Venture
+                Capital, track ecosystem trends.
+              </p>
+              <a href="#" class="benefit-link">
+                Explore Deals <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Auto-Entrepreneur -->
+          <div class="benefit-card" data-category="entrepreneur">
+            <div class="benefit-card-content">
+              <div class="benefit-icon">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <h3 class="benefit-title">Auto-Entrepreneur</h3>
+              <p class="benefit-description">
+                Connect with startups, find projects, and grow your independent
+                business within the ecosystem.
+              </p>
+              <a href="#" class="benefit-link">
+                Join Network <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Freelancer -->
+          <div class="benefit-card" data-category="entrepreneur">
+            <div class="benefit-card-content">
+              <div class="benefit-icon">
+                <i class="fas fa-laptop-code"></i>
+              </div>
+              <h3 class="benefit-title">Freelancer</h3>
+              <p class="benefit-description">
+                Find projects, collaborate with startups, and build your
+                portfolio in the entrepreneurial community.
+              </p>
+              <a href="#" class="benefit-link">
+                Find Projects <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Project Holder -->
+          <div class="benefit-card" data-category="entrepreneur">
+            <div class="benefit-card-content">
+              <div class="benefit-icon">
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              <h3 class="benefit-title">Project Holder</h3>
+              <p class="benefit-description">
+                Turn your ideas into reality, find support, and connect with
+                mentors and investors.
+              </p>
+              <a href="#" class="benefit-link">
+                Launch Idea <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- University -->
+          <div class="benefit-card" data-category="support">
+            <div class="benefit-card-content">
+              <div class="benefit-icon">
+                <i class="fas fa-university"></i>
+              </div>
+              <h3 class="benefit-title">University & Research</h3>
+              <p class="benefit-description">
+                Bridge research and entrepreneurship, share innovations, and
+                connect with the startup ecosystem.
+              </p>
+              <a href="#" class="benefit-link">
+                Partner With Us <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Mentor -->
+          <div class="benefit-card" data-category="support">
+            <div class="benefit-card-content">
+              <div class="benefit-icon">
+                <i class="fas fa-chalkboard-teacher"></i>
+              </div>
+              <h3 class="benefit-title">Mentor / Coach</h3>
+              <p class="benefit-description">
+                Share your expertise, guide entrepreneurs, and contribute to
+                ecosystem growth.
+              </p>
+              <a href="#" class="benefit-link">
+                Become Mentor <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         HOW IT WORKS SECTION
+         ============================================ -->
+    <section class="section how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">
+            <i class="fas fa-magic"></i>
+            How It Works
+          </span>
+          <h2 class="section-title">Getting Started is Simple</h2>
+          <p class="section-description">
+            Join the ecosystem in three easy steps
+          </p>
+        </div>
+
+        <div class="steps-wrapper">
+          <div class="steps-line">
+            <div class="steps-line-progress" id="stepsProgress"></div>
+          </div>
+
+          <div class="steps-container">
+            <div class="step" data-step="1">
+              <div class="step-number">
+                01
+                <span class="step-icon"><i class="fas fa-user-plus"></i></span>
+              </div>
+              <h3 class="step-title">Create Your Profile</h3>
+              <p class="step-description">
+                Sign up and tell us about your role in the ecosystem. Customize
+                your profile to showcase your skills and goals.
+              </p>
+            </div>
+
+            <div class="step" data-step="2">
+              <div class="step-number">
+                02
+                <span class="step-icon"><i class="fas fa-search"></i></span>
+              </div>
+              <h3 class="step-title">Explore & Connect</h3>
+              <p class="step-description">
+                Browse opportunities, follow actors you're interested in, and
+                engage with content that matters to you.
+              </p>
+            </div>
+
+            <div class="step" data-step="3">
+              <div class="step-number">
+                03
+                <span class="step-icon"><i class="fas fa-chart-line"></i></span>
+              </div>
+              <h3 class="step-title">Grow Together</h3>
+              <p class="step-description">
+                Collaborate on projects, share knowledge, and contribute to
+                building Algeria's entrepreneurial future.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SUCCESS STORIES SECTION
+         ============================================ -->
+    <section class="section testimonials" id="stories">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">
+            <i class="fas fa-lightbulb"></i>
+            Community Voices
+          </span>
+          <h2 class="section-title">Shared Vision, Real Alignment</h2>
+          <p class="section-description">
+            Insights from people who believe in the UP-NEXUS
+          </p>
+        </div>
+
+        <div class="testimonials-grid">
+          <!-- Testimonial 1 -->
+          <div class="testimonial-card">
+            <div class="testimonial-content">
+              <div class="testimonial-quote">
+                <i class="fas fa-quote-left"></i>
+              </div>
+              <p class="testimonial-text">
+                "UP-NEXUS is a smart initiative to structure and connect actors
+                within the entrepreneurship ecosystem. A platform like this can
+                genuinely improve visibility and communication for industrial
+                projects."
+              </p>
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">OB</div>
+              <div class="author-info">
+                <h4 class="author-name">Oussama Brahimi</h4>
+                <p class="author-role">Project Holder, Maintafox</p>
+              </div>
+            </div>
+            <div class="testimonial-result">
+              <span class="result-badge">Idea Support</span>
+            </div>
+          </div>
+
+          <!-- Testimonial 2 -->
+          <div class="testimonial-card featured">
+            <div class="testimonial-content">
+              <div class="testimonial-quote">
+                <i class="fas fa-quote-left"></i>
+              </div>
+              <p class="testimonial-text">
+                "Connecting startups, incubators, and investors is no longer
+                optional. UP-NEXUS is a promising concept that could
+                significantly improve coordination across the ecosystem."
+              </p>
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">BA</div>
+              <div class="author-info">
+                <h4 class="author-name">Benkirat Abdelaziz</h4>
+                <p class="author-role">Incubator Director</p>
+              </div>
+            </div>
+            <div class="testimonial-result">
+              <span class="result-badge">Concept Encouragement</span>
+            </div>
+          </div>
+
+          <!-- Testimonial 3 -->
+          <div class="testimonial-card">
+            <div class="testimonial-content">
+              <div class="testimonial-quote">
+                <i class="fas fa-quote-left"></i>
+              </div>
+              <p class="testimonial-text">
+                "Having a platform that helps project holders showcase their
+                ideas and reach the right partners can make a real difference at
+                the early stages."
+              </p>
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">KG</div>
+              <div class="author-info">
+                <h4 class="author-name">Khalil Guetiche</h4>
+                <p class="author-role">Project Holder, Maker DZ</p>
+              </div>
+            </div>
+            <div class="testimonial-result">
+              <span class="result-badge">Vision Support</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonials-cta">
+          <a href="/ecosystem" class="btn btn-glass btn-lg">
+            <i class="fas fa-users"></i>
+            Browse the Ecosystem
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         CTA SECTION
+         ============================================ -->
+    <section class="section cta" id="cta">
+      <div class="cta-background"></div>
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+
+      <div class="container">
+        <div class="cta-content">
+          <h2 class="cta-title">Ready to Join the Movement?</h2>
+          <p class="cta-description">
+            Be part of Algeria's most comprehensive entrepreneurial platform.
+            Connect, collaborate, and grow with thousands of ecosystem players.
+          </p>
+          <div class="cta-actions">
+            <button class="btn btn-primary btn-xl">
+              Start Now — It's Free
+              <i class="fas fa-arrow-right"></i>
+            </button>
+            <button class="btn btn-glass btn-xl">
+              <i class="fas fa-play-circle"></i>
+              Watch Demo
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-grid">
+            <!-- Brand Column -->
+            <div class="footer-brand">
+              <a href="#" class="logo">
+                <span class="logo-text">
+                  <span class="logo-up">UP</span><span class="logo-ne">-NE</span
+                  ><span class="logo-x"><img src="/icon.png" alt="X" /></span
+                  ><span class="logo-us">US</span>
+                </span>
+              </a>
+              <p>
+                Connecting Algeria's entrepreneurial ecosystem for a brighter
+                future.
+              </p>
+              <div class="footer-social">
+                <a href="#" class="social-link" aria-label="Facebook">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Twitter">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="LinkedIn">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Instagram">
+                  <i class="fab fa-instagram"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Platform Links -->
+            <div class="footer-column">
+              <h4>Platform</h4>
+              <ul class="footer-links">
+                <li><a href="/announcements">Announcements</a></li>
+                <li><a href="/ecosystem">Ecosystem</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+              </ul>
+            </div>
+
+            <!-- Resources Links -->
+            <div class="footer-column">
+              <h4>Resources</h4>
+              <ul class="footer-links">
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/contact#faq">FAQ</a></li>
+                <li><a href="/contact">Contact</a></li>
+              </ul>
+            </div>
+
+            <!-- Legal Links -->
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <ul class="footer-links">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Cookie Policy</a></li>
+              </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="footer-column footer-newsletter">
+              <h4>Stay Updated</h4>
+              <p>Subscribe to our newsletter for ecosystem updates.</p>
+              <form class="newsletter-form" id="newsletterForm">
+                <input
+                  type="email"
+                  class="form-input"
+                  placeholder="Enter your email"
+                  required
+                />
+                <button type="submit" class="btn btn-primary btn-icon">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 UP-NEXUS. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Cookies</a>
+            <a href="/admin/login">Admin</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/main.js"></script>
   </body>
 </html>

@@ -1,48 +1,78 @@
 ================================================================================
-                    CPANEL SETUP INSTRUCTIONS
+                    CPANEL DEPLOYMENT INSTRUCTIONS
 ================================================================================
 
-STEP 1: Upload .htaccess to public_html
-----------------------------------------
-Copy the .htaccess file from this folder to:
-/home/bnyqzpdb/public_html/.htaccess
+OVERVIEW:
+---------
+This folder contains the necessary files for deploying UP-NEXUS to cPanel.
+The .htaccess file handles routing, while symlinks connect to the main app.
 
 
-STEP 2: Create Symlinks in cPanel Terminal
-------------------------------------------
-Go to cPanel > Terminal and run these commands ONE BY ONE:
+STEP 1: Upload Files to cPanel
+-------------------------------
+1. Upload the entire 'cpanel-deployment' folder to:
+   /home/bnyqzpdb/upnexus/
 
-cd /home/bnyqzpdb/public_html
-
-ln -s /home/bnyqzpdb/upnexus/public/index.html index.html
-ln -s /home/bnyqzpdb/upnexus/public/404.html 404.html
-ln -s /home/bnyqzpdb/upnexus/public/icon.png icon.png
-ln -s /home/bnyqzpdb/upnexus/public/pages pages
-ln -s /home/bnyqzpdb/upnexus/public/css css
-ln -s /home/bnyqzpdb/upnexus/public/js js
+2. Make sure these files are in public_html:
+   - index.html
+   - 404.html
+   - .htaccess
+   - Symlinks: css, js, pages (pointing to ../public/)
 
 
-STEP 3: Test
-------------
-Visit these URLs:
-- https://www.up-nexus.com/           (should show homepage)
-- https://www.up-nexus.com/ecosystem  (should show ecosystem page)
-- https://www.up-nexus.com/auth/login (should show login page)
-
-
-IF SYMLINKS DON'T WORK (some hosts block them):
------------------------------------------------
-Alternative: Copy files instead of symlinking.
-
-Run in cPanel Terminal:
+STEP 2: Create Symlinks (if not already present)
+-------------------------------------------------
+Go to cPanel > Terminal and run:
 
 cd /home/bnyqzpdb/public_html
-cp /home/bnyqzpdb/upnexus/public/index.html .
-cp /home/bnyqzpdb/upnexus/public/404.html .
-cp /home/bnyqzpdb/upnexus/public/icon.png .
+ln -sfn /home/bnyqzpdb/upnexus/public/pages pages
+ln -sfn /home/bnyqzpdb/upnexus/public/css css
+ln -sfn /home/bnyqzpdb/upnexus/public/js js
+cp /home/bnyqzpdb/upnexus/public/index.html index.html
+cp /home/bnyqzpdb/upnexus/public/404.html 404.html
+
+NOTE: If your host doesn't support symlinks, copy instead:
 cp -r /home/bnyqzpdb/upnexus/public/pages .
 cp -r /home/bnyqzpdb/upnexus/public/css .
 cp -r /home/bnyqzpdb/upnexus/public/js .
+
+
+STEP 3: Install Node Dependencies
+----------------------------------
+cd /home/bnyqzpdb/upnexus
+npm install --production
+
+
+STEP 4: Restart Application
+----------------------------
+mkdir -p tmp
+touch tmp/restart.txt
+
+
+STEP 5: Test the Deployment
+----------------------------
+Visit these URLs to verify everything works:
+
+✓ https://www.up-nexus.com/           (Homepage)
+✓ https://www.up-nexus.com/ecosystem  (Ecosystem page)
+✓ https://www.up-nexus.com/auth/login (Login page)
+✓ https://www.up-nexus.com/admin      (Admin dashboard)
+✓ https://www.up-nexus.com/api/health (API health check)
+
+
+TROUBLESHOOTING:
+----------------
+Problem: Pages redirect to homepage
+Solution: Check .htaccess file is in public_html and symlinks are correct
+
+Problem: API requests fail
+Solution: Verify Node.js app is running (touch tmp/restart.txt)
+
+Problem: CSS/JS not loading
+Solution: Check symlinks to css and js folders exist
+
+Problem: 500 Internal Server Error
+Solution: Check .htaccess syntax and Apache error logs
 
 
 ================================================================================
